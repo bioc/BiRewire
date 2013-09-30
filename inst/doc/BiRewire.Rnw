@@ -56,6 +56,15 @@ It is possible to download the package from \url{http://www.ebi.ac.uk/~iorio/BiR
  R CMD INSTALL BiRewire_xx.yy.zz.tar.gz
 \end{verbatim}
 
+or with biocLite() directly in R:
+
+\begin{verbatim}
+source("http://bioconductor.org/biocLite.R")
+biocLite("BiRewire")
+\end{verbatim}
+
+
+
 To load BiRewire use the following commands:
 <<loadBiRewire>>=
 library(BiRewire)

@@ -82,12 +82,12 @@ size_t analysis(short **incidence,size_t ncol,size_t nrow,double **scores,size_t
 
 	
 
-	size_t i,j,kk,n,bb,dd,rand1,rand2;
+	size_t i,j,kk,n,rand1,rand2;
 	size_t dim=max_iter+1;
 	size_t *from;
   size_t *to;
   short **matrix;
-  size_t max_degree=0;
+
 	size_t a,b,c,d,e=0;
 	size_t index=1;
   do matrix=(short **)R_alloc(nrow,sizeof(short*)); while(matrix==NULL);
@@ -157,12 +157,12 @@ size_t analysis_ex(short **incidence,size_t ncol,size_t nrow,double **scores,siz
 
 	
 
-	size_t i,j,kk,n,bb,dd,rand1,rand2,t=0;
+	size_t i,j,kk,n,rand1,rand2,t=0;
 	size_t dim=max_iter+1;
 	size_t *from;
   size_t *to;
   short **matrix;
-  size_t max_degree=0;
+
 	size_t a,b,c,d,e=0;
 	size_t index=1;
   do matrix=(short **)R_alloc(nrow,sizeof(short*)); while(matrix==NULL);
@@ -237,7 +237,7 @@ size_t analysis_ex(short **incidence,size_t ncol,size_t nrow,double **scores,siz
 
 size_t rewire_bipartite(short **matrix,size_t ncol, size_t nrow,size_t max_iter,size_t verbose)
 {
-	size_t i,j,kk,n,bb,dd,e=0,rand1,rand2;
+	size_t i,j,kk,n,e=0,rand1,rand2;
 	size_t *from;
 	size_t a,b,c,d;
 	size_t *to;
@@ -295,7 +295,7 @@ return 0;
 
 size_t rewire_bipartite_ex(short **matrix,size_t ncol, size_t nrow,size_t max_iter,size_t verbose,size_t MAXITER)
 {
-	size_t i,j,kk,n,bb,dd,e=0,rand1,rand2,t=0;
+	size_t i,j,kk,n,e=0,rand1,rand2,t=0;
 	size_t *from;
 	size_t a,b,c,d;
 	size_t *to;
@@ -380,7 +380,7 @@ size_t inline check(size_t *pos,size_t *to,size_t *index,size_t a,size_t  b,size
 
 size_t rewire_sparse_bipartite(size_t *from,size_t *to,size_t nc,size_t nr,size_t max_iter,size_t e,size_t verbose)
 {
-	size_t i,j,kk,n,bb,dd,rand1,rand2;
+	size_t i,j,kk,n,rand1,rand2;
  	size_t a,b,c,d;
 	size_t *index;
 	size_t *pos;
@@ -437,7 +437,7 @@ size_t rewire_sparse_bipartite(size_t *from,size_t *to,size_t nc,size_t nr,size_
 
 size_t rewire_sparse_bipartite_ex(size_t *from,size_t *to,size_t nc,size_t nr,size_t max_iter,size_t e,size_t verbose,size_t MAXITER)
 {
-	size_t i,j,kk,n,bb,dd,rand1,rand2,t=0;
+	size_t i,j,kk,n,rand1,rand2,t=0;
  	size_t a,b,c,d;
 	size_t *index;
 	size_t *pos;
@@ -793,7 +793,7 @@ size_t analysis_undirected_ex(short **incidence,size_t ncol, size_t nrow,double 
 size_t rewire(short **incidence,size_t ncol, size_t nrow,size_t max_iter,size_t verbose)
 {
 	
- 	size_t i,j,kk,n,index,rand1,rand2;
+ 	size_t i,j,kk,n,rand1,rand2;
 	size_t e=0;
     //copy of the original incidence matrix
 	size_t *from;
@@ -821,7 +821,6 @@ size_t rewire(short **incidence,size_t ncol, size_t nrow,size_t max_iter,size_t 
         }
 	time_t  tin,tfin;
   tin = time (NULL);
-	index=1; 
  	GetRNGstate(); 
 	for(n=0;n<max_iter;n++)
 		{
@@ -906,7 +905,7 @@ size_t rewire(short **incidence,size_t ncol, size_t nrow,size_t max_iter,size_t 
 size_t rewire_ex(short **incidence,size_t ncol, size_t nrow,size_t max_iter,size_t verbose,size_t MAXITER)
 {
 	
- 	size_t i,j,kk,n,index,rand1,rand2,t=0;
+ 	size_t i,j,kk,n,rand1,rand2,t=0;
 	size_t e=0;
     //copy of the original incidence matrix
 	size_t *from;
@@ -934,7 +933,7 @@ size_t rewire_ex(short **incidence,size_t ncol, size_t nrow,size_t max_iter,size
         }
 	time_t  tin,tfin;
   tin = time (NULL);
-	index=1; 
+
  	GetRNGstate(); 
 	for(n=0;n<max_iter;t++)
 		{
@@ -1094,7 +1093,6 @@ void inline sub2(size_t a,size_t b,size_t c,size_t d,size_t *degree,short **adj)
 size_t inline is_not(size_t a,size_t d,size_t *degree,short **adj)
 {
     size_t i;
-    size_t tmp;
  
     for(i=0;i<degree[a];i++)
         if(adj[a][i]==d)
@@ -1104,7 +1102,7 @@ size_t inline is_not(size_t a,size_t d,size_t *degree,short **adj)
 size_t rewire_sparse(size_t *from, size_t *to,size_t *degree,size_t ncol, size_t nrow,size_t max_iter, size_t e,size_t verbose)
 {
 
- 	size_t i,j,kk,n,index,rand1,rand2;
+ 	size_t i,n,rand1,rand2;
     //copy of the original incidence matrix
 	size_t a,b,c,d;
 	size_t ad,cb,ac,bd;
@@ -1127,7 +1125,6 @@ size_t rewire_sparse(size_t *from, size_t *to,size_t *degree,size_t ncol, size_t
 
   GetRNGstate(); 
     
-	index=1;
   time_t  tin,tfin;
 	tin = time (NULL);
 	for(n=0;n<max_iter;n++)
@@ -1209,7 +1206,7 @@ size_t rewire_sparse(size_t *from, size_t *to,size_t *degree,size_t ncol, size_t
 size_t rewire_sparse_ex(size_t *from, size_t *to,size_t *degree,size_t ncol, size_t nrow,size_t max_iter, size_t e,size_t verbose,size_t MAXITER)
 {
 
- 	size_t i,j,kk,n,index,rand1,rand2,t=0;
+ 	size_t i,n,rand1,rand2,t=0;
     //copy of the original incidence matrix
 	size_t a,b,c,d;
 	size_t ad,cb,ac,bd;
@@ -1232,7 +1229,6 @@ size_t rewire_sparse_ex(size_t *from, size_t *to,size_t *degree,size_t ncol, siz
 
   GetRNGstate(); 
     
-	index=1;
   time_t  tin,tfin;
 	tin = time (NULL);
 	for(n=0;n<max_iter;t++)

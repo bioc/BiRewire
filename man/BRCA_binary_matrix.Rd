@@ -3,7 +3,7 @@
 \alias{BRCA_binary_matrix}
 \title{TCGA Brest Cancer data}
 \description{
-Breast cancer samples and their respective mutations downloaded from the Cancer Cancer Genome Atlas (TCGA), used in \cite{Gobbi er al.}.
+Breast cancer samples and their respective mutations downloaded from the Cancer Cancer Genome Atlas (TCGA), used in \cite{Gobbi et al.}.
 Germline mutations were filtered out of the list of reported mutations; synonymous mutations and mutations identified as benign and tolerated were also removed from the dataset. The bipartite graph resulting when considering this matrix as an incidence matrix has \eqn{n_r=757, n_c=9757, e=19758}  for an edge density equal to \eqn{0.27\%}.
 
 }

@@ -159,7 +159,7 @@ SEXP R_rewire_sparse_bipartite (SEXP edges,SEXP ncol, SEXP nrow,SEXP max_iter,SE
 	size_t *to;
     
     
-	size_t i,check,nc,nr,j,ne;
+	size_t i,check,nc,nr,ne;
 	ne=asInteger(e);
 	nc=asInteger(ncol);
     nr=asInteger(nrow);
@@ -356,7 +356,7 @@ SEXP R_rewire_sparse (SEXP edges,SEXP ncol, SEXP nrow,SEXP max_iter,SEXP e,SEXP 
 	size_t *to;
     size_t *degree;
 
-	size_t i,check,nc,nr,j,ne;
+	size_t i,check,nc,nr,ne;
 	nc=asInteger(ncol);
   	nr=asInteger(nrow);
     ne=asInteger(e);
