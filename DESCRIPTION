@@ -1,5 +1,5 @@
 Package: BiRewire
-Version: 1.0.0
+Version: 1.2.0
 Date: 2013-09-30
 Title: High-performing routines for the randomization of a bipartite graph, or a envent matrix, preserving the degree distribution.
 Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>
