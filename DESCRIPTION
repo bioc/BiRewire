@@ -9,4 +9,3 @@ Depends: igraph
 Suggests: RUnit, BiocGenerics 
 Author: Andrea Gobbi [aut], Davide Albanese [cbt], Francesco Iorio [cbt], Giuseppe Jurman [cbt], Julio Saez-Rodriguez [cbt] .
 URL: http://www.ebi.ac.uk/~iorio/BiRewire
-
