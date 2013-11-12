@@ -13,7 +13,7 @@ Routines for undirected graphs are also provided.
 Summary:
   \tabular{ll}{
   Package: \tab BiRewire\cr
-  Version: \tab 0.99.4\cr
+  Version: \tab 1.3.2\cr
   Date: 2013-07-15\cr
   Require: igraph, R>=2.10\cr
   URL:  http://www.ebi.ac.uk/~iorio/BiRewire  \cr
