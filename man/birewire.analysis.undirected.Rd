@@ -32,7 +32,7 @@ A list containing a vector of Jaccard index values computed each (\emph{scores})
 
 }
 \references{
- Gobbi, A. and Iorio, and Wedge, D. and Dawson, K. and Ludmil, A. F. and Jurman, G. and Saez-Rodriguez, J.  (submitted),  \emph{Randomization of next generation sequencing data preserving genomic-event distributions}.\cr
+Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
 
  Gobbi, A. and Jurman, G.  (in preparation),  \emph{Number of required Switching Steps in the Switching Algorithm for undirected graphs}.\cr
 

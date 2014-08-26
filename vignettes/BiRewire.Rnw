@@ -214,7 +214,9 @@ legend("top",1, c("Proj2","Proj1"), cex=0.9, col=c("blue","red"), lty=1:1,lwd=3)
 
 \begin{thebibliography}{}
 
-\bibitem{Gobbi} Gobbi, A. and Iorio, and Wedge, D. and Dawson, K. and Ludmil, A. F. and Jurman, G. and Saez-Rodriguez, J., \emph{Next-Generation-Sequencing data randomisation preserving genomic-event distributions}, submitted.
+
+
+\bibitem{Gobbi}Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.
 \bibitem{GobbiJurman} Gobbi, A.  and Jurman, G. \emph{Number of required Switching Steps in the Switching Algorithm for undirected graphs}.in preparation, .
 \bibitem{Jaccard} Jaccard, P. (1901), \emph{Etude comparative de la distribution florale dans une portion des Alpes et des Jura}, Bulletin de la Societe Vaudoise des Sciences Naturelles 37:547--579.
  \bibitem{Milo03} R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028.

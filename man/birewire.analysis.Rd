@@ -30,7 +30,7 @@ At each \emph{step} number of switching steps the function computes the \strong{
 A list containing a vector of Jaccard index values computed each (\emph{scores}) switching steps, whose length is equal to \eqn{max.iter/step}, and the analytically derived lower bound (\eqn{N}) of switching steps to be performed by the switching algorithm in order to provide the revired version of \emph{g} with the maximal level of achievable randomness (in terms of dissimilarity from the initial \emph{g}).
 }
 \references{
- Gobbi, A. and Iorio, and Wedge, D. and Dawson, K. and Ludmil, A. F. and Jurman, G. and Saez-Rodriguez, J.  (submitted),  \emph{Randomization of next generation sequencing data preserving genomic-event distributions}.\cr
+Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
 
 Jaccard, P. (1901), \emph{Étude comparative de la distribution florale dans une portion des Alpes et des Jura},
  Bulletin de la Société Vaudoise des Sciences Naturelles 37: 547–579.\cr
