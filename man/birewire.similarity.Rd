@@ -45,7 +45,6 @@ g2=birewire.rewire.bipartite(g)
 
 birewire.similarity(get.incidence(g,sparse=FALSE),get.incidence(g2,sparse=FALSE))
 
-
 }
 
 \keyword{similarity,jaccard}

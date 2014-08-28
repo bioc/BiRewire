@@ -228,5 +228,4 @@ Gotelli NJ. Null model analysis of species co-occurrence patterns. Ecology. 2000
 \bibitem{Jaccard}Jaccard, Paul. \'{E}tude comparative de la distribution florale dans une portion des Alpes et des Jura. Bulletin del la Soci\'{e}t\'{e} Vaudoise des Sciences Naturelles; 1901; 37:547--579.
 \end{thebibliography}
 
-
 \end{document}
