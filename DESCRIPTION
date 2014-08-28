@@ -1,5 +1,9 @@
 Package: BiRewire
+<<<<<<< .working
 Version: 1.4.0
+=======
+Version: 1.6.1
+>>>>>>> .merge-right.r93669
 Date: 2013-09-30
 Title: High-performing routines for the randomization of a bipartite
         graph (or a binary event matrix) preserving degree distribution
