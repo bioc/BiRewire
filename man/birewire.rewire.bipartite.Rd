@@ -35,6 +35,7 @@ Davide Albanese
 }
 \examples{
 
+
 library(igraph)
 library(BiRewire)
 g <- simplify(graph.bipartite( rep(0:1,length=100),

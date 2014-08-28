@@ -77,6 +77,5 @@ col="red")
 legend(max*0.5,1, c("Jaccard index","Jaccard index with lower-bound N"), cex=0.9, 
 col=c("black","red"), lty=1:1,lwd=3)
 
-
 }
 \keyword{rewire, undirected graph}

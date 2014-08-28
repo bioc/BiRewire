@@ -36,6 +36,7 @@ Davide Albanese
 \examples{
 
 
+
 library(igraph)
 library(BiRewire)
 g <- erdos.renyi.game(1000,0.1)
