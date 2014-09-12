@@ -24,6 +24,7 @@ version of the initial graph \emph{g}, while the second and the third one are re
 }
 \references{
  Gobbi, A. and Iorio, and Wedge, D. and Dawson, K. and Ludmil, A. F. and Jurman, G. and Saez-Rodriguez, J.  (submitted),  \emph{Randomization of next generation sequencing data preserving genomic-event distributions}.\cr
+
   }
 \author{Andrea Gobbi
 \cr

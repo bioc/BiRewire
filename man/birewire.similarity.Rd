@@ -11,6 +11,7 @@
   \item{m2}{Second matrix.  }
   }
 
+
 \details{
 The \strong{Jaccard} index between two sets \emph{M} and \emph{N} is defined as:
 

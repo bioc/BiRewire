@@ -12,7 +12,6 @@ Germline mutations were filtered out of the list of reported mutations; synonymo
 randomized next generation sequencing data}.\cr
 
 
-
   }
 \usage{data(BRCA_binary_matrix)}
 \source{http://tcga.cancer.gov/dataportal/}
