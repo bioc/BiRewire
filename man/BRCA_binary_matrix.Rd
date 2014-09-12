@@ -11,7 +11,6 @@ Germline mutations were filtered out of the list of reported mutations; synonymo
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
 
 
-
   }
 \usage{data(BRCA_binary_matrix)}
 \source{http://tcga.cancer.gov/dataportal/}
