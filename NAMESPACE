@@ -1,3 +1,0 @@
-useDynLib(BiRewire)
-export(birewire.analysis.undirected,birewire.rewire,birewire.analysis,birewire.rewire.bipartite,birewire.bipartite.from.incidence,birewire.similarity,birewire.rewire.bipartite.and.projections)
-
