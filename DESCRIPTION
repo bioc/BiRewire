@@ -1,6 +1,6 @@
 Package: BiRewire
-Version: 1.6.4
-Date: 2013-09-30
+Version: 1.6.5
+Date: 2014-09-16
 Title: High-performing routines for the randomization of a bipartite
         graph (or a binary event matrix) preserving degree distribution
         (or marginal totals).
