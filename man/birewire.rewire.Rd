@@ -5,7 +5,7 @@
 \title{Efficient rewiring of undirected graphs}
 \description{Optimal implementation of the switching algorithm. It returns the rewired version of the initial undirected graph or its adjacency matrix.} 
 \usage{birewire.rewire(adjacency, max.iter="n",accuracy=1,
-verbose=TRUE,MAXITER_MUL=10,exact=F)}
+verbose=TRUE,MAXITER_MUL=10,exact=T)}
 \arguments{
   \item{adjacency}{An \code{igraph} undirected graph \emph{g}  or its adjacency matrix (can be extracted from \emph{g}   using {\code{get.adjacency(g)}});  }
   \item{max.iter}{ "n" (default)  the number of switching steps to be performed (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{(2d^3-6d^2+2d+2)} \ln{(e-de)} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{(e-de)} } otherwise ,  
@@ -14,7 +14,8 @@ verbose=TRUE,MAXITER_MUL=10,exact=F)}
         \item{verbose}{ TRUE (default) boolean value. If TRUE print a processing bar during the rewiring algorithm.}
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
 
- \item{exact}{ FALSE (default). If TRUE the program performs \code{max.iter} \strong{successful} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+ \item{exact}{ TRUE (default). If FALSE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+
 } 
 \details{Performs at most \eqn{max.iter} number of rewiring steps producing a rewired version of an initial undirected graph.
 }

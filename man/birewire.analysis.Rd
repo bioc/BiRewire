@@ -7,7 +7,7 @@
 \title{Analysis of Jaccard similarity trends across switching steps.}
 \description{This function performs a sequence of \emph{max.iter} switching steps on the input bipartite graph \emph{g} and compute the Jaccard similarity between \emph{g} (the initial network) and its rewired version each \emph{step} switching steps. }
 \usage{birewire.analysis(incidence, step=10, max.iter="n",accuracy=1,
-verbose=TRUE,MAXITER_MUL=10,exact=F)}
+verbose=TRUE,MAXITER_MUL=10,exact=T)}
 \arguments{
   \item{incidence}{Incidence matrix of the initial bipartite graph \emph{g} (can be extracted from an {\code{igraph}} bipartite graph using the {\code{get.incidence}})} function;
   \item{step}{  10 (default): the interval (in terms of switching steps) at which the Jaccard index between \emph{g} and the its current rewired version is computed;}
@@ -17,7 +17,8 @@ verbose=TRUE,MAXITER_MUL=10,exact=F)}
     \item{accuracy}{ 1 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point;}
     \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation;}
     \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
- \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} successful swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+  \item{exact}{ TRUE (default). If FALSE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+
 } 
 \details{
  This function performs  \emph{max.iter} switching steps (see references). In particular, at each step two edges are randomly selected from the current version of \emph{g}. Let these two edges be \eqn{(a,b)} and \eqn{(c,d)} (where \eqn{a} and \eqn{c} belong to the first class of nodes whereas \eqn{b} and \eqn{d} belong to the second one), with \eqn{a\not=c} and  \eqn{b\not=d}.\cr 

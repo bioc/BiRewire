@@ -1,8 +1,8 @@
 Package: BiRewire
-Version: 1.9.0
-Date: 2014-09-16
+Version: 1.9.1
+Date: 2014-03-01
 Title: High-performing routines for the randomization of a bipartite
-        graph (or a binary event matrix) preserving degree distribution
+        graph (or a binary event matrix) and directed signed graph preserving degree distribution
         (or marginal totals).
 Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>
 Description: Fast functions for bipartite network rewiring through N
@@ -12,10 +12,11 @@ Description: Fast functions for bipartite network rewiring through N
         to the original network. Includes function for the analysis of
         the introduced randomness across the switching and several
         other routines to analyse the resulting networks and their
-        natural projections. Extension to undirected networks (not
-        bipartite) is also provided.
+        natural projections. 
+	Extension to undirected networks and directed signed networks (not
+        bipartite) is also provided. 
 License: GPL-3
-Depends: igraph
+Depends: igraph, slam	
 Suggests: RUnit, BiocGenerics
 Author: Andrea Gobbi [aut], Davide Albanese [cbt], Francesco Iorio
         [cbt], Giuseppe Jurman [cbt], Julio Saez-Rodriguez [cbt] .

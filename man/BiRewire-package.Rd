@@ -5,7 +5,7 @@
 \docType{package}
 \title{The BiRewire package}
 \description{
-   R package for computationally-efficient rewiring of bipartite graphs (or randomisation of 0-1 tables with prescribed marginal totals). The package provides useful functions for the analysis and the randomisation of large biological datasets that can be encoded as 0-1 tables, hence modeled as bipartite graphs by considering a 0-1 table as an incidence matrix. Large collections of such randomised tables can be used to approximate null models, preserving event-rates both across rows and columns, for statistical significance tests of combinatorial properties of the original dataset.
+   R package for computationally-efficient rewiring of bipartite graphs (or randomisation of 0-1 tables with prescribed marginal totals) and directed signed graphs (dsg). The package provides useful functions for the analysis and the randomisation of large biological datasets that can be encoded as 0-1 tables, hence modeled as bipartite graphs by considering a 0-1 table as an incidence matrix, and for data that can be encoded as directed signed graphs such as patways and signaling networks. Large collections of such randomised tables can be used to approximate null models, preserving event-rates both across rows and columns, for statistical significance tests of combinatorial properties of the original dataset. The package provides also some sampler routines useful for generating correctly such collections.
 Routines for undirected graphs are also provided.
 
    }
@@ -13,9 +13,9 @@ Routines for undirected graphs are also provided.
 Summary:
   \tabular{ll}{
   Package: \tab BiRewire\cr
-  Version: \tab 1.3.2\cr
-  Date: 2013-07-15\cr
-  Require: igraph, R>=2.10\cr
+  Version: \tab 1.12.1\cr
+  Date: 2015-03-01\cr
+  Require: slam, igraph, R>=2.10\cr
   URL:  http://www.ebi.ac.uk/~iorio/BiRewire  \cr
   License: \tab GPL-3 \cr
   }

@@ -6,7 +6,7 @@
 \title{Analysis of the randomness trend across switching steps in a general undirected graph.}
 \description{This function performs a sequence of \emph{max.iter} switching steps on the input undirected graph \emph{g} and compute the Jaccard similarity between \emph{g} and its rewired version each \emph{step} switching steps. }
 \usage{birewire.analysis.undirected(adjacency, step=10, max.iter="n",accuracy=1,
-verbose=TRUE,MAXITER_MUL=10,exact=F)}
+verbose=TRUE,MAXITER_MUL=10,exact=T)}
 \arguments{
   \item{adjacency}{ adjacency matrix of the undirected graph \emph{g} (can be extracted from a {\code{igraph}} graph using the {\code{get.adjacency}})  function;}
   \item{step}{  10 (default): the interval (in terms of switching steps) at which the Jaccard index between \emph{g} and the its current rewired version is computed;  }
@@ -16,7 +16,8 @@ verbose=TRUE,MAXITER_MUL=10,exact=F)}
     \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}   
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
 
- \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} successful swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+ \item{exact}{ TRUE (default). If FALSE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+
 } 
 \details{
  This function performs  \emph{max.iter} switching steps (see references). In particular, at each step two edges are randomly selected from the current version of

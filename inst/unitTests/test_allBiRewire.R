@@ -6,6 +6,7 @@ test_birewire.bipartite()
 test_birewire.bipartite.incidence()
 test_birewire.bipartite.sparse()
 test_birewire.undirected ()
+test_birewire.dsg()
 }
 
 test_birewire.analysis <- function() 
@@ -63,6 +64,18 @@ max=100*length(E(g))
  checkTrue(is.igraph(birewire.rewire(g,verbose=TRUE)))
 
 
+
+}
+
+test_birewire.dsg<-function()
+{
+##g=birewire.load.dsg("data/test.sif")
+data(test_dsg)
+dsg=birewire.induced.bipartite(test_dsg)
+tmp= birewire.rewire.dsg(dsg,verbose=F)
+dsg2=birewire.build.dsg(tmp)
+##birewire.save.dsg(dsg2,"test2.sif")
+checkTrue(birewire.similarity.dsg(dgs,dsg2)<=1)
 
 }
 

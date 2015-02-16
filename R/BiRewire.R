@@ -1,5 +1,5 @@
 # This code is written by Andrea Gobbi  <gobbi.andrea@mail.com>
-# 2013
+# 2015
 # 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -11,7 +11,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 # 
-# You should have received a copy of the GNU General Public License
+# You should have received a copy of the GNU General Public licenses
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # 
 
@@ -45,7 +45,7 @@ return(g)
 ##accuracy=level of accuracy
 ##verbose= print execution bar during the process 
 ##MAXITER_MUL= MAXITER_MUL* max.iter indicates the maximum number of real iteration
-birewire.analysis<- function(incidence, step=10, max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=F)
+birewire.analysis<- function(incidence, step=10, max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
 {
   
 if(!is.matrix(incidence) && !is.data.frame(incidence))
@@ -104,7 +104,7 @@ if(!is.matrix(incidence) && !is.data.frame(incidence))
   return( result)
 }
 ##Performs the rewiring algorithm max.iter times
-birewire.rewire.bipartite<- function(incidence,  max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=F)
+birewire.rewire.bipartite<- function(incidence,  max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
 {
   
 
@@ -246,7 +246,7 @@ birewire.similarity<-function(m1,m2)
   return( sum( m1*m2)/sum(m1+m2-m1*m2))
   
 }
-birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=F)
+birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
 {
   if(verbose)
     verbose=1
@@ -295,7 +295,7 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=1,ver
   return(gg)
 }
 
-birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=F) 
+birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T) 
 	{
 
 if(!is.matrix(adjacency) && !is.data.frame(adjacency))
@@ -357,7 +357,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency))
 
 
 
-birewire.rewire<- function(adjacency,  max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=F)
+birewire.rewire<- function(adjacency,  max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
 	{ 
 
 if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
@@ -438,7 +438,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
 	}
 
 
-birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=F)
+birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
 	{ if(verbose)
     verbose=1
   else
@@ -485,4 +485,199 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,M
         gg<-graph(edges=result+1,directed=FALSE,n=n)
 		return( gg)
 	}
+
+
+
+
+
+
+
+
+
+
+
+#######V.1.10
+##Given a dsg (a list of two incidnece matrix), this routine sample randomly K network preserving the degrees. The inputs are the same of birewire.rewire.bipartite
+birewire.sampler.dsg<-function(dsg,K,path,exact=T,verbose=T, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
+	{
+
+  
+		if(!is.list(dsg) | is.null(dsg[['positive']] | is.null(dsg[['negative']])) )
+			    {
+			    	stop("The input must be a dsg object (see References) \n")
+			    	return(0)
+			    }
+
+		if(!file.exists(path))
+  					{
+    					dir.create(path) 
+ 				 	}
+
+		n=ceiling(K/1000)
+		NNET=1000
+		if(n==0)
+			n=1
+		for( i in 1:n)
+			{
+				if(K-1000*(i+1)<1000)
+					NNET=K-1000*(K+1)			
+  
+			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given dsg.'))
+    			PATH<-paste(path,'/',i,'/',sep='')
+				if(!file.exists(PATH))
+					{
+      					dir.create(PATH)
+    				}
+    				for(j in 1:NNET)
+    					{
+    						dsg=birewire.rewire.dsg(dsg=dsg,exact=exact,save.file=T,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
+    							verbose=verbose,max.iter.pos=max.iter.pos,max.iter.neg=max.iter.neg, accuracy=accuracy,MAXITER_MUL=MAXITER_MUL)
+
+    					}	
+
+			}
+
+
+
+
+
+	}
+
+
+##sililat to above function
+birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
+{
+
+
+		if(!file.exists(path))
+  					{
+    					dir.create(path) 
+ 				 	}
+
+		n=ceiling(K/300)
+		##NB 300 perche' non voglio piu' di 1000 file per cartella
+		NNET=300
+		for( i in 1:n)
+			{
+				if(K-300*i<300)
+					NNET=K-300*i  	+300			
+  
+			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given dsg.'))
+    			PATH<-paste(path,'/',i,'/',sep='')
+				if(!file.exists(PATH))
+					{
+      					dir.create(PATH)
+    				}
+    				for(j in 1:NNET)
+    					{
+    						incidence=birewire.rewire.bipartite(incidence=incidence,  max.iter=max.iter, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,
+    							exact=exact)
+    						write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+    						##write.table(incidence,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F,)
+    					}	
+
+			}
+
+
+
+
+	
+
+}
+
+birewire.rewire.dsg<-function(dsg,exact=T,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,save.file=F,path=NA)
+{
+
+	incidence_pos=dsg[["positive"]]
+	incidence_neg=dsg[["negative"]]
+	incidence_pos=birewire.rewire.bipartite(incidence=incidence_pos,  max.iter=max.iter.pos, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+    incidence_neg=birewire.rewire.bipartite(incidence=incidence_neg,  max.iter=max.iter.neg, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+	dsg=list(positive=incidence_pos,negative=incidence_neg)	
+	if(save.file)
+		{
+			birewire.save.dsg(g=birewire.build.dsg(dsg),file=path)
+
+		}
+	return(dsg)
+}
+
+
+##INTERNAL ROUTINES
+simplify.table<-function(df)
+	{
+		return(df[which(rowSums(df)>0),which(colSums(df)>0)])
+
+	}
+##INTERNAL ROUTINES
+get.data.frame.from.incidence<-function(table,sign)
+{
+
+
+source=rownames(table)
+target=colnames(table)
+index=which(table>0,arr.ind=T)
+df=data.frame(source=source[index[,1]],sign=sign,target=target[index[,2]])
+return(df)
+
+}
+
+##from a sif file, the routine generates the negative and positive incidence matrix
+birewire.induced.bipartite<-function(g)
+
+{
+	g=as.data.frame(g)
+	g_p=g[g[,2]=='+',c(1,3)]
+	g_n=g[g[,2]=='-',c(1,3)]
+
+	positive=as.data.frame.matrix(table(g_p))
+
+	negative=as.data.frame.matrix(table(g_n))
+
+
+dsg=list(positive=simplify.table(positive),negative=simplify.table(negative))
+return(dsg)
+
+}
+
+
+##inverse of the function above
+birewire.build.dsg<-function(dsg)
+{
+
+	positive=dsg[['positive']]
+	negative=dsg[['negative']]
+
+	g_p=get.data.frame.from.incidence(positive,'+')
+	g_n=get.data.frame.from.incidence(negative,'-')
+	g=rbind(g_p,g_n)
+	return(g)
+}
+
+birewire.load.dsg<-function(path)
+	{
+		
+
+		return(read.table(path))
+
+
+	}
+birewire.save.dsg<-function(g,file)
+	{
+
+		
+		write.table(g,file,col.names=F,row.names=F,quote=F)
+
+		
+
+
+	}
+
+##jaccard index for dsg
+	birewire.similarity.dsg<-function(m1,m2)
+{
+ x=sum(m1[['positive']]*m2[['positive']]) +sum(m1[['negative']]*m2[['negative']] )
+e=sum(m1[['positive']])+sum(m2[['positive']])+sum(m1[['negative']])+sum(m2[['negative']])
+  return( x/(e+x))
+  
+}
 
