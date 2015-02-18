@@ -1,4 +1,6 @@
 useDynLib(BiRewire)
+import(igraph)
+import(slam)
 export(birewire.analysis.undirected,birewire.rewire,birewire.analysis,birewire.rewire.bipartite,birewire.bipartite.from.incidence,birewire.similarity,
 birewire.rewire.bipartite.and.projections,
 	birewire.sampler.bipartite,birewire.sampler.dsg,birewire.rewire.dsg,birewire.induced.bipartite,birewire.build.dsg,birewire.load.dsg,

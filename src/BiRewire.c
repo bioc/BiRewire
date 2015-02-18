@@ -574,7 +574,7 @@ size_t analysis_undirected(short **incidence,size_t ncol, size_t nrow,double **s
         {
             if(incidence[a][d]==0 && incidence[c][b]==0 && incidence[a][c]==0 && incidence[d][b]==0 )
             {
-                if(rand()%2==0)
+                if(unif_rand()>=0.5)
                 {
                     incidence[a][d]=1;incidence[d][a]=1;
                     incidence[c][b]=1;incidence[b][c]=1;
@@ -712,7 +712,7 @@ size_t analysis_undirected_ex(short **incidence,size_t ncol, size_t nrow,double 
         {
             if(incidence[a][d]==0 && incidence[c][b]==0 && incidence[a][c]==0 && incidence[d][b]==0 )
             {
-                if(rand()%2==0)
+                if(unif_rand()>=0.5)
                 {
                     incidence[a][d]=1;incidence[d][a]=1;
                     incidence[c][b]=1;incidence[b][c]=1;
@@ -841,7 +841,7 @@ size_t rewire(short **incidence,size_t ncol, size_t nrow,size_t max_iter,size_t 
         {
             if(incidence[a][d]==0 && incidence[c][b]==0 && incidence[a][c]==0 && incidence[d][b]==0 )
             {
-                if(rand()%2==0)
+                if(unif_rand()>=0.5)
                 {
                     incidence[a][d]=1;incidence[d][a]=1;
                     incidence[c][b]=1;incidence[b][c]=1;
@@ -962,7 +962,7 @@ size_t rewire_ex(short **incidence,size_t ncol, size_t nrow,size_t max_iter,size
         {
             if(incidence[a][d]==0 && incidence[c][b]==0 && incidence[a][c]==0 && incidence[d][b]==0 )
             {
-                if(rand()%2==0)
+                if(unif_rand()>=0)
                 {
                     incidence[a][d]=1;incidence[d][a]=1;
                     incidence[c][b]=1;incidence[b][c]=1;
@@ -1150,7 +1150,7 @@ size_t rewire_sparse(size_t *from, size_t *to,size_t *degree,size_t ncol, size_t
         {
             if(ad==1 && cb==1 && ac==1 && bd==1 )
             {
-                if(rand()%2==0)
+                if(unif_rand()>=0.5)
                 {
                     
                     to[rand1]=d;
@@ -1266,7 +1266,7 @@ size_t rewire_sparse_ex(size_t *from, size_t *to,size_t *degree,size_t ncol, siz
         {
             if(ad==1 && cb==1 && ac==1 && bd==1 )
             {
-                if(rand()%2==0)
+                if(unif_rand()>=0.5)
                 {
                     
                     to[rand1]=d;

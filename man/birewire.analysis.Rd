@@ -7,7 +7,7 @@
 \title{Analysis of Jaccard similarity trends across switching steps.}
 \description{This function performs a sequence of \emph{max.iter} switching steps on the input bipartite graph \emph{g} and compute the Jaccard similarity between \emph{g} (the initial network) and its rewired version each \emph{step} switching steps. }
 \usage{birewire.analysis(incidence, step=10, max.iter="n",accuracy=1,
-verbose=TRUE,MAXITER_MUL=10,exact=T)}
+verbose=TRUE,MAXITER_MUL=10,exact=TRUE)}
 \arguments{
   \item{incidence}{Incidence matrix of the initial bipartite graph \emph{g} (can be extracted from an {\code{igraph}} bipartite graph using the {\code{get.incidence}})} function;
   \item{step}{  10 (default): the interval (in terms of switching steps) at which the Jaccard index between \emph{g} and the its current rewired version is computed;}

@@ -4,7 +4,7 @@
 \alias{birewire.build.dsg}
 \title{Transform a dsg  into SIF format.}
 \description{The routine transforms the initial dsg obgect (two bipartite graphs) into SIF dsg format.} 
-\usage{birewire.induced.bipartite(g)}
+\usage{birewire.build.dsg(dsg)}
 \arguments{
  \item{dsg}{The dsg to be converted.}
  } 
@@ -20,7 +20,7 @@ A dsg in SIF format.}
 
 data(test_dsg)
 dsg=birewire.induced.bipartite(test_dsg)
-tmp= birewire.rewire.dsg(dsg,verbose=F)
+tmp= birewire.rewire.dsg(dsg,verbose=FALSE)
 dsg2=birewire.build.dsg(tmp)
 
 }

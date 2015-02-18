@@ -6,7 +6,7 @@
 \title{Analysis of the randomness trend across switching steps in a general undirected graph.}
 \description{This function performs a sequence of \emph{max.iter} switching steps on the input undirected graph \emph{g} and compute the Jaccard similarity between \emph{g} and its rewired version each \emph{step} switching steps. }
 \usage{birewire.analysis.undirected(adjacency, step=10, max.iter="n",accuracy=1,
-verbose=TRUE,MAXITER_MUL=10,exact=T)}
+verbose=TRUE,MAXITER_MUL=10,exact=TRUE)}
 \arguments{
   \item{adjacency}{ adjacency matrix of the undirected graph \emph{g} (can be extracted from a {\code{igraph}} graph using the {\code{get.adjacency}})  function;}
   \item{step}{  10 (default): the interval (in terms of switching steps) at which the Jaccard index between \emph{g} and the its current rewired version is computed;  }

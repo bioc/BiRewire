@@ -4,7 +4,7 @@
 \alias{birewire.sampler.dsg}
 \title{Efficient generation null model for a given dsg}
 \description{Efficient generation null model for a given dsg. The routine samples correctly from the null model of a given dsg.} 
-\usage{birewire.sampler.dsg(dsg,K,path,exact=T,verbose=T, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
+\usage{birewire.sampler.dsg(dsg,K,path,exact=TRUE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
 }
 \arguments{
  \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{getbirewire.load.dsg} function and converting the resulting dataframe using \code{birewire.induced.bipartite}.}
@@ -40,7 +40,7 @@ Davide Albanese
 library(BiRewire)
 data(test_dsg)
 dsg=birewire.induced.bipartite(test_dsg)
-tmp= birewire.rewire.dsg(dsg,verbose=F)
+tmp= birewire.rewire.dsg(dsg,verbose=FALSE)
 
 }
 \keyword{directed graph, rewire, pathway, signaling}

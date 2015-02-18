@@ -45,7 +45,7 @@ return(g)
 ##accuracy=level of accuracy
 ##verbose= print execution bar during the process 
 ##MAXITER_MUL= MAXITER_MUL* max.iter indicates the maximum number of real iteration
-birewire.analysis<- function(incidence, step=10, max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
+birewire.analysis<- function(incidence, step=10, max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE)
 {
   
 if(!is.matrix(incidence) && !is.data.frame(incidence))
@@ -78,7 +78,7 @@ if(!is.matrix(incidence) && !is.data.frame(incidence))
   e=sum(incidence)
 
 
-		if(exact==T)
+		if(exact==TRUE)
     	{
 					if( max.iter=="n")
 						max.iter=floor((e*(1-e/t)) *log(x= e/accuracy-e*e/(accuracy*t) )/2  )
@@ -104,7 +104,7 @@ if(!is.matrix(incidence) && !is.data.frame(incidence))
   return( result)
 }
 ##Performs the rewiring algorithm max.iter times
-birewire.rewire.bipartite<- function(incidence,  max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
+birewire.rewire.bipartite<- function(incidence,  max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE)
 {
   
 
@@ -147,7 +147,7 @@ if(is.igraph(incidence))
   e=sum(incidence)
 
 	
-		if(exact==T)
+		if(exact==TRUE)
     	{
 					if( max.iter=="n")
 						max.iter=floor((e*(1-e/t)) *log(x= e/accuracy-e*e/(accuracy*t) )/2  )
@@ -210,8 +210,8 @@ birewire.rewire.bipartite.and.projections<-function(graph,step=10,max.iter="n",a
   mm=m
   for(i in 1:(max.iter/step))
   {
-    mm=birewire.rewire.bipartite(incidence=mm,max.iter=step,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=T)
-    p=birewire.bipartite.from.incidence(directed=F,matrix=mm,reverse=FALSE)
+    mm=birewire.rewire.bipartite(incidence=mm,max.iter=step,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=TRUE)
+    p=birewire.bipartite.from.incidence(directed=FALSE,matrix=mm,reverse=FALSE)
     sc[i+1]=birewire.similarity(m,mm)
     p=bipartite.projection(graph=p,multiplicity=FALSE)
     tmp1=get.adjacency(graph=p$proj1,sparse=FALSE)
@@ -246,7 +246,7 @@ birewire.similarity<-function(m1,m2)
   return( sum( m1*m2)/sum(m1+m2-m1*m2))
   
 }
-birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
+birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE)
 {
   if(verbose)
     verbose=1
@@ -295,7 +295,7 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=1,ver
   return(gg)
 }
 
-birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T) 
+birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE) 
 	{
 
 if(!is.matrix(adjacency) && !is.data.frame(adjacency))
@@ -323,7 +323,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency))
 
 
 
-		if(exact==T)
+		if(exact==TRUE)
     	{
 						if( max.iter=="n")
    						 max.iter=floor((e*(1-e/t)) *log(x= e/accuracy-e*e/(accuracy*t) )/2  )
@@ -357,7 +357,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency))
 
 
 
-birewire.rewire<- function(adjacency,  max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
+birewire.rewire<- function(adjacency,  max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE)
 	{ 
 
 if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
@@ -398,7 +398,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
 		e=sum(adjacency)/2
 		d=e/t
 
-	if(exact==T)
+	if(exact==TRUE)
     	{
 						if( max.iter=="n" )
     					max.iter=floor((e*(1-e/t)) *log(x= e/accuracy-e*e/(accuracy*t) )/2  )
@@ -438,7 +438,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
 	}
 
 
-birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
+birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE)
 	{ if(verbose)
     verbose=1
   else
@@ -455,7 +455,7 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,M
         
         
 
-	if(exact==T)
+	if(exact==TRUE)
     	{
 						if( max.iter=="n")
   				 	 max.iter=floor((e*(1-e/t)) *log(x= e/accuracy-e*e/(accuracy*t) )/2  )
@@ -498,7 +498,7 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,M
 
 #######V.1.10
 ##Given a dsg (a list of two incidnece matrix), this routine sample randomly K network preserving the degrees. The inputs are the same of birewire.rewire.bipartite
-birewire.sampler.dsg<-function(dsg,K,path,exact=T,verbose=T, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
+birewire.sampler.dsg<-function(dsg,K,path,exact=TRUE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
 	{
 
   
@@ -530,7 +530,7 @@ birewire.sampler.dsg<-function(dsg,K,path,exact=T,verbose=T, max.iter.pos='n',ma
     				}
     				for(j in 1:NNET)
     					{
-    						dsg=birewire.rewire.dsg(dsg=dsg,exact=exact,save.file=T,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
+    						dsg=birewire.rewire.dsg(dsg=dsg,exact=exact,save.file=TRUE,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
     							verbose=verbose,max.iter.pos=max.iter.pos,max.iter.neg=max.iter.neg, accuracy=accuracy,MAXITER_MUL=MAXITER_MUL)
 
     					}	
@@ -545,7 +545,7 @@ birewire.sampler.dsg<-function(dsg,K,path,exact=T,verbose=T, max.iter.pos='n',ma
 
 
 ##sililat to above function
-birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=T)
+birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE)
 {
 
 
@@ -585,7 +585,7 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,v
 
 }
 
-birewire.rewire.dsg<-function(dsg,exact=T,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,save.file=F,path=NA)
+birewire.rewire.dsg<-function(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,save.file=FALSE,path=NA)
 {
 
 	incidence_pos=dsg[["positive"]]
@@ -615,7 +615,7 @@ get.data.frame.from.incidence<-function(table,sign)
 
 source=rownames(table)
 target=colnames(table)
-index=which(table>0,arr.ind=T)
+index=which(table>0,arr.ind=TRUE)
 df=data.frame(source=source[index[,1]],sign=sign,target=target[index[,2]])
 return(df)
 
@@ -665,7 +665,7 @@ birewire.save.dsg<-function(g,file)
 	{
 
 		
-		write.table(g,file,col.names=F,row.names=F,quote=F)
+		write.table(g,file,col.names=FALSE,row.names=FALSE,quote=FALSE)
 
 		
 
