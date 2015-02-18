@@ -250,8 +250,8 @@ These two functions encoded the correspondence between a DSG and a ordered coupl
 
 <<Induced bipartite and SIF builder>>=
 data(test_dsg)
-dsg=birewire.induced.bipartite(test_dsg)
-tmp=birewire.build.dsg(dsg)
+dsg=birewire.induced.bipartite(test_dsg,delimitators=list(negative='-',positive='+'))
+tmp=birewire.build.dsg(dsg,delimitators=list(negative='-',positive='+'))
 
 @
 
@@ -259,9 +259,9 @@ tmp=birewire.build.dsg(dsg)
 Function for generating a rewired version of a given DSG $G$. The parameters are quite the same of {\bf birewire.rewire.bipartite }: in this case it is possible to control the number of SS independently for the positive{\bf max.iter.pos} and negative {\bf max.iter.neg}  part of $G$.
 <<Rewire dsg>>=
 dsg2=birewire.rewire.dsg(dsg=dsg)
-tmp=birewire.build.dsg(dsg2)
+tmp=birewire.build.dsg(dsg2,delimitators=list(negative='-',positive='+'))
 
-@
+@test_dsg
 
 \subsection{{\bf birewire.similarity.dsg }}
 Computes the Jaccard index between two DSGs.
@@ -275,7 +275,7 @@ This function uses the SA to generate a set of $K$ DSG in SIF format drawn from 
 
 <<Sampler DSG>>=
 ##NOT RUN
-##birewire.sampler.dsg(dsg,K=10,path='TESTBIREWIREDSG',verbose=F)
+##birewire.sampler.dsg(dsg,K=10,path='TESTBIREWIREDSG',verbose=F,delimitators=list(negative='-',positive='+'))
 ##unlink('TESTBIREWIREDSG',recursive = T)
 @
 

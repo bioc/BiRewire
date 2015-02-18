@@ -4,7 +4,7 @@
 \alias{birewire.rewire.dsg}
 \title{Efficient rewiring of directed signed graphs}
 \description{Optimal implementation of the switching algorithm. It returns the rewired version of the initial directed signed graph.} 
-\usage{birewire.rewire.dsg(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,save.file=FALSE,path=NA)
+\usage{birewire.rewire.dsg(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,save.file=FALSE,path=NA,delimitators=NA)
 }
 \arguments{
  \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{getbirewire.load.dsg} function and converting the resulting dataframe using \code{birewire.induced.bipartite};}
@@ -19,7 +19,9 @@
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
 
   \item{save.file}{ FALSE (default). If TRUE the dsg is converted in a SIF format file and saved in the \emph{path} directory;}
-   \item{path}{ NA (default). If \emph{save.file} is true, the dsg is saved in \emph{path} in SIF format. }
+   \item{path}{ NA (default). If \emph{save.file} is true, the dsg is saved in \emph{path} in SIF format; }  
+    \item{delimitators}{ NA (default). If \emph{save.file} is true, the dsg is saved  using \emph{delimitators} as characters encoding the relations. See \code{birewire.build.dsg} for more details. }
+
 } 
 \details{ This fuction runs \code{birewire.rewire.bipartite} on the positive and negative part of \emph{dsg}. See references for more details.
 }

@@ -4,7 +4,7 @@
 \alias{birewire.sampler.dsg}
 \title{Efficient generation null model for a given dsg}
 \description{Efficient generation null model for a given dsg. The routine samples correctly from the null model of a given dsg.} 
-\usage{birewire.sampler.dsg(dsg,K,path,exact=TRUE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
+\usage{birewire.sampler.dsg(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=TRUE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
 }
 \arguments{
  \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{getbirewire.load.dsg} function and converting the resulting dataframe using \code{birewire.induced.bipartite}.}
@@ -19,7 +19,8 @@
  \item{exact}{ TRUE (default). If FALSE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
 
     \item{path}{ The directory in which the routine stores the outputs; }
-      \item{K}{  The number of network that has to be generated.}
+      \item{K}{  The number of network that has to be generated;}
+  \item{delimitators}{list(negative='-',positive='+') (default):a list with 'positive' and 'negative' names identifying the character encoding the relation used for writing the ouput with \code{birewire.build.dsg};}
 } 
 \details{ The routine creates subfolder in order to have maximum 1000 files for folder. Moreover the SIF files are saved using \code{birewire.save.dsg}. The set is generated calling birewire.rewire.dsg on the last generated dsg starting from the input dsg.
 }

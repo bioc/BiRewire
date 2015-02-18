@@ -71,9 +71,9 @@ test_birewire.dsg<-function()
 {
 ##g=birewire.load.dsg("data/test.sif")
 data(test_dsg)
-dsg=birewire.induced.bipartite(test_dsg)
+dsg=birewire.induced.bipartite(test_dsg,delimitators=list(negative='-',positive='+'))
 tmp= birewire.rewire.dsg(dsg,verbose=FALSE)
-dsg2=birewire.build.dsg(tmp)
+dsg2=birewire.build.dsg(tmp,delimitators=list(negative='-',positive='+'))
 ##birewire.save.dsg(dsg2,"test2.sif")
 checkTrue(birewire.similarity.dsg(dsg,tmp)<=1)
 

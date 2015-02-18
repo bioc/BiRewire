@@ -498,11 +498,11 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,M
 
 #######V.1.10
 ##Given a dsg (a list of two incidnece matrix), this routine sample randomly K network preserving the degrees. The inputs are the same of birewire.rewire.bipartite
-birewire.sampler.dsg<-function(dsg,K,path,exact=TRUE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
+birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=TRUE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
 	{
 
   
-		if(!is.list(dsg) | is.null(dsg[['positive']] | is.null(dsg[['negative']])) )
+		if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
 			    {
 			    	stop("The input must be a dsg object (see References) \n")
 			    	return(0)
@@ -519,8 +519,8 @@ birewire.sampler.dsg<-function(dsg,K,path,exact=TRUE,verbose=TRUE, max.iter.pos=
 			n=1
 		for( i in 1:n)
 			{
-				if(K-1000*(i+1)<1000)
-					NNET=K-1000*(K+1)			
+				if(K-1000*i<0)
+					NNET=K-1000*(i-1)			
   
 			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given dsg.'))
     			PATH<-paste(path,'/',i,'/',sep='')
@@ -530,7 +530,7 @@ birewire.sampler.dsg<-function(dsg,K,path,exact=TRUE,verbose=TRUE, max.iter.pos=
     				}
     				for(j in 1:NNET)
     					{
-    						dsg=birewire.rewire.dsg(dsg=dsg,exact=exact,save.file=TRUE,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
+    						dsg=birewire.rewire.dsg(dsg=dsg,delimitators=delimitators,exact=exact,save.file=TRUE,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
     							verbose=verbose,max.iter.pos=max.iter.pos,max.iter.neg=max.iter.neg, accuracy=accuracy,MAXITER_MUL=MAXITER_MUL)
 
     					}	
@@ -559,8 +559,8 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,v
 		NNET=300
 		for( i in 1:n)
 			{
-				if(K-300*i<300)
-					NNET=K-300*i  	+300			
+					if(K-300*i<0)
+					NNET=K-300*(i-1)
   
 			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given dsg.'))
     			PATH<-paste(path,'/',i,'/',sep='')
@@ -585,7 +585,7 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,v
 
 }
 
-birewire.rewire.dsg<-function(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,save.file=FALSE,path=NA)
+birewire.rewire.dsg<-function(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,save.file=FALSE,path=NA,delimitators=NA)
 {
 
 	incidence_pos=dsg[["positive"]]
@@ -595,8 +595,9 @@ birewire.rewire.dsg<-function(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter
 	dsg=list(positive=incidence_pos,negative=incidence_neg)	
 	if(save.file)
 		{
-			birewire.save.dsg(g=birewire.build.dsg(dsg),file=path)
-
+			
+			birewire.save.dsg(g=birewire.build.dsg(dsg,delimitators),file=path)
+				
 		}
 	return(dsg)
 }
@@ -622,33 +623,35 @@ return(df)
 }
 
 ##from a sif file, the routine generates the negative and positive incidence matrix
-birewire.induced.bipartite<-function(g)
+birewire.induced.bipartite<-function(g,delimitators=list(negative='-',positive='+'))
 
 {
 	g=as.data.frame(g)
-	g_p=g[g[,2]=='+',c(1,3)]
-	g_n=g[g[,2]=='-',c(1,3)]
+	dsg=list()
+	g_p=g[g[,2]==delimitators[['positive']],c(1,3)]
+	g_n=g[g[,2]==delimitators[['negative']],c(1,3)]
 
 	positive=as.data.frame.matrix(table(g_p))
 
 	negative=as.data.frame.matrix(table(g_n))
-
-
-dsg=list(positive=simplify.table(positive),negative=simplify.table(negative))
+	dsg[['positive']]=simplify.table(positive)
+	
+	dsg[['negative']]=simplify.table(negative)
+	
 return(dsg)
 
-}
+}	
 
 
 ##inverse of the function above
-birewire.build.dsg<-function(dsg)
+birewire.build.dsg<-function(dsg,delimitators=list(negative='-',positive='+'))
 {
 
 	positive=dsg[['positive']]
 	negative=dsg[['negative']]
 
-	g_p=get.data.frame.from.incidence(positive,'+')
-	g_n=get.data.frame.from.incidence(negative,'-')
+	g_p=get.data.frame.from.incidence(positive,delimitators[['positive']])
+	g_n=get.data.frame.from.incidence(negative,delimitators[['negative']])
 	g=rbind(g_p,g_n)
 	return(g)
 }
@@ -657,7 +660,7 @@ birewire.load.dsg<-function(path)
 	{
 		
 
-		return(read.table(path))
+		return(unique(read.table(path)))
 
 
 	}
@@ -675,9 +678,10 @@ birewire.save.dsg<-function(g,file)
 ##jaccard index for dsg
 	birewire.similarity.dsg<-function(m1,m2)
 {
+	
  x=sum(m1[['positive']]*m2[['positive']]) +sum(m1[['negative']]*m2[['negative']] )
 e=sum(m1[['positive']])+sum(m2[['positive']])+sum(m1[['negative']])+sum(m2[['negative']])
-  return( x/(e+x))
+  return( x/(e-x))
   
 }
 
