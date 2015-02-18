@@ -4,7 +4,7 @@
 \alias{birewire.sampler.bipartite}
 \title{Efficient generation null model for a given bipartite graph}
 \description{Efficient generation null model for a given bipartite graph. The routine samples correctly from the null model of a given bipartite graph.} 
-\usage{birewire.sampler.bipartite(incidence,K,path,max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE)
+\usage{birewire.sampler.bipartite(incidence,K,path,max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE,write.sparse=TRUE)
 
 }
 \arguments{
@@ -19,6 +19,7 @@
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
 
  \item{exact}{ TRUE (default). If FALSE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+ \item{write.sparse}{ TRUE (default). If FALSE the table is written as an R data.frame (long time and more space needed)}
 
 } 
 \details{ The routine creates subfolder in order to have maximum 1000 files for folder. Moreover the incidence matrices are saved using \code{write_stm_CLUTO} (sparse matrices) that can be loaded using \code{read_stm_CLUTO}. The set is generated calling birewire.rewire.bipartite on the last generated graph starting from the input graph.

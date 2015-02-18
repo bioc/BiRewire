@@ -545,7 +545,7 @@ birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positiv
 
 
 ##sililat to above function
-birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE)
+birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,verbose=TRUE,MAXITER_MUL=10,exact=TRUE,write.sparse=TRUE)
 {
 
 
@@ -556,11 +556,15 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,v
 
 		n=ceiling(K/300)
 		##NB 300 perche' non voglio piu' di 1000 file per cartella
-		NNET=300
+		NFILES=300
+		if(write.sparse==F)
+			NFILES=1000
+		NNET=NFILES
+
 		for( i in 1:n)
 			{
-					if(K-300*i<0)
-					NNET=K-300*(i-1)
+					if(K-NFILES*i<0)
+					NNET=K-NFILES*(i-1)
   
 			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given dsg.'))
     			PATH<-paste(path,'/',i,'/',sep='')
@@ -572,8 +576,15 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,v
     					{
     						incidence=birewire.rewire.bipartite(incidence=incidence,  max.iter=max.iter, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,
     							exact=exact)
-    						write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
-    						##write.table(incidence,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F,)
+    						if(write.sparse)
+    							{
+    									write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+    							}else
+    							{
+										write.table(incidence,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
+
+    							}
+
     					}	
 
 			}
