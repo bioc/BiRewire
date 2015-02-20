@@ -496,7 +496,7 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=1,verbose=TRUE,M
 
 
 
-#######V.1.10
+#######V
 ##Given a dsg (a list of two incidnece matrix), this routine sample randomly K network preserving the degrees. The inputs are the same of birewire.rewire.bipartite
 birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=TRUE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=1,MAXITER_MUL=10)
 	{
@@ -530,7 +530,7 @@ birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positiv
     				}
     				for(j in 1:NNET)
     					{
-    						dsg=birewire.rewire.dsg(dsg=dsg,delimitators=delimitators,exact=exact,save.file=TRUE,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
+    						dsg=birewire.rewire.dsg(dsg=dsg,delimitators=delimitators,exact=exact,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
     							verbose=verbose,max.iter.pos=max.iter.pos,max.iter.neg=max.iter.neg, accuracy=accuracy,MAXITER_MUL=MAXITER_MUL)
 
     					}	
@@ -596,17 +596,25 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=1,v
 
 }
 
-birewire.rewire.dsg<-function(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,save.file=FALSE,path=NA,delimitators=NA)
+birewire.rewire.dsg<-function(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=1,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'))
 {
+
+
+		if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
+			    {
+			    	stop("The input must be a dsg object (see References) \n")
+			    	return(0)
+			    }
+
 
 	incidence_pos=dsg[["positive"]]
 	incidence_neg=dsg[["negative"]]
 	incidence_pos=birewire.rewire.bipartite(incidence=incidence_pos,  max.iter=max.iter.pos, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
     incidence_neg=birewire.rewire.bipartite(incidence=incidence_neg,  max.iter=max.iter.neg, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
 	dsg=list(positive=incidence_pos,negative=incidence_neg)	
-	if(save.file)
+	if(!is.null(path))
 		{
-			
+
 			birewire.save.dsg(g=birewire.build.dsg(dsg,delimitators),file=path)
 				
 		}
@@ -637,6 +645,13 @@ return(df)
 birewire.induced.bipartite<-function(g,delimitators=list(negative='-',positive='+'))
 
 {
+	if(is.null(delimitators[['positive']]) | is.null(delimitators[['negative']]) )
+			    {
+			    	stop("Problem with delimitators (see References) \n")
+			    	return(0)
+			    }
+
+
 	g=as.data.frame(g)
 	dsg=list()
 	g_p=g[g[,2]==delimitators[['positive']],c(1,3)]
@@ -658,6 +673,12 @@ return(dsg)
 birewire.build.dsg<-function(dsg,delimitators=list(negative='-',positive='+'))
 {
 
+
+	if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
+			    {
+			    	stop("The input must be a dsg object (see References) \n")
+			    	return(0)
+			    }
 	positive=dsg[['positive']]
 	negative=dsg[['negative']]
 
