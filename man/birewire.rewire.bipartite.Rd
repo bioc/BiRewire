@@ -4,15 +4,15 @@
 \alias{birewire.rewire.bipartite}
 \title{Efficient rewiring of bipartite graphs}
 \description{Optimal implementation of the switching algorithm. It returns the rewired version of the initial bipartite graph or its incidence matrix.} 
-\usage{birewire.rewire.bipartite(incidence, max.iter="n",accuracy=1,verbose=TRUE,
+\usage{birewire.rewire.bipartite(incidence, max.iter="n",accuracy=0.00005,verbose=TRUE,
 MAXITER_MUL=10,exact=TRUE)}
 \arguments{
  \item{incidence}{Incidence matrix of the initial bipartite graph \emph{g} (can be extracted from an {\code{igraph}} bipartite graph using the {\code{get.incidence}}) function; or the entire bipartite \code{igraph} graph}
   \item{max.iter}{ "n" (default)  the number of switching steps to be performed (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{2(1-d)} \ln{(e-de)} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{(e-de)} } otherwise ,  
   where \eqn{e}  is the number of edges of \emph{g} and \eqn{d} its edge density . This bound is much lower than the empirical one proposed  in  \emph{Milo et al. 2003} (see References);}   
 
-    \item{accuracy}{ 1 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point;}
-    \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
+ \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
+         \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
 
  \item{exact}{ TRUE (default). If FALSE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}

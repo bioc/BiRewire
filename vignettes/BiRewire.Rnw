@@ -221,7 +221,7 @@ seq(1,100,17),seq(1,100,19),seq(1,100,23),100
 )))
 
 result=birewire.rewire.bipartite.and.projections(gg,step=10,
-        max.iter="n",accuracy=1,verbose=FALSE) 
+        max.iter="n",accuracy=0.00005,verbose=FALSE) 
 plot(result$similarity_scores.proj2,type='l',col='red',ylim=c(0,1))
 lines(result$similarity_scores.proj1,type='l',col='blue')
 legend("top",1, c("Proj2","Proj1"), cex=0.9, col=c("blue","red"), lty=1:1,lwd=3)
