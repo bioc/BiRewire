@@ -4,7 +4,7 @@
 \alias{birewire.sampler.dsg}
 \title{Efficient generation null model for a given dsg}
 \description{Efficient generation null model for a given dsg. The routine samples correctly from the null model of a given dsg.} 
-\usage{birewire.sampler.dsg(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=TRUE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10)
+\usage{birewire.sampler.dsg(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=FALSE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10)
 }
 \arguments{
  \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{getbirewire.load.dsg} function and converting the resulting dataframe using \code{birewire.induced.bipartite}.}
@@ -16,7 +16,7 @@
     \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
 
- \item{exact}{ TRUE (default). If FALSE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+ \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
 
     \item{path}{ The directory in which the routine stores the outputs; }
       \item{K}{  The number of network that has to be generated;}

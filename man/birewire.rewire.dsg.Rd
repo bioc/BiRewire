@@ -4,7 +4,7 @@
 \alias{birewire.rewire.dsg}
 \title{Efficient rewiring of directed signed graphs}
 \description{Optimal implementation of the switching algorithm. It returns the rewired version of the initial directed signed graph.} 
-\usage{birewire.rewire.dsg(dsg,exact=TRUE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=0.00005,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'))
+\usage{birewire.rewire.dsg(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=0.00005,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'))
 }
 \arguments{
  \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{getbirewire.load.dsg} function and converting the resulting dataframe using \code{birewire.induced.bipartite};}

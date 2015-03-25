@@ -4,7 +4,7 @@
 \alias{birewire.sampler.bipartite}
 \title{Efficient generation null model for a given bipartite graph}
 \description{Efficient generation null model for a given bipartite graph. The routine samples correctly from the null model of a given bipartite graph.} 
-\usage{birewire.sampler.bipartite(incidence,K,path,max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=TRUE,write.sparse=TRUE)
+\usage{birewire.sampler.bipartite(incidence,K,path,max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,write.sparse=TRUE)
 
 }
 \arguments{
@@ -18,7 +18,7 @@
     \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
 
- \item{exact}{ TRUE (default). If FALSE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
+ \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
  \item{write.sparse}{ TRUE (default). If FALSE the table is written as an R data.frame (long time and more space needed)}
 
 } 
