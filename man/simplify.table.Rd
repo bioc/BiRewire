@@ -14,7 +14,7 @@
 \value{
 An incidence matrix simplified that can be used in \code{birewire.rewire.bipartite}.}
 \references{
- Iorio, F. and Gobbi, A.  and  Saez-Rodriguez, J. (2015) \emph{XXX} YYY.\cr
+ Iorio, F. and Gobbi, A.  \emph{In preparation} In preparation.\cr
   }
 
 \keyword{directed graph, rewire, pathway, signaling}

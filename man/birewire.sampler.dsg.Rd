@@ -25,7 +25,7 @@
 \details{ The routine creates subfolder in order to have maximum 1000 files for folder. Moreover the SIF files are saved using \code{birewire.save.dsg}. The set is generated calling birewire.rewire.dsg on the last generated dsg starting from the input dsg.
 }
 \references{
- Iorio, F. and Gobbi, A.  and  Saez-Rodriguez, J. (2015) \emph{XXX} YYY.\cr
+ Iorio, F. and Gobbi, A.  (2015) \emph{In Preparation} In Preparation.\cr
 
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
 

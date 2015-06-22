@@ -15,7 +15,7 @@
 \value{
 A dsg in SIF format.}
 \references{
- Iorio, F. and Gobbi, A.  and  Saez-Rodriguez, J. (2015) \emph{XXX} YYY.\cr
+ Iorio, F. and Gobbi, A.  (2015) \emph{In Preparation} In Preparation.\cr
   }
 
 \examples{

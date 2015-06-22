@@ -15,7 +15,7 @@
 \value{
 A SIF-like dataframe used to generate the complete SIF file in \code{birewire.build.dsg}.}
 \references{
- Iorio, F. and Gobbi, A.  and  Saez-Rodriguez, J. (2015) \emph{XXX} YYY.\cr
+ Iorio, F. and Gobbi, A.  (2015) \emph{In preparation} In preparation.\cr
   }
 
 \keyword{directed graph, rewire, pathway, signaling}

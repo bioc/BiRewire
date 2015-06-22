@@ -22,20 +22,21 @@
 birewire.bipartite.from.incidence<-function(matrix,directed=FALSE,reverse=FALSE)
 { 
 
-	edges=which(matrix==1,arr.ind=TRUE)
-
-		edges[,2]=	edges[,2]+nrow(matrix)
-  cl1=rep(T,nrow(matrix))
-  cl2=rep(F,ncol(matrix))
-  if(reverse)
-  {
-    cl1=!cl1
-    cl2=!cl2
-  }
-  types=c(cl1,cl2)
-g=graph.bipartite(types,as.vector(t(edges)),directed)
-if(length(rownames(matrix))*length(colnames(matrix))!=0)
-V(g)$label=c(rownames(matrix),colnames(matrix))
+#	edges=which(matrix==1,arr.ind=TRUE)
+#
+#		edges[,2]=	edges[,2]+nrow(matrix)
+# cl1=rep(T,nrow(matrix))
+#  cl2=rep(F,ncol(matrix))
+#  if(reverse)
+#  {
+#    cl1=!cl1
+#    cl2=!cl2
+#  }
+#  types=c(cl1,cl2)
+#g=graph.bipartite(types,as.vector(t(edges)),directed)
+#if(length(rownames(matrix))*length(colnames(matrix))!=0)
+#V(g)$label=c(rownames(matrix),colnames(matrix))
+g=graph.incidence(matrix,directed)
 return(g)
 }
 ##Pertforms the analysis of a bipartite graph (see the manual for more details)
@@ -289,7 +290,7 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.000
 			}
   
   
-  gg<-graph.bipartite(edges=result,types=V(g)$type,directed=TRUE)
+  gg<-graph.bipartite(edges=result,types=V(g)$type,directed=FALSE)
   
   
   return(gg)
