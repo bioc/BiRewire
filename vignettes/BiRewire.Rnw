@@ -47,8 +47,6 @@ Specifically, with \textit{BiRewire} users can:
 \item	generate rewired versions of a bipartite graph with the analytically derived bound as number of switching steps or a user-defined one; 
 \item	derive projections of the starting network and its rewired version and perform different graph-theory analysis on them;
 \item 	generate a set of netwoks correctly drawn from the suitable null-model starting from the initial BEM;
-\item 	generate rewired versions of a DSG;
-\item 	generate a set of netwoks correctly drawn from the suitable null-model starting from the initial DSG;
 \end{enumerate}
 
 All the functions of the package are written in C-code and R-wrapped.
