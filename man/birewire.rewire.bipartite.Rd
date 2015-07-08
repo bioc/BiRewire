@@ -8,7 +8,7 @@
 MAXITER_MUL=10,exact=FALSE)}
 \arguments{
  \item{incidence}{Incidence matrix of the initial bipartite graph \emph{g} (can be extracted from an {\code{igraph}} bipartite graph using the {\code{get.incidence}}) function; or the entire bipartite \code{igraph} graph}
-  \item{max.iter}{ "n" (default)  the number of switching steps to be performed (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{2(1-d)} \ln{(e-de)} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{(e-de)} } otherwise ,  
+  \item{max.iter}{ "n" (default)  the number of switching steps to be performed (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{2(1-d)} \ln{(e-de)/\delta} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{(e-de)/\delta} } otherwise ,  
   where \eqn{e}  is the number of edges of \emph{g} and \eqn{d} its edge density . This bound is much lower than the empirical one proposed  in  \emph{Milo et al. 2003} (see References);}   
 
  \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
@@ -21,7 +21,7 @@ MAXITER_MUL=10,exact=FALSE)}
 \details{Main function of the package. It performs at most \eqn{max.iter} switching steps producing a rewired version of an initial bipartite graph.
 }
 \value{
-Incidence matrix of the rewired graph. 
+Incidence matrix  of the rewired graphn or the \emph{igraph} corresponding object depending on the input type.
 }
 \references{
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
@@ -40,10 +40,7 @@ Davide Albanese
 
 library(igraph)
 library(BiRewire)
-g <- simplify(graph.bipartite( rep(0:1,length=100),
-c(c(1:100),seq(1,100,3),seq(1,100,7),100,seq(1,100,13),
-seq(1,100,17),seq(1,100,19),seq(1,100,23),100
-)))
+g <- bipartite.random.game(n1=10,n2=4,p=0.5)
 
 ##gets the incidence matrix of g
  m<-as.matrix(get.incidence(graph=g))
@@ -51,7 +48,7 @@ seq(1,100,17),seq(1,100,19),seq(1,100,23),100
 ##rewiring
 m2=birewire.rewire.bipartite(m,100*length(E(g))) 
 ##creates the corresponding bipartite graph 
-g2<-birewire.bipartite.from.incidence(m2,directed=TRUE,reverse=FALSE)
+g2<-birewire.bipartite.from.incidence(m2,directed=TRUE)
 
 
 }

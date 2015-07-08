@@ -2,15 +2,16 @@
 \name{birewire.sampler.dsg}
 
 \alias{birewire.sampler.dsg}
-\title{Efficient generation null model for a given dsg}
-\description{Efficient generation null model for a given dsg. The routine samples correctly from the null model of a given dsg.} 
-\usage{birewire.sampler.dsg(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=FALSE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10)
+\title{Efficient generation of a null model for a given dsg.}
+\description{Efficient generation of a null model for a given dsg. The routine samples correctly from the null model of a given dsg creating a set of randomized dsgs.} 
+\usage{birewire.sampler.dsg(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=FALSE,
+  verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10)
 }
 \arguments{
  \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{getbirewire.load.dsg} function and converting the resulting dataframe using \code{birewire.induced.bipartite}.}
-  \item{max.iter.pos}{ "n" (default)  the number of switching steps to be performed on the positive part of  \emph{dsg} (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{2(1-d)} \ln{(e-de)} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{(e-de)} } otherwise ,  
+  \item{max.iter.pos}{ "n" (default)  the number of switching steps to be performed on the positive part of  \emph{dsg} (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{2(1-d)} \ln{(e-de)/\delta} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{(e-de)/\delta} } otherwise ,  
   where \eqn{e}  is the number of edges of \emph{g} and \eqn{d} its edge density . This bound is much lower than the empirical one proposed  in  \emph{Milo et al. 2003} (see References);}   
-  \item{max.iter.neg}{ "n" (default)  the number of switching steps to be performed on the negative part of  \emph{dsg} (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{2(1-d)} \ln{(e-de)} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{(e-de)} } otherwise ,  
+  \item{max.iter.neg}{ "n" (default)  the number of switching steps to be performed on the negative part of  \emph{dsg} (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{2(1-d)} \ln{(e-de)/\delta} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{(e-de)/\delta} } otherwise ,  
   where \eqn{e}  is the number of edges of \emph{g} and \eqn{d} its edge density . This bound is much lower than the empirical one proposed  in  \emph{Milo et al. 2003} (see References);}   
     \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
     \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
@@ -22,7 +23,7 @@
       \item{K}{  The number of network that has to be generated;}
   \item{delimitators}{list(negative='-',positive='+') (default):a list with 'positive' and 'negative' names identifying the character encoding the relation used for writing the ouput with \code{birewire.build.dsg};}
 } 
-\details{ The routine creates subfolder in order to have maximum 1000 files for folder. Moreover the SIF files are saved using \code{birewire.save.dsg}. The set is generated calling birewire.rewire.dsg on the last generated dsg starting from the input dsg.
+\details{ The routine creates, starting from a given path, different subfolders in order to have maximum 1000 files for folder; the SIF files are saved using \code{birewire.save.dsg}. The set is generated calling birewire.rewire.dsg on the last generated dsg starting from the input dsg.
 }
 \references{
  Iorio, F. and Gobbi, A.  (2015) \emph{In Preparation} In Preparation.\cr

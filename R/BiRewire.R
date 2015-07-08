@@ -18,26 +18,10 @@
 
 
 # Create a bipartite igraph graph from its incidence matrix
-# it could be directed and the two classes can be reversed
-birewire.bipartite.from.incidence<-function(matrix,directed=FALSE,reverse=FALSE)
+# it could be directed and the two classes
+birewire.bipartite.from.incidence<-function(matrix,directed=FALSE)
 { 
-
-#	edges=which(matrix==1,arr.ind=TRUE)
-#
-#		edges[,2]=	edges[,2]+nrow(matrix)
-# cl1=rep(T,nrow(matrix))
-#  cl2=rep(F,ncol(matrix))
-#  if(reverse)
-#  {
-#    cl1=!cl1
-#    cl2=!cl2
-#  }
-#  types=c(cl1,cl2)
-#g=graph.bipartite(types,as.vector(t(edges)),directed)
-#if(length(rownames(matrix))*length(colnames(matrix))!=0)
-#V(g)$label=c(rownames(matrix),colnames(matrix))
-g=graph.incidence(matrix,directed)
-return(g)
+	return(graph.incidence(matrix,directed))
 }
 ##Pertforms the analysis of a bipartite graph (see the manual for more details)
 ##incidence= the incidence matrix of the graph
@@ -46,63 +30,83 @@ return(g)
 ##accuracy=level of accuracy
 ##verbose= print execution bar during the process 
 ##MAXITER_MUL= MAXITER_MUL* max.iter indicates the maximum number of real iteration
-birewire.analysis<- function(incidence, step=10, max.iter="n",accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
+birewire.analysis.bipartite<- function(incidence, step=10, max.iter="n",accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,n.networks=50,display=TRUE)
 {
   
-if(!is.matrix(incidence) && !is.data.frame(incidence))
+	if(!is.matrix(incidence) && !is.data.frame(incidence))
 	{
-    stop("The input must be a data.frame or a matrix object \n")
-    return (0)
-  }
+		stop("The input must be a data.frame or a matrix object \n")
+		return (0)
+	}
 
 		if(is.data.frame(incidence))
 		{	
 			incidence=as.matrix(incidence)
 		}
 	if(verbose)
-    verbose=1
-  else
-    verbose=0
-  nc=as.numeric(ncol(incidence))
-  nr=as.numeric(nrow(incidence))
-  t=nc*nr
-	
-
-	
-
+		verbose=1
+	else
+		verbose=0
+	nc=as.numeric(ncol(incidence))
+	nr=as.numeric(nrow(incidence))
+	t=nc*nr
 	if(is.integer(incidence)|| is.logical(incidence))
 		{
 			incidence=matrix(as.double(incidence),ncol=nc)
 		}
-
-
-  e=sum(incidence)
-
-
+	e=sum(incidence)
+	RES=NULL
+	for(i in 1:n.networks)
+	{
 		if(exact==TRUE)
     	{
-					if( max.iter=="n")
-						max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
-					MAXITER_MUL=MAXITER_MUL*max.iter
-  				result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,MAXITER_MUL+1)
-					result$N=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
-			}
-
+			if( max.iter=="n")
+				max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
+			MAXITER_MUL=MAXITER_MUL*max.iter
+			result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,MAXITER_MUL+1)
+			result$N=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
+		}
 		else
-			{
-					if( max.iter=="n")
-    				max.iter=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy) )  
-  				result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,0)
-    				result$N=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy)   )
+		{
+			if( max.iter=="n")
+				max.iter=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy) )  
+			result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,0)
+			result$N=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy)   )
 
 
-			}
-  #C function is called!
-	#cat(c(nc,nr,step,max.iter,"\n"))
+		}
+	RES=rbind(RES,result$similarity_scores)
 
-
-
-  return( result)
+	}
+	if(display)
+	{
+		mean=colMeans(RES)
+		std=apply(RES,2,sd)
+		sup=mean+1.96*std/sqrt(nrow(RES))
+		inf=mean-1.96*std/sqrt(nrow(RES))
+		try(dev.off())
+		par(mfrow=c(2,1))
+		x=seq(1,length.out=length(mean))
+		plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time",xlab="Switching steps",ylab='Jaccard Index')
+		polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey80', border = NA)
+		lines(step*x,mean,col='blue',lwd=2)
+		abline(v=result$N,col= 'red')
+		legend("topright",
+				col=c('blue','grey80','red'),
+				lwd=c(2,10,1),
+				legend=c( "Mean JI","C.I.","Bound")
+				)
+		plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time (log-log scale)",log='xy',xlab="Switching steps",ylab='Jaccard Index')
+		polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey80', border = NA)
+		lines(step*x,mean,col='blue',lwd=2)
+		abline(v=result$N,col= 'red')
+		legend("bottomleft",
+				col=c('blue','grey80','red'),
+				lwd=c(2,10,1),
+				legend=c( "Mean JI","C.I.","Bound")
+				)
+	}
+	return( list(N=result$N,data=RES))
 }
 ##Performs the rewiring algorithm max.iter times
 birewire.rewire.bipartite<- function(incidence,  max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
@@ -212,7 +216,7 @@ birewire.rewire.bipartite.and.projections<-function(graph,step=10,max.iter="n",a
   for(i in 1:(max.iter/step))
   {
     mm=birewire.rewire.bipartite(incidence=mm,max.iter=step,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=FALSE)
-    p=birewire.bipartite.from.incidence(directed=FALSE,matrix=mm,reverse=FALSE)
+    p=birewire.bipartite.from.incidence(directed=FALSE,matrix=mm)
     sc[i+1]=birewire.similarity(m,mm)
     p=bipartite.projection(graph=p,multiplicity=FALSE)
     tmp1=get.adjacency(graph=p$proj1,sparse=FALSE)
@@ -236,15 +240,30 @@ birewire.rewire.bipartite.and.projections<-function(graph,step=10,max.iter="n",a
   result$similarity_scores=sc
   result$rewired.proj1=p$proj1
   result$rewired.proj2=p$proj2
-  result$rewired=birewire.bipartite.from.incidence(directed=F,matrix=mm,reverse=FALSE)
+  result$rewired=birewire.bipartite.from.incidence(directed=F,matrix=mm)
   return( result )
 }
-#similarity score (jaccard and hamming)
+#similarity jaccard score 
 birewire.similarity<-function(m1,m2)
 {
-  if(dim(m2)[1]!=dim(m1)[1])
-    m1=t(m1)
-  return( sum( m1*m2)/sum(m1+m2-m1*m2))
+	if(is.igraph(m1))
+	{
+		if(is.bipartite(m1))
+		{
+			m1=get.incidence(m1,sparse=F)
+			m2=get.incidence(m2,sparse=F)
+		}else
+		{
+			m1=get.adjacency(m1,sparse=F)
+			m2=get.adjacency(m2,sparse=F)
+		}
+
+	}
+	
+	if(dim(m2)[1]!=dim(m1)[1])
+		m1=t(m1)
+	return( sum( m1*m2)/sum(m1+m2-m1*m2))
+	
   
 }
 birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
@@ -261,7 +280,6 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.000
   }
 
   
-  
   e=length(E(g))
   edges= get.edgelist(names=FALSE,g)
   edges=edges[order(edges[,1]),]
@@ -269,6 +287,7 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.000
   nr=length(unique(edges[,1]))
   nc=length(V(g))-nr
   t=nc*nr
+  names=V(g)$label
 		if(exact==T)
     	{
 					if( max.iter=="n")
@@ -289,70 +308,92 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.000
 
 			}
   
-  
   gg<-graph.bipartite(edges=result,types=V(g)$type,directed=FALSE)
-  
+  if(!is.null(names))
+ 	 V(gg)$label=names
   
   return(gg)
 }
 
-birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE) 
+birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,n.networks=50,display=TRUE) 
+{
+
+	if(!is.matrix(adjacency) && !is.data.frame(adjacency))
 	{
-
-if(!is.matrix(adjacency) && !is.data.frame(adjacency))
+		stop("The input must be a data.frame or a matrix object \n")
+		return (0)
+	}
+	if(is.data.frame(adjacency))
+		adjacency=as.matrix(adjacency)
+	if(verbose)
+		verbose=1
+	else
+		verbose=0
+	n=as.numeric(ncol(adjacency))
+	if(is.integer(adjacency)|| is.logical(adjacency))
 	{
-    stop("The input must be a data.frame or a matrix object \n")
-    return (0)
-  }
-
-		if(is.data.frame(adjacency))
-			adjacency=as.matrix(adjacency)
-				
-			
-		 if(verbose)
-    verbose=1
-  else
-    verbose=0
-		n=as.numeric(ncol(adjacency))
-		if(is.integer(adjacency)|| is.logical(adjacency))
-		{
-			adjacency=matrix(as.double(adjacency),ncol=n)
-		}
-		t=n^2/2
-		e=sum(adjacency)/2
-		d=e/t
-
-
-
+		adjacency=matrix(as.double(adjacency),ncol=n)
+	}
+	t=n^2/2
+	e=sum(adjacency)/2
+	d=e/t
+	RES=NULL
+	for( i in 1:n.networks)
+	{
 		if(exact==TRUE)
-    	{
-						if( max.iter=="n")
-   						 max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
-						MAXITER_MUL=MAXITER_MUL*max.iter
-						result<-.Call("R_analysis_undirected", adjacency,n,n,as.numeric(step),as.numeric(max.iter),as.numeric(verbose),MAXITER_MUL)
-						result$N=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
-  
-
-			}
+		{
+			if( max.iter=="n")
+			max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
+			MAXITER_MUL=MAXITER_MUL*max.iter
+			result<-.Call("R_analysis_undirected", adjacency,n,n,as.numeric(step),as.numeric(max.iter),as.numeric(verbose),MAXITER_MUL)
+			result$N=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
+		}
 
 		else
-			{
+		{
+			if(max.iter=="n")
+			max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
+			result<-.Call("R_analysis_undirected", adjacency,n,n,as.numeric(step),as.numeric(max.iter),as.numeric(verbose),0)
+			result$N=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
+		}
+		RES=rbind(RES,result$similarity_scores)
 
-					if(max.iter=="n")
-			 			max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
-					result<-.Call("R_analysis_undirected", adjacency,n,n,as.numeric(step),as.numeric(max.iter),as.numeric(verbose),0)
-					result$N=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
-
-
-			}
-
-
-		return( result)
 	}
+	if(display)
+	{
+		mean=colMeans(RES)
+		std=apply(RES,2,sd)
+		sup=mean+1.96*std/sqrt(nrow(RES))
+		inf=mean-1.96*std/sqrt(nrow(RES))
+		try(dev.off())
+		par(mfrow=c(2,1))
+		x=seq(1,length.out=length(mean))
+		plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time",xlab="Switching steps",ylab='Jaccard Index')
+		polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey80', border = NA)
+		lines(step*x,mean,col='blue',lwd=2)
+		abline(v=result$N,col= 'red')
+		legend("topright",
+				col=c('blue','grey80','red'),
+				lwd=c(2,10,1),
+				legend=c( "Mean JI","C.I.","Bound")
+				)
+		plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time (log-log scale)",log='xy',xlab="Switching steps",ylab='Jaccard Index')
+		polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey80', border = NA)
+		lines(step*x,mean,col='blue',lwd=2)
+		abline(v=result$N,col= 'red')
+		legend("bottomleft",
+				col=c('blue','grey80','red'),
+				lwd=c(2,10,1),
+				legend=c( "Mean JI","C.I.","Bound")
+				)
+
+	}
+	return( list(N=result$N,data=RES))
+}
 
 
 
-birewire.rewire<- function(adjacency,  max.iter="n",accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
+birewire.rewire.undirected<- function(adjacency,  max.iter="n",accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
 	{ 
 
 if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
@@ -407,7 +448,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
 			{
 
 					if(max.iter=="n")
-			 			max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
+			 			max.iter=ceiling((e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy))
  					result<-.Call("R_rewire", adjacency,n , n, as.numeric( max.iter),verbose,0)
 
 					
@@ -444,7 +485,7 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=0.00005,verbose=
         edges= get.edgelist(graph)
         edges[ , c(1,2)] <- edges[ , c(2,1)]
         edges=edges[order(edges[,1]),]-1
-        
+        names=V(graph)$label
         
 
 	if(exact==TRUE)
@@ -461,7 +502,7 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=0.00005,verbose=
 			{
 
         		if(max.iter=="n")
-			 		max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
+			 		max.iter=ceiling((e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy))
 				
  				result<-.Call("R_rewire_sparse", edges,n , n, as.numeric( max.iter),e,verbose,0)
 
@@ -469,6 +510,8 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=0.00005,verbose=
 
 		
         gg<-graph(edges=result+1,directed=FALSE,n=n)
+        if(!is.null(names))
+        	V(gg)$label=names
 		return( gg)
 	}
 
@@ -478,62 +521,13 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=0.00005,verbose=
 
 
 
-
-
-
-
-#######V
-##Given a dsg (a list of two incidnece matrix), this routine sample randomly K network preserving the degrees. The inputs are the same of birewire.rewire.bipartite
-birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=FALSE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10)
-	{
-
-  
-		if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
-			    {
-			    	stop("The input must be a dsg object (see References) \n")
-			    	return(0)
-			    }
-
-		if(!file.exists(path))
-  					{
-    					dir.create(path) 
- 				 	}
-
-		n=ceiling(K/1000)
-		NNET=1000
-		if(n==0)
-			n=1
-		for( i in 1:n)
-			{
-				if(K-1000*i<0)
-					NNET=K-1000*(i-1)			
-  
-			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given dsg.'))
-    			PATH<-paste(path,'/',i,'/',sep='')
-				if(!file.exists(PATH))
-					{
-      					dir.create(PATH)
-    				}
-    				for(j in 1:NNET)
-    					{
-    						dsg=birewire.rewire.dsg(dsg=dsg,delimitators=delimitators,exact=exact,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
-    							verbose=verbose,max.iter.pos=max.iter.pos,max.iter.neg=max.iter.neg, accuracy=accuracy,MAXITER_MUL=MAXITER_MUL)
-
-    					}	
-
-			}
-
-
-
-
-
-	}
-
-
-##sililat to above function
 birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,write.sparse=TRUE)
 {
+	if(K>=100000)
+		{
 
+			stop("I can not create more than 1000 subfolders but if you need it contact the manteiner.")
+		}
 
 		if(!file.exists(path))
   					{
@@ -581,6 +575,168 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
 	
 
 }
+
+
+
+birewire.visual.monitoring.bipartite<-function(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,nrow=length(sequence)/ncol,display=TRUE)
+{
+
+
+if(display)
+{
+	try(dev.off())
+	par(mfrow=c(nrow,ncol))
+}
+	
+dist=list()
+tsne=list()
+ii=1
+for( i in sequence)
+{
+	print(paste("K=",i))
+	data_tmp=data
+	tot=list(data)
+	m=matrix(nrow=n.networks,ncol=n.networks,0)
+	for(j in 2:n.networks)
+		{
+			data_tmp=birewire.rewire.bipartite(data_tmp,  max.iter=i, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+			tot[[j]]=data_tmp
+			for(k in 1:(j-1))
+				m[k,j]=m[j,k]=1-birewire.similarity(tot[[k]],tot[[j]])
+				
+
+		}
+	dist[[ii]]=m	
+	tsne[[ii]]=tsne(m,whiten=F,perplexity=perplexity)
+	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
+	if(display)
+		{
+			plot(tsne[[ii]],col=colorRampPalette(c("blue", "red"))( n.networks),pch=16,xlab='A.U.',ylab='A.U.',main=paste('k=',i))
+			text(x=tsne[[ii]][1,1],y=tsne[[ii]][1,2],label='start')
+		}	
+	ii=ii+1
+
+
+}
+
+return(list(dist=dist,tsne=tsne))
+
+
+
+}
+
+birewire.visual.monitoring.undirected<-function(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,nrow=length(sequence)/ncol,display=TRUE)
+{
+
+
+if(display)
+{
+	try(dev.off())
+	par(mfrow=c(nrow,ncol))
+}
+dist=list()
+tsne=list()
+ii=1
+for( i in sequence)
+{
+	print(paste("K=",i))
+	data_tmp=data
+	tot=list(data)
+	m=matrix(nrow=n.networks,ncol=n.networks,0)
+	for(j in 2:n.networks)
+		{
+			data_tmp=birewire.rewire.undirected(data_tmp,  max.iter=i, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+			tot[[j]]=data_tmp
+			for(k in 1:(j-1))
+				m[k,j]=m[j,k]=1-birewire.similarity(tot[[k]],tot[[j]])
+				
+
+		}
+	dist[[ii]]=m	
+	tsne[[ii]]=tsne(m,whiten=F,perplexity=perplexity)
+	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
+	if(display)
+		{
+			plot(tsne[[ii]],col=colorRampPalette(c("blue", "red"))( n.networks),pch=16,xlab='A.U.',ylab='A.U.',main=paste('k=',i))
+			text(x=tsne[[ii]][1,1],y=tsne[[ii]][1,2],label='start')
+		}	
+	ii=ii+1
+
+
+}
+
+return(list(dist=dist,tsne=tsne))
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##################DSG STUFF#############################
+birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=FALSE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10)
+	{
+
+  
+		if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
+			    {
+			    	stop("The input must be a dsg object (see References) \n")
+			    	return(0)
+			    }
+
+		if(!file.exists(path))
+  					{
+    					dir.create(path) 
+ 				 	}
+
+		n=ceiling(K/1000)
+		NNET=1000
+		if(n==0)
+			n=1
+		for( i in 1:n)
+			{
+				if(K-1000*i<0)
+					NNET=K-1000*(i-1)			
+  
+			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given dsg.'))
+    			PATH<-paste(path,'/',i,'/',sep='')
+				if(!file.exists(PATH))
+					{
+      					dir.create(PATH)
+    				}
+    				for(j in 1:NNET)
+    					{
+    						dsg=birewire.rewire.dsg(dsg=dsg,delimitators=delimitators,exact=exact,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
+    							verbose=verbose,max.iter.pos=max.iter.pos,max.iter.neg=max.iter.neg, accuracy=accuracy,MAXITER_MUL=MAXITER_MUL)
+
+    					}	
+
+			}
+
+
+
+
+
+	}
 
 birewire.rewire.dsg<-function(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=0.00005,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'))
 {

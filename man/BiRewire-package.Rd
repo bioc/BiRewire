@@ -5,17 +5,16 @@
 \docType{package}
 \title{The BiRewire package}
 \description{
-   R package for computationally-efficient rewiring of bipartite graphs (or randomisation of 0-1 tables with prescribed marginal totals) and directed signed graphs (dsg). The package provides useful functions for the analysis and the randomisation of large biological datasets that can be encoded as 0-1 tables, hence modeled as bipartite graphs by considering a 0-1 table as an incidence matrix, and for data that can be encoded as directed signed graphs such as patways and signaling networks. Large collections of such randomised tables can be used to approximate null models, preserving event-rates both across rows and columns, for statistical significance tests of combinatorial properties of the original dataset. The package provides also some sampler routines useful for generating correctly such collections.
-Routines for undirected graphs are also provided.
+   R package for computationally-efficient rewiring of bipartite graphs (or randomisation of 0-1 tables with prescribed marginal totals), undirected and directed signed graphs (dsg). The package provides useful functions for the analysis and the randomisation of large biological datasets that can be encoded as 0-1 tables, hence modeled as bipartite graphs by considering a 0-1 table as an incidence matrix, and for data that can be encoded as directed signed graphs such as patways and signaling networks. Large collections of such randomised tables can be used to approximate null models, preserving event-rates both across rows and columns, for statistical significance tests of combinatorial properties of the original dataset. The package provides an interface to a sampler routine useful for generating correctly such collections. Moreover a visual monitoring for the Markov Chain underlying the swithicng algorithm has been implemented.
 
    }
 \details{
 Summary:
   \tabular{ll}{
   Package: \tab BiRewire\cr
-  Version: \tab 1.12.1\cr
-  Date: 2015-03-01\cr
-  Require: slam, igraph, R>=2.10\cr
+  Version: \tab 2.3.0\cr
+  Date: 2015-07-07\cr
+  Require: slam, igraph,tsne,  R>=2.10\cr
   URL:  http://www.ebi.ac.uk/~iorio/BiRewire  \cr
   License: \tab GPL-3 \cr
   }
@@ -38,13 +37,9 @@ Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. a
 Jaccard, P. (1901), \emph{Étude comparative de la distribution florale dans une portion des Alpes et des Jura},
  Bulletin de la Société Vaudoise des Sciences Naturelles 37: 547–579.\cr
 \cr
-  David J. Rogers and Taffee T. Tanimoto, \emph{A Computer Program for Classifying Plants}, Science Vol 132 pp 1115-1118, October 1960 \cr
-\cr
-Hamming, Richard W. (1950), \emph{Error detecting and error correcting codes}, Bell System Technical Journal 29 (2): 147–160, MR 0035935.\cr
-\cr
-R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028 \cr
-\cr
- Csardi, G. and  Nepusz, T (2006)
+R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028 
+ Csardi, G. and  Nepusz, T (2006)\cr
+  Van der Maaten, L.J.P. and Hinton, G.E., \emph{ Visualizing High-Dimensional Data Using t-SNE}. Journal of Machine Learning Research 9(Nov):2579-2605, 2008
 \emph{The igraph software package for complex network research},
  InterJournal, Complex Systems 
     \url{http://igraph.sf.net}
