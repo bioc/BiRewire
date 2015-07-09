@@ -9,7 +9,7 @@
 accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10)}
 \arguments{
   \item{graph}{ A bipartite graph \emph{g};}
-    \item{max.iter}{ "n" (default)  the  number of successful switching steps to be performed. If equal to "n" then this number is considered equal to the analytically derived lower bound \eqn{N={e(1-d)}/{2} \ln{(e-de)/\delta} } presented in \emph{Gobbi et al.} (see References); }
+    \item{max.iter}{ "n" (default)  the  number of successful switching steps to be performed. If equal to "n" then this number is considered equal to the analytically derived lower bound \eqn{N={e(1-d)}/{2} \ln{((e-de)/\delta)} } presented in \emph{Gobbi et al.} (see References); }
   \item{step}{  10 (default): the interval (in terms of switching steps) at which the Jaccard index between \emph{g} and the its current rewired version is computed;}
  \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
              \item{verbose}{ TRUE (default) boolean value. If TRUE print a processing bar during the rewiring algorithm.}

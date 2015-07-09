@@ -58,9 +58,9 @@ max=100*length(E(g))
 }
 
 test_birewire.visual.monitoring <- function(){
-g <- bipartite.random.game(n1=10,n2=4,p=0.5)
+g <- bipartite.random.game(n1=20,n2=4,p=0.5)
 b=birewire.visual.monitoring.bipartite(g,display=F,n.networks=10)
-g <- erdos.renyi.game(1000,0.1)
+g <- erdos.renyi.game(100,0.1)
 b=birewire.visual.monitoring.undirected(g,display=F,n.networks=10)
 
 

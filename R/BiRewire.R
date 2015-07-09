@@ -84,7 +84,6 @@ birewire.analysis.bipartite<- function(incidence, step=10, max.iter="n",accuracy
 		std=apply(RES,2,sd)
 		sup=mean+1.96*std/sqrt(nrow(RES))
 		inf=mean-1.96*std/sqrt(nrow(RES))
-		try(dev.off())
 		par(mfrow=c(2,1))
 		x=seq(1,length.out=length(mean))
 		plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time",xlab="Switching steps",ylab='Jaccard Index')
@@ -365,7 +364,6 @@ birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accurac
 		std=apply(RES,2,sd)
 		sup=mean+1.96*std/sqrt(nrow(RES))
 		inf=mean-1.96*std/sqrt(nrow(RES))
-		try(dev.off())
 		par(mfrow=c(2,1))
 		x=seq(1,length.out=length(mean))
 		plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time",xlab="Switching steps",ylab='Jaccard Index')
@@ -546,7 +544,7 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
 					if(K-NFILES*i<0)
 					NNET=K-NFILES*(i-1)
   
-			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given dsg.'))
+			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given bipartite.'))
     			PATH<-paste(path,'/',i,'/',sep='')
 				if(!file.exists(PATH))
 					{
@@ -554,16 +552,26 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
     				}
     				for(j in 1:NNET)
     					{
-    						incidence=birewire.rewire.bipartite(incidence=incidence,  max.iter=max.iter, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,
-    							exact=exact)
-    						if(write.sparse)
-    							{
-    									write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
-    							}else
-    							{
+    						incidence=birewire.rewire.bipartite(incidence=incidence,  max.iter=max.iter, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+    						if(is.igraph(incidence))
+								{
+									if(write.sparse)
+									{
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(get.adjacency(incidence,sparse=F))),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+									}else
+									{
+										write.table(get.adjacency(incidence,sparse=F),file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
+									}
+								}else
+								{
+									if(write.sparse)
+									{
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+									}else
+									{
 										write.table(incidence,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
-
-    							}
+									}
+								}
 
     					}	
 
@@ -584,7 +592,6 @@ birewire.visual.monitoring.bipartite<-function(data,accuracy=0.00005,verbose=FAL
 
 if(display)
 {
-	try(dev.off())
 	par(mfrow=c(nrow,ncol))
 }
 	
@@ -607,7 +614,10 @@ for( i in sequence)
 
 		}
 	dist[[ii]]=m	
-	tsne[[ii]]=tsne(m,whiten=F,perplexity=perplexity)
+	tmp=try(tsne(m,whiten=F,perplexity=perplexity))
+	if(!is.double(tmp))
+		return(list(dist=list(),tsne=list()))
+	tsne[[ii]]=tmp
 	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
 	if(display)
 		{
@@ -631,7 +641,6 @@ birewire.visual.monitoring.undirected<-function(data,accuracy=0.00005,verbose=FA
 
 if(display)
 {
-	try(dev.off())
 	par(mfrow=c(nrow,ncol))
 }
 dist=list()
@@ -653,7 +662,10 @@ for( i in sequence)
 
 		}
 	dist[[ii]]=m	
-	tsne[[ii]]=tsne(m,whiten=F,perplexity=perplexity)
+	tmp=try(tsne(m,whiten=F,perplexity=perplexity))
+	if(!is.double(tmp))
+		return(list(dist=list(),tsne=list()))
+	tsne[[ii]]=tmp
 	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
 	if(display)
 		{

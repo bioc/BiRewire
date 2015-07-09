@@ -38,17 +38,17 @@ This package is particularly useful for the randomisation of '0-1' tables (or pr
 For example, by modeling a genomic dataset as a binary event matrix (BEM), in which rows correspond to samples, columns correspond to genes and the $(i,j)$ entry is non-null if the $i$-th sample harbours a mutation in the $j$-th gene, then with BiRewire is possible to randomise the dataset preserving its mutation rates both across samples and genes. This is crucial to preserve tumour specific alterations, dependencies between gene-mutations and heterogeneity in mutation/copy-number-alteration rates across patients.\\
 Large collections of such randomised tables can be then used to approximate samples from the uniform distribution of all the possible genomic datasets with the same mutation-rates of the initial one. Finally this data can be used as null model to test the statistical significance of several combinatorial properties of the original dataset: for example the tendency of a group of genes to be co- or mutually-mutated \cite{Ciriello12}.\\
 
-Moreover, with se same routines, it is possible to generate a rewired version of a given directed signed network (DSG), encoding for example a patway or a signaling network (for details see section \ref{sec:DSG} and \cite{Iorio}). 
+Moreover, with se same routines, it is possible to generate a rewired version of a given directed signed network (DSG), encoding for example a patway or a signaling network (for details see section \ref{sec:DSG} and \cite{Iorio}). Similar procedures have been implemented in order to manage undirected networks.
 
 Specifically, with \textit{BiRewire} users can:
 \begin{enumerate}
-\item	create bipartite graphs from genomic BEMs (or, generally, from any kind of \'presence-absence\' matrix); 
+\item	create bipartite graphs from genomic BEMs (or, generally, from any kind of \'presence-absence\'  matrix); 
 \item	perform an analysis, which consists of studying the trend of Jaccard Similarity between the original network and its rewired versions across the switching steps (by using a user-defined sampling time), and analytically estimating the number of steps at which this similarity reaches a plateau (i.e. the maximal level of randomness is achieved) according to the lower bound derived in \cite{Gobbi}; 
 \item	generate rewired versions of a bipartite graph with the analytically derived bound as number of switching steps or a user-defined one; 
 \item	derive projections of the starting network and its rewired version and perform different graph-theory analysis on them;
 \item 	generate a set of netwoks correctly drawn from the suitable null-model starting from the initial BEM;
-\item 	generate rewired versions of a DSG;
-\item 	generate a set of netwoks correctly drawn from the suitable null-model starting from the initial DSG;
+\item   monitoring the behaviour of the Markov chain underlying the SA
+\item 	perform the same analysis described in point 1,2,3,5 and 6 for undirected graphs and directed signed graphs (DGS).
 \end{enumerate}
 
 All the functions of the package are written in C-code and R-wrapped.
@@ -69,6 +69,11 @@ source("http://bioconductor.org/biocLite.R")
 biocLite("BiRewire")
 \end{verbatim}
 
+Moreover, the sources of the developement version are available here \url{http://www.bioconductor.org/packages/devel/bioc/html/BiRewire.html}. Alternatively, the source files can be cloned from the github repositories: \url{https://github.com/andreagobbi/BiRewire} and  \url{https://github.com/andreagobbi/BiRewire--release} using the command 
+\begin{verbatim}
+git clone git@github.com:andreagobbi/BiRewire--release.git
+git clone git@github.com:andreagobbi/BiRewire.git
+\end{verbatim}
 
 
 To load BiRewire use the following commands:
@@ -77,7 +82,7 @@ library(BiRewire)
 @
 
 \section{Package Dependencies}
-BiRewire requires the R packages {\bf igraph} and {\bf{slam}} (see \cite{igraph}, \cite{slam} ) available at the CRAN repository.
+BiRewire requires the R packages {\bf igraph}, {\bf{slam}} and {\bf tsne} (see \cite{igraph}, \cite{slam}, \cite{tsne} ) available at the CRAN repository.
 
 \section{Notation}\label{Notation}
 Let $\mathcal{G}$ be a bipartite graph, i.e. a graph containing two classes of nodes $V_r$ and $V_c$ such that every edge $e\in E$ connects one node in the first class to a node in the second class.\\ 
@@ -99,10 +104,16 @@ The \textit{Jaccard Index} (JI, \cite{Jaccard}) is used to quantify the similari
 $$
 s^{(k)}=\frac{x^{(k)}}{2e-x^{(k)}},
 $$
-where $x^{(k)}$ is the number of edges in common between the two graphs. The number $N$ of SSs providing the rewired version of a network with the maximally achievable level of randomness (in terms of average dissimilarity from the original network) is asymptotically equal to 
+where $x^{(k)}$ is the number of edges in common between the two graphs. Fixed a small error $\delta$, the number $N$ of SSs providing the rewired version of a network with the maximally achievable level of randomness (in terms of average dissimilarity from the original network) is asymptotically equal to 
 $$
-\frac{e(1-d)}{2}\ln{e(1-d)}.
+\frac{e(1-d)}{2}\ln{\frac{1-d}{\delta}}.
 $$
+
+More detailed, we analitically derived the fixed point of the underlying Markov chain $\bar{x}$; fixed a $\delta$ we can extimate the distance of the current state of the chain respect to this fixed point in terms of fraction of edges $\delta$. For large netowrk we can assumne that a distance less than one edge is satisfiable (see \cite{gobbi}), so the bound reads:
+$$
+\frac{e(1-d)}{2}\ln{e(1-d)},
+$$
+but in order to manage smaller network the bound with the parameter $\delta$ results to be more general.
 This bound is much lower than the empirical one proposed in \cite{Milo03}  (see Reference for details).
 
 
@@ -112,13 +123,13 @@ This bound is much lower than the empirical one proposed in \cite{Milo03}  (see 
 
 \section{Directed Signed Network}\label{sec:DSG}
 
-A directed signed network (DSG) $G$ is a directed network in which the edges are encoded with a triplet $(a,b,*)$ where $a$ denotes the source node, $b$ the target node and $*$ the sign of the relation (the weight of the edge). In our case (pathways and signaling) $*$ can be positive $+$ and negative $-$.
+A directed signed network (DSG) $\mathcal{G}$ is a directed network in which the edges are encoded with a triplet $(a,b,*)$ where $a$ denotes the source node, $b$ the target node and $*$ the sign of the relation (the weight of the edge). In our case (pathways and signaling) $*$ can be positive $+$ and negative $-$.
 In \cite{Iorio} we show how to create a correspondence between a DSG and a couple $(B^+, B^-)$ of bipartite networks. This correspondence $f$, and its inverse $f^{-1}$ are useful for the creation of a rewired version of $G$: we rewire independently $B^+$ and $B^-$ and we rebuild the final DSG $G^*$ using $f^{-1}$. A DGS is usually encoded in a SIF format (Simple Interaction File see \url{http://wiki.cytoscape.org/Cytoscape_User_Manual/Network_Formats} for more informations). In the case of DSG a suitable SIF file has 3 columns: the first encodes the source nodes, the second the sign and the last the source nodes.
 
 \section{Function Description}
 In this section all the functions implemented in BiRewire are described with a simple practical example in which a real breast cancer dataset is modeled as a bipartite network, and randomised preserving the mutation-rate both across samples and genes (i.e. the corresponding bipartite network is rewired). In each of the following functions it is possible to perform $N$ \textbf{successful} switching steps (see \cite{Gobbi} for more details about this more general bound) using the flag exact=TRUE.  To prevent a possible indinite loop, the program performs at maximum MAXITER\_MUL*max.iter iterations. 
 
-\subsection{{\bf birewire.analysis.bipartite} and{\bf birewire.analysis.undirected} }
+\subsection{{\bf birewire.analysis.bipartite} and{\bf .undirected} }
 
 First of all, we create a bipartite network modeling a genomic breast cancer dataset downloaded from the Cancer Genome Atlas (TCGA) projects data portal \url{http://tcga.cancer.gov/dataportal/}, used in \cite{Gobbi}
 From this dataset germline mutations were filtered out with state-of-the-art softwares; synonymous mutations and mutations identified as benign and tolerated were also removed. The resulting bipartite graph has $n_r=757$ nodes (corresponding to samples), $n_c=9,757$ nodes (corresponding to genes), and $e=19,758$ edges connecting a node in $n_r$ to a node in $n_c$ if the gene corresponding to the node in $n_r$ is mutated to the samples corresponding to the node in $n_C$. The edge density of this network is $0.27\%$.\\
@@ -137,20 +148,22 @@ Once the bipartite graph is created it is possible to conduct the analysis by ca
 <<PerformAnalisys>>=
 step=5000
 max=100*sum(BRCA_binary_matrix)
-scores<-birewire.analysis.bipartite(BRCA_binary_matrix,step,verbose=FALSE,max.iter=max,n.networks=5,display=)
+scores<-birewire.analysis.bipartite(BRCA_binary_matrix,step,
+		verbose=FALSE,max.iter=max,n.networks=5,display=F)
 
 @
 
-The function \textbf{birewire.analysis.bipartite} returns the Jaccard similarity sampled every \textit{step} SSs (in the example above step is equal to 5000). In the resulting plots the value of the analyitically derived lower bound to the number of switching steps is also visualised {\bf \$N }. For more details see the the documentation.\\ 
+The function \textbf{birewire.analysis.bipartite} returns the Jaccard similarity sampled every \textit{step} SSs (in the example above step is equal to 5000). The SA is independentyl applyed on the initial data for \textit{n.networks} times in order to extimate the mean value of thr JI and the relative CI (as $1.96\pm \sigma/\sqrt{n.networks}$). A plot such information is displayed if the paramenter \textit{ndisplay} is set to true. The routine returns a list of two element: \textbf{\$N} is the analitically derived bound and  \textbf{\$data} the similarity score table.
 
-The same analysis can be performed on general undirected networks (not bipartite).
+The same analysis can be performed on general undirected networks.
 
 <<PerformAnalisysUndirected>>=
 g.und<-erdos.renyi.game(directed=F,loops=F,n=1000,p.or.m=0.01)
 m.und<-get.adjacency(g.und,sparse=FALSE)
 step=100
 max=100*length(E(g.und))
-scores.und<-birewire.analysis.undirected(m.und,step=step,verbose=FALSE,max.iter=max,n.networks=5)
+scores.und<-birewire.analysis.undirected(m.und,step=step,
+			verbose=FALSE,max.iter=max,n.networks=5)
 
 @
 
@@ -165,7 +178,7 @@ m2<-birewire.rewire.bipartite(BRCA_binary_matrix,verbose=FALSE)
 g2<-birewire.rewire.bipartite(g,verbose=FALSE)
 @
 
-The first function gives in output the incidence matrix of the rewired graph while the second one a rewired \textit{igraph} graph.
+The first function recives in output the incidence matrix of the rewired graph while the second one a bipartite \textit{igraph} graph.
 See documentation for further details.
 
 \subsection{{\bf birewire.rewire.undirected }}
@@ -180,7 +193,7 @@ g2.und<-birewire.rewire.undirected(g.und,verbose=FALSE)
 
 \subsection{{\bf birewire.similarity }}
 
-This function computes the Jaccard index between two incidence matrices with same dimensions and node degrees.
+This function computes the Jaccard index between two incidence matrices with same dimensions and node degrees. It is possible also to use directly two suitable graphs. 
 <<Similarity>>=
 sc=birewire.similarity(BRCA_binary_matrix,m2)
 sc=birewire.similarity(BRCA_binary_matrix,t(m2))#also works
@@ -201,7 +214,7 @@ legend("top",1, c("Proj2","Proj1"), cex=0.9, col=c("blue","red"), lty=1:1,lwd=3)
 @
 
 \subsection{{\bf birewire.sampler.bipartite }}
-This function uses the SA to generate a set of $K$ bipartite networks drawn from the null model given by an initial bipartite graph. The function creates a main folder (\textit{path} input parameter) and a set of subfolders in order to have maximum 1000 files per folder.
+This function uses the SA to generate a set of $K$ bipartite networks drawn from the null model given by an initial bipartite graph. The function creates a main folder (\textit{path} input parameter) and a set of subfolders in order to have maximum 1000 files per folder. Notice that the initial graph is used only for the first rewiring process, and the output of the fist process is used as inoput for the second and so on.
 
 <<Sampler Bipartite>>=
 #use a smaller graph!
@@ -212,7 +225,7 @@ gg <- bipartite.random.game(n1=10,n2=4,p=0.5)
 @
 
 
-\subsection{{\bf birewire.visual.monitoring.bipartite  } and {\bf birewire.visual.monitoring.undirected}}
+\subsection{{\bf birewire.visual.monitoring.bipartite  } and {\bf .undirected}}
 
 These functions allow to visualize the Markov Chain underlying the SA. More in detail, given a sequence of steps to test, we sample from the SA each indicated step generating a brunch of networks. We compute the pairwise Jaccard distance among them, i.e. the Jaccad index is defined as 1 minus the Jaccad similarity. Then we perform a dimensional scaling using \emph{tsne}\cite{tsne} and plot the result. 
 
@@ -237,7 +250,6 @@ These two functions encoded the correspondence between a DSG and a ordered coupl
 data(test_dsg)
 dsg=birewire.induced.bipartite(test_dsg,delimitators=list(negative='-',positive='+'))
 tmp=birewire.build.dsg(dsg,delimitators=list(negative='-',positive='+'))
-
 @
 
 \subsection{{\bf birewire.rewire.dsg }}
@@ -256,7 +268,7 @@ Computes the Jaccard index between two DSGs.
 @
 
 \subsection{{\bf birewire.sampler.dsg }}
-This function uses the SA to generate a set of $K$ DSG in SIF format drawn from the null model given by an initial DSG. The function creates a main folder (\textit{path} input parameter) and a set of subfolders in order to have maximum 1000 files per folder.
+This function uses the SA to generate a set of $K$ DSG in SIF format drawn from the null model given by an initial DSG. The function creates a main folder (\textit{path} input parameter) and a set of subfolders in order to have maximum 1000 files per folder. See  {\bf birewire.sampler.bipartite } from more details.
 
 <<Sampler DSG>>=
 ##NOT RUN
@@ -264,8 +276,30 @@ This function uses the SA to generate a set of $K$ DSG in SIF format drawn from 
 ##unlink('TESTBIREWIREDSG',recursive = T)
 @
 
+\section{Example}\label{ex}
+Here we collect the functionalities of the package in a single example. The output plot of the analysis is showed in Fig. \ref{fig} on the left side and the output of the monitoring procedure is displayed in Fig.\ref{fig:2} on the right side.
+<<Example general>>=
+##NOT RUN
+#ggg <- bipartite.random.game(n1=100,n2=40,p=0.2)
+#For recovering quickly the bound N we can perform a short analysis
+#N=birewire.analysis.bipartite(get.incidence(ggg,sparse=F),max.iter=2,step=1)$N
+#Now we can perform the real analysis
+#res=birewire.analysis.bipartite(get.incidence(ggg,sparse=F),max.iter=10*N,n.networks=10)
+#and monitoring the markov chain
+#birewire.visual.monitoring.bipartite(ggg,display=T,n.networks=75,sequence=c(1,10,200,500,"n",10000),ncol=3)
+#Now we can generate a null model
+#birewire.sampler.bipartite(ggg,K=10000,path="/home/andrea/example")
+@
+
+\begin{figure}[!h]
+\includegraphics[height=6cm,width=6cm]{analysis.pdf}
+\includegraphics[height=6cm,width=7cm]{monitoring.pdf}
+\caption{(The output plots of \textbf{ birewire.analyis.bipartite}( left side)  and  of \textbf{ birewire.visual.monitoring.bipartite}(right side) relative to the example in section \ref{ex}. The gradient of the colour from blue to red indicates the position of the sampling network respect the others. The starting network (blue) is marked with the text \textit{start}. }\label{fig}
+\end{figure}
 
 
+
+\clearpage
 \begin{thebibliography}{}
 
 
