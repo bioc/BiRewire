@@ -4,19 +4,19 @@
 \alias{birewire.rewire.bipartite.and.projections}
 
 \title{Analysis and rewiring function processing a bipartite graphs and its two projections}
-\description{This function performs the same analysis of \code{\link{birewire.analysis}} but additionally it provides in output a rewired version of the two networks resulting from the natural projections of the initial graph, together with the corresponding Jaccard index trends.} 
+\description{This function performs the same analysis of \code{\link{birewire.analysis.bipartite}} but additionally it provides in output a rewired version of the two networks resulting from the natural projections of the initial graph, together with the corresponding Jaccard index trends.} 
 \usage{birewire.rewire.bipartite.and.projections(graph,step=10,max.iter="n",
 accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10)}
 \arguments{
   \item{graph}{ A bipartite graph \emph{g};}
-    \item{max.iter}{ "n" (default)  the  number of successful switching steps to be performed. If equal to "n" then this number is considered equal to the analytically derived lower bound \eqn{N={e(1-d)}/{2} \ln{(e-de)} } presented in \emph{Gobbi et al.} (see References); }
+    \item{max.iter}{ "n" (default)  the  number of successful switching steps to be performed. If equal to "n" then this number is considered equal to the analytically derived lower bound \eqn{N={e(1-d)}/{2} \ln{((e-de)/\delta)} } presented in \emph{Gobbi et al.} (see References); }
   \item{step}{  10 (default): the interval (in terms of switching steps) at which the Jaccard index between \emph{g} and the its current rewired version is computed;}
  \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
              \item{verbose}{ TRUE (default) boolean value. If TRUE print a processing bar during the rewiring algorithm.}
    \item{MAXITER_MUL}{ 10 (default).Since \eqn{N} indicates the number of successful switching steps, in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations  ;}
 } 
 \details{
-See \code{\link{birewire.analysis}} for details.
+See \code{\link{birewire.analysis.bipartite}} for details.
 }
 \value{
 A list containing the three sequences of Jaccard index values (similarity_scores, similarity_scores.proj1, similarity_scores.proj2) for the three resulting graphs respectively (rewired, rewired.proj1, rewired.proj2). The first one is the rewired
