@@ -277,7 +277,7 @@ This function uses the SA to generate a set of $K$ DSG in SIF format drawn from 
 @
 
 \section{Example}\label{ex}
-Here we collect the functionalities of the package in a single example. The output plot of the analysis is showed in Fig. \ref{fig} on the left side and the output of the monitoring procedure is displayed in Fig.\ref{fig:2} on the right side.
+Here we collect the functionalities of the package in a single example. The output plot of the analysis is showed in Fig.\ref{fig} on the left side and the output of the monitoring procedure is displayed in Fig.\ref{fig} on the right side.
 <<Example general>>=
 ##NOT RUN
 #ggg <- bipartite.random.game(n1=100,n2=40,p=0.2)
