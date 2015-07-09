@@ -294,7 +294,7 @@ Here we collect the functionalities of the package in a single example. The outp
 \begin{figure}[!h]
 \includegraphics[height=6cm,width=6cm]{analysis.pdf}
 \includegraphics[height=6cm,width=7cm]{monitoring.pdf}
-\caption{(The output plots of \textbf{ birewire.analyis.bipartite}( left side)  and  of \textbf{ birewire.visual.monitoring.bipartite}(right side) relative to the example in section \ref{ex}. The gradient of the colour from blue to red indicates the position of the sampling network respect the others. The starting network (blue) is marked with the text \textit{start}. }\label{fig}
+\caption{The output plots of \textbf{ birewire.analyis.bipartite}(left side)  and  of \textbf{ birewire.visual.monitoring.bipartite}(right side) relative to the example in section \ref{ex}. The gradient of the colour from blue to red indicates the position of the sampling network respect the others. The starting network (blue) is marked with the text \textit{start}. }\label{fig}
 \end{figure}
 
 
