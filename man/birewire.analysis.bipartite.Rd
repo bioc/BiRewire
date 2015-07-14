@@ -48,7 +48,7 @@ Davide Albanese
 }
 \examples{
 library(BiRewire)
-g <- bipartite.random.game(n1=10,n2=4,p=0.5)
+g <-graph.bipartite( rep(0:1,length=10), c(1:10))
 
 ##get the incidence matrix of g
  m<-as.matrix(get.incidence(graph=g))

@@ -179,7 +179,7 @@ SEXP R_rewire_sparse_bipartite (SEXP edges,SEXP ncol, SEXP nrow,SEXP max_iter,SE
     {
         from[i] =(size_t) INTEGER(edges)[i];
         to[i]		=(size_t) INTEGER(edges)[i+ne];
-        //printf("%d %d \n",from[i],to[i]);
+       // printf("%d %d \n",from[i],to[i]);
         
         
     }

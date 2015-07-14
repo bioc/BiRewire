@@ -32,7 +32,7 @@ Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>
 
 library(igraph)
 library(BiRewire)
-g <-  bipartite.random.game(n1=10,n2=4,p=0.5)
+g <-  graph.bipartite( rep(0:1,length=10), c(1:10))
 
 ##gets the incidence matrix of g
  m<-as.matrix(get.incidence(graph=g))

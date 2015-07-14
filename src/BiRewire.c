@@ -471,9 +471,11 @@ size_t rewire_sparse_bipartite_ex(size_t *from,size_t *to,size_t nc,size_t nr,si
 		c=from[rand2];
 		b=to[rand1];
 		d=to[rand2];
+		//Rprintf("%d,%d,%d,%d, ok %d,%d\n",a,b,c,d,rand1,rand2);
+
 		if(a!=c && d!=b &&  check(pos,to,index,rand1,b,rand2,d,e,nr)==1 )
         {
-						to[rand1]=d;
+			to[rand1]=d;
             to[rand2]=b;
             n++;
             //Rprintf("Rewire ok!\n");

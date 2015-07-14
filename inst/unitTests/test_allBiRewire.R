@@ -12,7 +12,7 @@ test_birewire.visual.monitoring()
 
 test_birewire.analysis.bipartite <- function() 
 {
-g <- bipartite.random.game(n1=10,n2=4,p=0.5)
+g <- graph.bipartite( rep(0:1,length=10), c(1:10))
  m<-as.matrix(get.incidence(graph=g))
 step=1
 max=100*length(E(g))
@@ -21,7 +21,7 @@ checkTrue(is.numeric(birewire.analysis.bipartite(m,step,"n",display=F,n.networks
 }
 
 test_birewire.bipartite <- function(){
-g <- bipartite.random.game(n1=10,n2=4,p=0.5)
+g <- graph.bipartite( rep(0:1,length=10), c(1:10))
 
  m<-as.matrix(get.incidence(graph=g))
 max=100*length(E(g))
@@ -33,12 +33,12 @@ maxiter=birewire.analysis.bipartite(m,step,max,display=F,n.networks=3)$N
 }
 
 test_birewire.bipartite.incidence <- function(){
-g <- bipartite.random.game(n1=10,n2=4,p=0.5)
+g <- graph.bipartite( rep(0:1,length=10), c(1:10))
  m<-as.matrix(get.incidence(graph=g))
  checkTrue(is.igraph( birewire.bipartite.from.incidence(m,T)))
 }
 test_birewire.bipartite.sparse <- function(){
-g <- bipartite.random.game(n1=10,n2=4,p=0.5)
+g <- graph.bipartite( rep(0:1,length=10), c(1:10))
 #checkException(birewire.rewire.sparse.bipartite(g))
  checkTrue(is.igraph(birewire.rewire.bipartite(g)))
 
@@ -58,7 +58,7 @@ max=100*length(E(g))
 }
 
 test_birewire.visual.monitoring <- function(){
-g <- bipartite.random.game(n1=20,n2=4,p=0.5)
+g <- graph.bipartite( rep(0:1,length=10), c(1:10))
 b=birewire.visual.monitoring.bipartite(g,display=F,n.networks=10)
 g <- erdos.renyi.game(100,0.1)
 b=birewire.visual.monitoring.undirected(g,display=F,n.networks=10)
