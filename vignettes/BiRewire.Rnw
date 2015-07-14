@@ -37,7 +37,6 @@ preserving their node degrees (i.e. Network Rewiring), through the Switching Alg
 This package is particularly useful for the randomisation of '0-1' tables (or presence-absence matrices) in which the distributions of non-null entries (i.e. presence distributions) must be preserved both across rows and columns. By considering these tables as incidence matrices of bipartite graphs then this problem reduces to bipartite network rewiring.\\
 For example, by modeling a genomic dataset as a binary event matrix (BEM), in which rows correspond to samples, columns correspond to genes and the $(i,j)$ entry is non-null if the $i$-th sample harbours a mutation in the $j$-th gene, then with BiRewire is possible to randomise the dataset preserving its mutation rates both across samples and genes. This is crucial to preserve tumour specific alterations, dependencies between gene-mutations and heterogeneity in mutation/copy-number-alteration rates across patients.\\
 Large collections of such randomised tables can be then used to approximate samples from the uniform distribution of all the possible genomic datasets with the same mutation-rates of the initial one. Finally this data can be used as null model to test the statistical significance of several combinatorial properties of the original dataset: for example the tendency of a group of genes to be co- or mutually-mutated \cite{Ciriello12}.\\
-
 Similar procedures have been implemented in order to manage undirected networks.
 
 Specifically, with \textit{BiRewire} users can:
@@ -47,11 +46,8 @@ Specifically, with \textit{BiRewire} users can:
 \item	generate rewired versions of a bipartite graph with the analytically derived bound as number of switching steps or a user-defined one; 
 \item	derive projections of the starting network and its rewired version and perform different graph-theory analysis on them;
 \item 	generate a set of netwoks correctly drawn from the suitable null-model starting from the initial BEM;
-<<<<<<< HEAD
 \item   monitoring the behaviour of the Markov chain underlying the SA
 \item 	perform the same analysis described in point 1,2,3,5 and 6 for undirected graphs.
-=======
->>>>>>> 03f314fd4a098ed92e8d79badbacdf7f4ab95973
 \end{enumerate}
 
 All the functions of the package are written in C-code and R-wrapped.
@@ -118,6 +114,7 @@ $$
 $$
 but in order to manage smaller network the bound with the parameter $\delta$ results to be more general.
 This bound is much lower than the empirical one proposed in \cite{Milo03}  (see Reference for details).
+
 
 
 
@@ -200,7 +197,7 @@ The following functions execute the Switching Algorithm and computes similarity 
 
 <<Projections>>=
 #use a smaller graph!
-gg <- bipartite.random.game(n1=10,n2=4,p=0.5)
+gg <- graph.bipartite( rep(0:1,length=10), c(1:10))
 result=birewire.rewire.bipartite.and.projections(gg,step=10,
         max.iter="n",accuracy=0.00005,verbose=FALSE) 
 plot(result$similarity_scores.proj2,type='l',col='red',ylim=c(0,1))
@@ -213,7 +210,7 @@ This function uses the SA to generate a set of $K$ bipartite networks drawn from
 
 <<Sampler Bipartite>>=
 #use a smaller graph!
-gg <- bipartite.random.game(n1=10,n2=4,p=0.5)
+gg <-graph.bipartite(rep(0:1,length=10), c(1:10))
  ## NOT RUN
  ##birewire.sampler.bipartite(get.incidence(g),K=10,path='TESTBIREWIRE',verbose=F)
  ##unlink('TESTBIREWIRE',recursive = T)
@@ -225,7 +222,7 @@ gg <- bipartite.random.game(n1=10,n2=4,p=0.5)
 These functions allow to visualize the Markov Chain underlying the SA. More in detail, given a sequence of steps to test, we sample from the SA each indicated step generating a brunch of networks. We compute the pairwise Jaccard distance among them, i.e. the Jaccad index is defined as 1 minus the Jaccad similarity. Then we perform a dimensional scaling using \emph{tsne}\cite{tsne} and plot the result. 
 
 <<Monitoring>>=
- ggg <- bipartite.random.game(n1=10,n2=4,p=0.5)
+ ggg <- graph.bipartite( rep(0:1,length=10), c(1:10))
  ## NOT RUN	
 ##birewire.visual.monitoring.bipartite(ggg,display=F,n.networks=10)
 g <- erdos.renyi.game(1000,0.1)
