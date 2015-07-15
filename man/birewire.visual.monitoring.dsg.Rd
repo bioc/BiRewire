@@ -1,35 +1,37 @@
 \encoding{UTF-8}
-\name{birewire.visual.monitoring.undirected}
+\name{birewire.visual.monitoring.dsg}
 
-\alias{birewire.visual.monitoring.undirected}
+\alias{birewire.visual.monitoring.dsg}
 
-\title{Visual monitoring of the Markov chain underlying the SA for undirected graphs.}
+\title{Visual monitoring of the Markov chain underlying the SA for dsgs.}
 \description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{tsne}). If \emph{display} is true, the relative plot is displayed.  }
-\usage{birewire.visual.monitoring.undirected(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,
-	exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,
-	nrow=length(sequence)/ncol,display=TRUE)}
+\usage{birewire.visual.monitoring.dsg(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,exact=FALSE,n.networks=100,perplexity=15,
+  sequence.pos=c(1,5,100,"n"),
+  sequence.neg=c(1,5,100,"n"),ncol=2,nrow=length(sequence.pos)/ncol,display=TRUE)}
 \arguments{
-  \item{data}{The initial undirected graph, either an adjacency matrix or an \emph{igraph} undirected graph object;}
+  \item{data}{The initial dsg either in matrix or graph formulation 9see \code{birewire.induced.bipartite}.}
   \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
-         \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
+   \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
-
  \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
-
   \item{n.networks}{  100 (default): the number of network generated for each step defined in \emph{sequence} ;}
   \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{tsne};}
-  \item{sequence}{ c(1,5,100,"n")(default) the sequence of step for wich generating a sampler (see\code{birewire.rewire.sampler.undirected})}
+  \item{sequence.pos}{ c(1,5,100,"n")(default) the sequence of step for wich generating a sampler (see\code{birewire.rewire.sampler.dsg}) for the positive part of \emph{data}}
+    \item{sequence.neg}{ same as \emph{sequence.pos} but for the negative part}
   \item{ncol}{ 2 (default). The number of column in the plot;}
   \item{nrow}{ length(sequence)/ncol (default). The number of row in the plot;}
   \item{display}{ TRUE (default). If TRUE the result of tsne is displayed.}
 } 
 \details{
- For each value \emph{p} in \emph{sequence} (it that can also contain the special character "n", see \code{birewire.rewire.bipartite}), the routine generates \emph{n.networks} sampled each \emph{p} SS from the SA initialized with the given \emph{data}. Pariwise distance are computed using the Jaccard distance and the resulting matrix is the input for the dimensional scaling performed by the function \code{tsne}. An explorative plot is displayed if \emph{display} is set to TRUE. 
+See \code{birewire.visual.monitoring.bipartite} for more details.
+
 }
 \value{
 A list containing the list containing the distance matrices  \emph{dist} and the list containing the tsne results \emph{tsne}.
 }
 \references{
+ Iorio, F. and Gobbi, A.  (2015) \emph{In Preparation} In Preparation.\cr
+
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
 
 Jaccard, P. (1901), \emph{Étude comparative de la distribution florale dans une portion des Alpes et des Jura},
@@ -42,14 +44,19 @@ Van der Maaten, L.J.P. and Hinton, G.E. Visualizing High-Dimensional Data Using 
 \author{Andrea Gobbi
 \cr
 Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>\cr
-Special thanks to:\cr
-Davide Albanese
+
 }
 \examples{
 library(BiRewire)
-g <- erdos.renyi.game(1000,0.1)
-birewire.visual.monitoring.undirected(g,display=FALSE,n.networks=10)
+data(test_dsg)
+##bigger dsg
+test_dsg_2=test_dsg
+test_dsg_2[,1]=paste(test_dsg_2[,1],"_",sep="")
+test_dsg_2[,3]=paste(test_dsg_2[,3],"_",sep="")
 
+dsg <-  birewire.induced.bipartite(rbind(test_dsg,test_dsg_2),sparse=FALSE)
+
+ a=birewire.visual.monitoring.dsg(dsg,exact=TRUE,sequence.pos=c(1,2,"n",100),sequence.neg=c(1,2,"n",60),n.networks=50)
 
 }
 \keyword{rewire, bipartite graph}

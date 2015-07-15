@@ -56,21 +56,27 @@ birewire.analysis.bipartite<- function(incidence, step=10, max.iter="n",accuracy
 		}
 	e=sum(incidence)
 	RES=NULL
-	for(i in 1:n.networks)
-	{
-		if(exact==TRUE)
+	if(exact==TRUE)
     	{
 			if( max.iter=="n")
 				max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
 			MAXITER_MUL=MAXITER_MUL*as.numeric(max.iter)
+		}else
+		{
+			if( max.iter=="n")
+				max.iter=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy) )  
+		}
+
+	for(i in 1:n.networks)
+	{
+		if(exact)
+			{
 			result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,MAXITER_MUL+1)
 			result$N=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
 		}
 		else
 		{
-			if( max.iter=="n")
-				max.iter=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy) )  
-			result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,0)
+				result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,0)
 			result$N=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy)   )
 
 
@@ -248,24 +254,25 @@ birewire.similarity<-function(m1,m2)
 	#print("mi rompo")
 	if(is.igraph(m1))
 	{
-		if(is.bipartite(m1))
-		{
-			m1=get.incidence(m1,sparse=F)
-			m2=get.incidence(m2,sparse=F)
-		}else
-		{
-			m1=get.adjacency(m1,sparse=F)
-			m2=get.adjacency(m2,sparse=F)
-		}
+		#if(is.bipartite(m1))
+		#{
+		#	m1=get.incidence(m1,sparse=F)
+		#	m2=get.incidence(m2,sparse=F)
+		#}else
+		#{
+		#	m1=get.adjacency(m1,sparse=F)
+		#m2=get.adjacency(m2,sparse=F)
+		#}
+		e=length(E(m1))
+		x=length(E(graph.intersection(as.undirected(m1),as.undirected(m2))))
+		return(x/(2*e-x))
 
-	}
+	}else{
 	
 	if(dim(m2)[1]!=dim(m1)[1])
 		m1=t(m1)
-	#print("no")
-
 	return( sum( m1*m2)/sum(m1+m2-m1*m2))
-	
+	}
   
 }
 birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
@@ -293,7 +300,7 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.000
   t=nc*nr
   names=V(g)$name
   types=V(g)$type
-		if(exact==T)
+		if(exact==TRUE)
     	{
 					if( max.iter=="n")
 					  max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
@@ -353,21 +360,27 @@ birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accurac
 	e=sum(adjacency)/2
 	d=e/t
 	RES=NULL
-	for( i in 1:n.networks)
-	{
-		if(exact==TRUE)
+	if(exact==TRUE)
 		{
 			if( max.iter=="n")
 			max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
 			MAXITER_MUL=MAXITER_MUL*as.numeric(max.iter)
+			}else
+			{
+				if(max.iter=="n")
+			max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
+	
+			}
+	for( i in 1:n.networks)
+	{
+		if(exact==TRUE)
+		{
 			result<-.Call("R_analysis_undirected", adjacency,n,n,as.numeric(step),as.numeric(max.iter),as.numeric(verbose),MAXITER_MUL)
 			result$N=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
 		}
 
 		else
 		{
-			if(max.iter=="n")
-			max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
 			result<-.Call("R_analysis_undirected", adjacency,n,n,as.numeric(step),as.numeric(max.iter),as.numeric(verbose),0)
 			result$N=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
 		}
@@ -691,8 +704,8 @@ for( i in sequence)
 	tmp=try(tsne(m,whiten=F,perplexity=perplexity))
 	if(!is.double(tmp))
 		return(list(dist=list(),tsne=list()))
-	#tsne[[ii]]=tmp
-	tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
+	tsne[[ii]]=tmp
+	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
 	if(display)
 		{
 			plot(tsne[[ii]],col=colorRampPalette(c("blue", "red"))( n.networks),pch=16,xlab='A.U.',ylab='A.U.',main=paste('k=',i))
@@ -708,8 +721,6 @@ return(list(dist=dist,tsne=tsne))
 
 
 }
-
-
 
 
 
@@ -843,14 +854,15 @@ birewire.induced.bipartite<-function(g,delimitators=list(negative='-',positive='
 		dsg[['negative']]=simplify.table(negative)
 	}else
 	{
-			g_p[,2]=paste(g_p[,2],"_t",sep='')
-			g_n[,2]=paste(g_n[,2],"_t",sep='')
-			dsg[['positive']]=graph.edgelist(as.matrix(g_p),directed=F)
-			dsg[['negative']]=graph.edgelist(as.matrix(g_n),directed=F)
+			g_p[,2]=paste(g_p[,2],"@@t",sep='')
+			g_n[,2]=paste(g_n[,2],"@@t",sep='')
+			dsg[['positive']]=graph.edgelist(as.matrix(g_p),directed=TRUE)
+			dsg[['negative']]=graph.edgelist(as.matrix(g_n),directed=TRUE)
 			V(dsg[['positive']])$type=0
-			V(dsg[['positive']])$type[which(unlist(lapply(strsplit(V(dsg[['positive']])$name,"_"),length))==2)]=1
+			V(dsg[['positive']])$type[which(unlist(lapply(strsplit(V(dsg[['positive']])$name,"@@"),length))==2)]=1
 			V(dsg[['negative']])$type=0
-			V(dsg[['negative']])$type[which(unlist(lapply(strsplit(V(dsg[['negative']])$name,"_"),length))==2)]=1
+			V(dsg[['negative']])$type[which(unlist(lapply(strsplit(V(dsg[['negative']])$name,"@@"),length))==2)]=1
+			
 
 	}
 return(dsg)
@@ -870,18 +882,21 @@ birewire.build.dsg<-function(dsg,delimitators=list(negative='-',positive='+'))
 			    }
 	positive=dsg[['positive']]
 	negative=dsg[['negative']]
-	if(!is.igraph(dsg[['positive']]))
+	if(!is.igraph(positive))
 	{
 		g_p=get.data.frame.from.incidence(positive,delimitators[['positive']])
 		g_n=get.data.frame.from.incidence(negative,delimitators[['negative']])
+		
 		}else
 		{
-			g_p=get.edgelist(dsg[['positive']])
-			g_p[,3]=delimitators[['positive']]
+			V(positive)$name=unlist(lapply(strsplit(V(positive)$name,"@@"),function(x){return(x[1])}))
+			V(negative)$name=unlist(lapply(strsplit(V(negative)$name,"@@"),function(x){return(x[1])}))
+			g_p=get.edgelist(positive,names=TRUE)
+			g_p=cbind(g_p,delimitators[['positive']])
 			g_p=g_p[,c(1,3,2)]
 
-			g_n=get.edgelist(dsg[['negative']])
-			g_n[,3]=delimitators[['negative']]
+			g_n=get.edgelist(negative,names=TRUE)
+			g_n=cbind(g_n,delimitators[['negative']])
 			g_n=g_n[,c(1,3,2)]
 		}
 	g=rbind(g_p,g_n)
@@ -911,9 +926,21 @@ birewire.save.dsg<-function(g,file)
 	birewire.similarity.dsg<-function(m1,m2)
 {
 
- x=sum(m1[['positive']]*m2[['positive']]) +sum(m1[['negative']]*m2[['negative']] )
-e=sum(m1[['positive']])+sum(m2[['positive']])+sum(m1[['negative']])+sum(m2[['negative']])
-  return( x/(e-x))
+
+if(is.igraph(m1[["positive"]]))
+	{
+		e.p=length(E(m1[["positive"]]))
+		x.p=length(E(graph.intersection(as.undirected(m1[["positive"]]),as.undirected(m2[["positive"]]))))
+		e.n=length(E(m1[["negative"]]))
+		x.n=length(E(graph.intersection(as.undirected(m1[["negative"]]),as.undirected(m2[["negative"]]))))
+		return((x.p+x.n)/(2*e.p+2*e.n-x.p-x.n))
+	}else
+	{
+		x=sum(m1[['positive']]*m2[['positive']]) +sum(m1[['negative']]*m2[['negative']] )
+		e=sum(m1[['positive']])+sum(m2[['positive']])+sum(m1[['negative']])+sum(m2[['negative']])
+  		return( x/(2*e-x))
+
+	}
   
 }
 
@@ -1007,3 +1034,62 @@ birewire.analysis.dsg<-function(dsg, step=10, max.iter.pos='n',max.iter.neg='n',
 	}
 	return( list(N=list(positive=incidence_pos$N,negative=incidence_neg$N),data=list(positive=incidence_pos$data,negative=incidence_neg$data)))
 }
+
+
+birewire.visual.monitoring.dsg<-function(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,exact=FALSE,n.networks=100,perplexity=15,
+	sequence.pos=c(1,5,100,"n"),
+	sequence.neg=c(1,5,100,"n"),ncol=2,nrow=length(sequence.pos)/ncol,display=TRUE)
+{
+if(length(sequence.pos)!=length(sequence.neg))
+{
+	stop("The two sequence to test must have the same length \n")
+
+}
+
+if(display)
+{
+	par(mfrow=c(nrow,ncol))
+	par(pty="s")
+}
+dist=list()
+tsne=list()
+ii=1
+
+for( i in 1:length(sequence.pos))
+{
+	print(paste("K.pos=",sequence.pos[i],", K.neg=", sequence.neg[i]))
+	data_tmp=data
+	tot=list(data)
+	m=matrix(nrow=n.networks,ncol=n.networks,0)
+	for(j in 2:n.networks)
+		{
+			data_tmp=birewire.rewire.dsg(data_tmp,  max.iter.pos=sequence.pos[i],max.iter.neg=sequence.neg[i], accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+			tot[[j]]=data_tmp
+			for(k in 1:(j-1))
+				m[k,j]=m[j,k]=1-birewire.similarity.dsg(tot[[k]],tot[[j]])
+				
+
+		}
+	dist[[ii]]=m	
+	tmp=try(tsne(m,whiten=F,perplexity=perplexity))
+	if(!is.double(tmp))
+		return(list(dist=list(),tsne=list()))
+	tsne[[ii]]=tmp
+	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
+	if(display)
+		{
+			plot(tsne[[ii]],col=colorRampPalette(c("blue", "red"))( n.networks),pch=16,xlab='A.U.',ylab='A.U.',main=paste("K.pos=",sequence.pos[i],", K.neg=", sequence.neg[i]))
+			text(x=tsne[[ii]][1,1],y=tsne[[ii]][1,2],label='start')
+		}	
+	ii=ii+1
+
+
+}
+
+return(list(dist=dist,tsne=tsne))
+
+
+
+}
+
+

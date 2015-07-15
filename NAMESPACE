@@ -18,5 +18,7 @@ birewire.rewire.dsg,
 birewire.induced.bipartite,
 birewire.build.dsg,
 birewire.load.dsg,
-birewire.similarity.dsg)
+birewire.similarity.dsg,
+birewire.analysis.dsg,
+birewire.visual.monitoring.dsg)
 

@@ -12,7 +12,7 @@
 Summary:
   \tabular{ll}{
   Package: \tab BiRewire\cr
-  Version: \tab 2.3.0\cr
+  Version: \tab 2.3.5\cr
   Date: 2015-07-07\cr
   Require: slam, igraph,tsne,  R>=2.10\cr
   URL:  http://www.ebi.ac.uk/~iorio/BiRewire  \cr

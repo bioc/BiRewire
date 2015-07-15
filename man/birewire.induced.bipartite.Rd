@@ -16,7 +16,11 @@
 \value{
 A list of two incidence matrix or bipartite \code{igraph} objects.}
 
+\references{
+	
+	 Iorio, F. and Gobbi, A.  (2015) \emph{In Preparation} In Preparation.\cr
 
+}
 \examples{
 
 data(test_dsg)

@@ -2,27 +2,37 @@
 \name{birewire.similarity.dsg}
 
 \alias{birewire.similarity.dsg}
-\title{Computes the Jaccard index between two directed signed networks.}
-\description{Computes the Jaccard index between two directed signed networks, the two graphs must have the same dimensions.} 
-\usage{birewire.similarity.dsg(m1,m2)}
+
+\title{Compute the Jaccard similarity index between dsg.}
+\description{Compute the Jaccard similarity index between dsg objects described in the same way (matrices of graphs).}  
+\usage{birewire.similarity.dsg( m1,m2)}
 \arguments{
- \item{m1}{A dsg object.}
-  \item{m2}{A dsg object.}
- } 
-\details{ Computes the Jaccard index between two directed signed networks, the two graphs must have the same dimensions.
-}
-\value{
-A real number between 0 (totally dissimilar graphs) and 1 (equal graphs).}
-\references{
- Iorio, F. and Gobbi, A.  (2015) \emph{In Preparation} In Preparation.\cr
+  \item{m1}{First dsg;}
+  \item{m2}{Second dsg.  }
   }
 
+
+\details{
+See \code{birewire.similarity} for more details. 
+
+}
+
+\value{
+Returns the Jaccard similarity index between the objects.
+}
+
+\author{Andrea Gobbi
+\cr
+Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>
+}
 \examples{
 
+library(BiRewire)
 data(test_dsg)
-dsg=birewire.induced.bipartite(test_dsg)
-tmp= birewire.rewire.dsg(dsg,verbose=FALSE)
-dsg2=birewire.build.dsg(tmp)
-jaccard=birewire.similarity.dsg(dsg,tmp)
+dsg <-  birewire.induced.bipartite(test_dsg,sparse=FALSE)
+birewire.similarity.dsg(dsg,birewire.rewire.dsg(dsg))
+dsg <-  birewire.induced.bipartite(test_dsg,sparse=TRUE)
+birewire.similarity.dsg(dsg,birewire.rewire.dsg(dsg))
 }
-\keyword{directed graph, rewire, pathway, signaling}
+
+\keyword{similarity,jaccard}
