@@ -56,21 +56,27 @@ birewire.analysis.bipartite<- function(incidence, step=10, max.iter="n",accuracy
 		}
 	e=sum(incidence)
 	RES=NULL
-	for(i in 1:n.networks)
-	{
-		if(exact==TRUE)
+	if(exact==TRUE)
     	{
 			if( max.iter=="n")
 				max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
 			MAXITER_MUL=MAXITER_MUL*as.numeric(max.iter)
+		}else
+		{
+			if( max.iter=="n")
+				max.iter=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy) )  
+		}
+
+	for(i in 1:n.networks)
+	{
+		if(exact)
+			{
 			result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,MAXITER_MUL+1)
 			result$N=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
 		}
 		else
 		{
-			if( max.iter=="n")
-				max.iter=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy) )  
-			result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,0)
+				result<-.Call("R_analysis", incidence,nc,nr,as.numeric(step),as.numeric(max.iter),verbose,0)
 			result$N=ceiling((e/(2-2*e/t)) *log(x=(1-e/t)/accuracy)   )
 
 
@@ -248,24 +254,25 @@ birewire.similarity<-function(m1,m2)
 	#print("mi rompo")
 	if(is.igraph(m1))
 	{
-		if(is.bipartite(m1))
-		{
-			m1=get.incidence(m1,sparse=F)
-			m2=get.incidence(m2,sparse=F)
-		}else
-		{
-			m1=get.adjacency(m1,sparse=F)
-			m2=get.adjacency(m2,sparse=F)
-		}
+		#if(is.bipartite(m1))
+		#{
+		#	m1=get.incidence(m1,sparse=F)
+		#	m2=get.incidence(m2,sparse=F)
+		#}else
+		#{
+		#	m1=get.adjacency(m1,sparse=F)
+		#m2=get.adjacency(m2,sparse=F)
+		#}
+		e=length(E(m1))
+		x=length(E(graph.intersection(as.undirected(m1),as.undirected(m2))))
+		return(x/(2*e-x))
 
-	}
+	}else{
 	
 	if(dim(m2)[1]!=dim(m1)[1])
 		m1=t(m1)
-	#print("no")
-
 	return( sum( m1*m2)/sum(m1+m2-m1*m2))
-	
+	}
   
 }
 birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
@@ -293,7 +300,7 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.000
   t=nc*nr
   names=V(g)$name
   types=V(g)$type
-		if(exact==T)
+		if(exact==TRUE)
     	{
 					if( max.iter=="n")
 					  max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
@@ -353,21 +360,27 @@ birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accurac
 	e=sum(adjacency)/2
 	d=e/t
 	RES=NULL
-	for( i in 1:n.networks)
-	{
-		if(exact==TRUE)
+	if(exact==TRUE)
 		{
 			if( max.iter=="n")
 			max.iter=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
 			MAXITER_MUL=MAXITER_MUL*as.numeric(max.iter)
+			}else
+			{
+				if(max.iter=="n")
+			max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
+	
+			}
+	for( i in 1:n.networks)
+	{
+		if(exact==TRUE)
+		{
 			result<-.Call("R_analysis_undirected", adjacency,n,n,as.numeric(step),as.numeric(max.iter),as.numeric(verbose),MAXITER_MUL)
 			result$N=ceiling((e*(1-e/t)) *log(x=(1-e/t)/accuracy) /2  )
 		}
 
 		else
 		{
-			if(max.iter=="n")
-			max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
 			result<-.Call("R_analysis_undirected", adjacency,n,n,as.numeric(step),as.numeric(max.iter),as.numeric(verbose),0)
 			result$N=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
 		}
@@ -574,19 +587,19 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
 								{
 									if(write.sparse)
 									{
-										write_stm_CLUTO(as.simple_sparse_array(as.matrix(get.adjacency(incidence,sparse=F))),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(get.incidence(incidence,names=TRUE,sparse=FALSE))),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
 									}else
 									{
-										write.table(get.adjacency(incidence,sparse=F),file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
+										write.table(get.incidence(incidence,names=TRUE,sparse=FALSE),file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
 									}
 								}else
 								{
 									if(write.sparse)
 									{
-										write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence,names=TRUE,names=TRUE)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
 									}else
 									{
-										write.table(incidence,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
+										write.table(incidence,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=FALSE)
 									}
 								}
 
@@ -600,6 +613,74 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
 	
 
 }
+
+
+
+birewire.sampler.undirected<-function(adjacency,K,path,max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,write.sparse=TRUE)
+{
+	if(K>=100000)
+		{
+
+			stop("I can not create more than 1000 subfolders but if you need it contact the manteiner.")
+		}
+
+		if(!file.exists(path))
+  					{
+    					dir.create(path) 
+ 				 	}
+
+		n=ceiling(K/300)
+		##NB 300 perche' non voglio piu' di 1000 file per cartella
+		NFILES=300
+		if(write.sparse==F)
+			NFILES=1000
+		NNET=NFILES
+
+		for( i in 1:n)
+			{
+					if(K-NFILES*i<0)
+					NNET=K-NFILES*(i-1)
+  
+			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given undirected graph.'))
+    			PATH<-paste(path,'/',i,'/',sep='')
+				if(!file.exists(PATH))
+					{
+      					dir.create(PATH)
+    				}
+    				for(j in 1:NNET)
+    					{
+    						incidence=birewire.rewire.undirected(adjacency=adjacency,  max.iter=max.iter, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+    						if(is.igraph(adjacency))
+								{
+									if(write.sparse)
+									{
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(get.adjacency(adjacency,names=TRUE,sparse=FALSE))),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+									}else
+									{
+										write.table(get.adjacency(adjacency,sparse=FALSE,names=TRUE),file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
+									}
+								}else
+								{
+									if(write.sparse)
+									{
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(adjacency)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+									}else
+									{
+										write.table(adjacency,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=FALSE)
+									}
+								}
+
+    					}	
+
+			}
+
+
+
+
+	
+
+}
+
 
 
 
@@ -691,8 +772,8 @@ for( i in sequence)
 	tmp=try(tsne(m,whiten=F,perplexity=perplexity))
 	if(!is.double(tmp))
 		return(list(dist=list(),tsne=list()))
-	#tsne[[ii]]=tmp
-	tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
+	tsne[[ii]]=tmp
+	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
 	if(display)
 		{
 			plot(tsne[[ii]],col=colorRampPalette(c("blue", "red"))( n.networks),pch=16,xlab='A.U.',ylab='A.U.',main=paste('k=',i))
@@ -708,4 +789,14 @@ return(list(dist=dist,tsne=tsne))
 
 
 }
+
+
+
+
+
+
+
+
+
+
 

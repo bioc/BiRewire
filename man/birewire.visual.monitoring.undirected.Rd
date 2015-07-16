@@ -9,7 +9,7 @@
 	exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,
 	nrow=length(sequence)/ncol,display=TRUE)}
 \arguments{
-  \item{data}{The initial bipartite graph, either an adjacency matrix or an \emph{igraph} undirected graph object;}
+  \item{data}{The initial undirected graph, either an adjacency matrix or an \emph{igraph} undirected graph object;}
   \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
          \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
