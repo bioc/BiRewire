@@ -587,19 +587,19 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
 								{
 									if(write.sparse)
 									{
-										write_stm_CLUTO(as.simple_sparse_array(as.matrix(get.adjacency(incidence,sparse=F))),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(get.incidence(incidence,names=TRUE,sparse=FALSE))),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
 									}else
 									{
-										write.table(get.adjacency(incidence,sparse=F),file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
+										write.table(get.incidence(incidence,names=TRUE,sparse=FALSE),file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
 									}
 								}else
 								{
 									if(write.sparse)
 									{
-										write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(incidence,names=TRUE,names=TRUE)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
 									}else
 									{
-										write.table(incidence,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
+										write.table(incidence,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=FALSE)
 									}
 								}
 
@@ -613,6 +613,74 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
 	
 
 }
+
+
+
+birewire.sampler.undirected<-function(adjacency,K,path,max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,write.sparse=TRUE)
+{
+	if(K>=100000)
+		{
+
+			stop("I can not create more than 1000 subfolders but if you need it contact the manteiner.")
+		}
+
+		if(!file.exists(path))
+  					{
+    					dir.create(path) 
+ 				 	}
+
+		n=ceiling(K/300)
+		##NB 300 perche' non voglio piu' di 1000 file per cartella
+		NFILES=300
+		if(write.sparse==F)
+			NFILES=1000
+		NNET=NFILES
+
+		for( i in 1:n)
+			{
+					if(K-NFILES*i<0)
+					NNET=K-NFILES*(i-1)
+  
+			  	print(paste('Filling directory n.',i,'with',NNET,'randomised versions of the given undirected graph.'))
+    			PATH<-paste(path,'/',i,'/',sep='')
+				if(!file.exists(PATH))
+					{
+      					dir.create(PATH)
+    				}
+    				for(j in 1:NNET)
+    					{
+    						incidence=birewire.rewire.undirected(adjacency=adjacency,  max.iter=max.iter, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+    						if(is.igraph(adjacency))
+								{
+									if(write.sparse)
+									{
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(get.adjacency(adjacency,names=TRUE,sparse=FALSE))),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+									}else
+									{
+										write.table(get.adjacency(adjacency,sparse=FALSE,names=TRUE),file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=F)
+									}
+								}else
+								{
+									if(write.sparse)
+									{
+										write_stm_CLUTO(as.simple_sparse_array(as.matrix(adjacency)),file=paste(PATH,'network_',(i-1)*1000+j,sep=''))
+									}else
+									{
+										write.table(adjacency,file=paste(PATH,'network_',(i-1)*1000+j,sep=''),append=FALSE)
+									}
+								}
+
+    					}	
+
+			}
+
+
+
+
+	
+
+}
+
 
 
 
