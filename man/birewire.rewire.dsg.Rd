@@ -8,7 +8,7 @@
   accuracy=0.00005,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'))
 }
 \arguments{
- \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{birewire.load.dsg} function and converting the resulting dataframe using \code{birewire.induced.bipartite};}
+ \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{\link{birewire.load.dsg}} function and converting the resulting dataframe using \code{\link{birewire.induced.bipartite}};}
    \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} \strong{successful} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
     \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation;}
 
@@ -20,23 +20,22 @@
       \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
 
    \item{path}{ NULL (default). If not NULL, the dsg is saved in \emph{path} in SIF format; }  
-    \item{delimitators}{ list(positive='+',negative= '-') (default). If \emph{save.file} is true, the dsg is saved  using \emph{delimitators} as characters encoding the relations. See \code{birewire.build.dsg} for more details. }
+    \item{delimitators}{ list(positive='+',negative= '-') (default). If \emph{save.file} is true, the dsg is saved  using \emph{delimitators} as characters encoding the relations. See \code{\link{birewire.build.dsg}} for more details. }
 
 } 
-\details{ This fuction runs \code{birewire.rewire.bipartite} on the positive and negative part of \emph{dsg}. See references for more details.
+\details{ This fuction runs \code{\link{birewire.rewire.bipartite}} on the positive and negative part of \emph{dsg}. See references for more details.
 }
 \value{
 Rewired dsg.}
 \references{
- Iorio, F. and Gobbi, A.  (2015) \emph{In Preparation} In Preparation.\cr
+ Iorio, F. and Gobbi, A.  (2016) \emph{In Preparation} In Preparation.\cr
 
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
 
 R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028
   }
 \author{Andrea Gobbi:  <gobbi.andrea@mail.com>\cr
-Special thanks to:
-Davide Albanese
+
 }
 \examples{
 

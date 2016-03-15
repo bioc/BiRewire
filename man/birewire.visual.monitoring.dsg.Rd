@@ -4,26 +4,26 @@
 \alias{birewire.visual.monitoring.dsg}
 
 \title{Visual monitoring of the Markov chain underlying the SA for dsgs.}
-\description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{tsne}). If \emph{display} is true, the relative plot is displayed.  }
+\description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{\link{tsne}}). If \emph{display} is set to \emph{TRUE} the relative plot is displayed.  }
 \usage{birewire.visual.monitoring.dsg(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,exact=FALSE,n.networks=100,perplexity=15,
   sequence.pos=c(1,5,100,"n"),
   sequence.neg=c(1,5,100,"n"),ncol=2,nrow=length(sequence.pos)/ncol,display=TRUE)}
 \arguments{
-  \item{data}{The initial dsg either in matrix or graph formulation 9see \code{birewire.induced.bipartite}.}
+  \item{data}{The initial dsg either in matrix or graph formulation 9see \code{\link{birewire.induced.bipartite}}.}
   \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
    \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
  \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
   \item{n.networks}{  100 (default): the number of network generated for each step defined in \emph{sequence} ;}
-  \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{tsne};}
-  \item{sequence.pos}{ c(1,5,100,"n")(default) the sequence of step for wich generating a sampler (see\code{birewire.rewire.sampler.dsg}) for the positive part of \emph{data}}
+  \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{\link{tsne}};}
+  \item{sequence.pos}{ c(1,5,100,"n")(default) the sequence of step for wich generating a sampler (see\code{\link{birewire.sampler.dsg}}) for the positive part of \emph{data}}
     \item{sequence.neg}{ same as \emph{sequence.pos} but for the negative part}
   \item{ncol}{ 2 (default). The number of column in the plot;}
   \item{nrow}{ length(sequence)/ncol (default). The number of row in the plot;}
   \item{display}{ TRUE (default). If TRUE the result of tsne is displayed.}
 } 
 \details{
-See \code{birewire.visual.monitoring.bipartite} for more details.
+See \code{\link{birewire.visual.monitoring.bipartite}} for more details.
 
 }
 \value{
@@ -56,7 +56,8 @@ test_dsg_2[,3]=paste(test_dsg_2[,3],"_",sep="")
 
 dsg <-  birewire.induced.bipartite(rbind(test_dsg,test_dsg_2),sparse=FALSE)
 
- a=birewire.visual.monitoring.dsg(dsg,exact=TRUE,sequence.pos=c(1,2,"n",100),sequence.neg=c(1,2,"n",60),n.networks=50)
+ a=birewire.visual.monitoring.dsg(dsg,exact=TRUE,sequence.pos=c(1,2,"n",100),
+				sequence.neg=c(1,2,"n",60),n.networks=50)
 
 }
 \keyword{rewire, bipartite graph}

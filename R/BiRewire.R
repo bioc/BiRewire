@@ -368,7 +368,7 @@ birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accurac
 			}else
 			{
 				if(max.iter=="n")
-			max.iter=(e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy)
+			max.iter=ceiling((e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy))
 	
 			}
 	for( i in 1:n.networks)
@@ -649,7 +649,7 @@ birewire.sampler.undirected<-function(adjacency,K,path,max.iter="n", accuracy=0.
     				}
     				for(j in 1:NNET)
     					{
-    						incidence=birewire.rewire.undirected(adjacency=adjacency,  max.iter=max.iter, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+    						adjacency=birewire.rewire.undirected(adjacency=adjacency,  max.iter=max.iter, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
     						if(is.igraph(adjacency))
 								{
 									if(write.sparse)
@@ -1160,4 +1160,13 @@ return(list(dist=dist,tsne=tsne))
 
 }
 
-
+birewire.slum.to.sparseMatrix<-function(simple_triplet_matrix_sparse) {
+  retval <-  sparseMatrix(i=as.numeric(simple_triplet_matrix_sparse$i),
+                          j=as.numeric(simple_triplet_matrix_sparse$j),
+                          x=as.numeric(as.character(simple_triplet_matrix_sparse$v)),
+                          dims=c(simple_triplet_matrix_sparse$nrow, 
+                                 simple_triplet_matrix_sparse$ncol),
+                          dimnames = dimnames(simple_triplet_matrix_sparse),
+                          giveCsparse = TRUE)
+  return(retval)
+}

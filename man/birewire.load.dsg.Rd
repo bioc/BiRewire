@@ -11,7 +11,7 @@
 
 
 \value{
-A R table that can be transfomred into a dsg using \code{birewire.induced.bipartite}}
+A R table that can be transfomred into a dsg using \code{\link{birewire.induced.bipartite}}}
 
 
 \keyword{directed graph, rewire, pathway, signaling}

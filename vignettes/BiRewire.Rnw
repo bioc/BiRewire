@@ -42,7 +42,7 @@ Moreover, with se same routines, it is possible to generate a rewired version of
 
 Specifically, with \textit{BiRewire} users can:
 \begin{enumerate}
-\item	create bipartite graphs from genomic BEMs (or, generally, from any kind of \'presence-absence\'  matrix); 
+\item	create bipartite graphs from genomic BEMs (or, generally, from any kind of presence-absence  matrix); 
 \item	perform an analysis, which consists of studying the trend of Jaccard Similarity between the original network and its rewired versions across the switching steps (by using a user-defined sampling time), and analytically estimating the number of steps at which this similarity reaches a plateau (i.e. the maximal level of randomness is achieved) according to the lower bound derived in \cite{Gobbi}; 
 \item	generate rewired versions of a bipartite graph with the analytically derived bound as number of switching steps or a user-defined one; 
 \item	derive projections of the starting network and its rewired version and perform different graph-theory analysis on them;
@@ -51,12 +51,11 @@ Specifically, with \textit{BiRewire} users can:
 \item 	perform the same analysis described in point 1,2,3,5 and 6 for undirected graphs and directed signed graphs (DGS).
 \end{enumerate}
 
-All the functions of the package are written in C-code and R-wrapped.
+All the functions of the package are written in C-code and R-wrapped. A reduced version of the packages has been also implemented in Python \url{https://github.com/andreagobbi/pyBiRewire}.
 
 
 \section{Installation}
 It is possible to download the package from \url{http://www.ebi.ac.uk/~iorio/BiRewire} and install it with the shell-command:
-
 
 \begin{verbatim}
  R CMD INSTALL BiRewire_xx.yy.zz.tar.gz
@@ -74,7 +73,7 @@ Moreover, the sources of the developement version are available here \url{http:/
 git clone git@github.com:andreagobbi/BiRewire--release.git
 git clone git@github.com:andreagobbi/BiRewire.git
 \end{verbatim}
-
+We suggest to use the biocLite function from R in order to have the last working relase package (build and check procedure).
 
 To load BiRewire use the following commands:
 <<loadBiRewire>>=
@@ -82,7 +81,7 @@ library(BiRewire)
 @
 
 \section{Package Dependencies}
-BiRewire requires the R packages {\bf igraph}, {\bf{slam}} and {\bf tsne} (see \cite{igraph}, \cite{slam}, \cite{tsne} ) available at the CRAN repository.
+BiRewire requires the R packages {\bf Matrix} {\bf igraph}\cite{igraph}, {\bf{slam}}\cite{slam} and {\bf tsne}\cite{tsne} available at the CRAN repository.
 
 \section{Notation}\label{Notation}
 Let $\mathcal{G}$ be a bipartite graph, i.e. a graph containing two classes of nodes $V_r$ and $V_c$ such that every edge $e\in E$ connects one node in the first class to a node in the second class.\\ 
@@ -123,7 +122,7 @@ This bound is much lower than the empirical one proposed in \cite{Milo03}  (see 
 
 \section{Directed Signed Network}\label{sec:DSG}
 
-A directed signed network (DSG) $\mathcal{G}$ is a directed network in which the edges are encoded with a triplet $(a,b,*)$ where $a$ denotes the source node, $b$ the target node and $*$ the sign of the relation (the weight of the edge). In our case (pathways and signaling) $*$ can be positive $+$ and negative $-$.
+A directed signed network (DSG) $\mathcal{G}$ is a directed network in which the edges are encoded with a triplet $(a,b,*)$ where $a$ denotes the source node, $b$ the target node and $*$ the sign of the relation (the sign of the edge). In our case (pathways and signaling) $*$ can be positive $+$ and negative $-$.
 In \cite{Iorio} we show how to create a correspondence between a DSG and a couple $(B^+, B^-)$ of bipartite networks. This correspondence $f$, and its inverse $f^{-1}$ are useful for the creation of a rewired version of $G$: we rewire independently $B^+$ and $B^-$ and we rebuild the final DSG $G^*$ using $f^{-1}$. A DGS is usually encoded in a SIF format (Simple Interaction File see \url{http://wiki.cytoscape.org/Cytoscape_User_Manual/Network_Formats} for more informations). In the case of DSG a suitable SIF file has 3 columns: the first encodes the source nodes, the second the sign and the last the source nodes.
 
 \section{Function Description}
@@ -253,11 +252,10 @@ tmp=birewire.build.dsg(dsg,delimitators=list(negative='-',positive='+'))
 @
 
 \subsection{{\bf birewire.rewire.dsg }}
-Function for generating a rewired version of a given DSG $G$. The parameters are quite the same of {\bf birewire.rewire.bipartite }: in this case it is possible to control the number of SS independently for the positive{\bf max.iter.pos} and negative {\bf max.iter.neg}  part of $G$.
+Function for generating a rewired version of a given DSG $G$. The parameters are quite the same of {\bf birewire.rewire.bipartite}: in this case it is possible to control the number of SS independently for the positive{\bf max.iter.pos} and negative {\bf max.iter.neg}  part of $G$.
 <<Rewire dsg>>=
 dsg2=birewire.rewire.dsg(dsg=dsg)
 tmp=birewire.build.dsg(dsg2,delimitators=list(negative='-',positive='+'))
-
 @test_dsg
 
 \subsection{{\bf birewire.similarity.dsg }}
@@ -272,7 +270,8 @@ This function uses the SA to generate a set of $K$ DSG in SIF format drawn from 
 
 <<Sampler DSG>>=
 ##NOT RUN
-##birewire.sampler.dsg(dsg,K=10,path='TESTBIREWIREDSG',verbose=F,delimitators=list(negative='-',positive='+'))
+##birewire.sampler.dsg(dsg,K=10,path='TESTBIREWIREDSG',verbose=F,
+##			delimitators=list(negative='-',positive='+'))
 ##unlink('TESTBIREWIREDSG',recursive = T)
 @
 
@@ -284,11 +283,13 @@ Here we collect the functionalities of the package in a single example. The outp
 #For recovering quickly the bound N we can perform a short analysis
 #N=birewire.analysis.bipartite(get.incidence(ggg,sparse=F),max.iter=2,step=1)$N
 #Now we can perform the real analysis
-#res=birewire.analysis.bipartite(get.incidence(ggg,sparse=F),max.iter=10*N,n.networks=10)
+#res=birewire.analysis.bipartite(get.incidence(ggg,sparse=F),
+#				max.iter=10*N,n.networks=10)
 #and monitoring the markov chain
-#birewire.visual.monitoring.bipartite(ggg,display=T,n.networks=75,sequence=c(1,10,200,500,"n",10000),ncol=3)
+#birewire.visual.monitoring.bipartite(ggg,display=T,n.networks=75,
+#				sequence=c(1,10,200,500,"n",10000),ncol=3)
 #Now we can generate a null model
-#birewire.sampler.bipartite(ggg,K=10000,path="/home/andrea/example")
+#birewire.sampler.bipartite(ggg,K=10000,path="TESTBIREWIREBIPARTITE")
 @
 
 \begin{figure}[!h]
@@ -305,8 +306,8 @@ Here we collect the functionalities of the package in a single example. The outp
 
 
 \bibitem{Gobbi}Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.
-\bibitem{Iorio} Iorio, F. and Gobbi, A. (2015) \emph{In preparation} In preparation.
-\bibitem{GobbiJurman} Gobbi, A.  and Jurman, G. \emph{Number of required Switching Steps in the Switching Algorithm for undirected graphs}.in preparation, .
+\bibitem{Iorio} Iorio, F. and Gobbi, A. (2016) \emph{In preparation} In preparation.
+\bibitem{GobbiJurman}  Gobbi, A. and Jurman, G. (2013) \emph{Theoretical and algorithmic solutions for null models in network theory} (Doctoral dissertation) \url{http://eprints-phd.biblio.unitn.it/1125/} .
 \bibitem{Jaccard} Jaccard, P. (1901), \emph{Etude comparative de la distribution florale dans une portion des Alpes et des Jura}, Bulletin de la Societe Vaudoise des Sciences Naturelles 37:547--579.
  \bibitem{Milo03} R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028.
  \bibitem{igraph}  Csardi, G. and  Nepusz, T (2006)\emph{The igraph software package for complex network research}, InterJournal, Complex Systems   \url{http://igraph.sf.net}.

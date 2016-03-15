@@ -224,8 +224,10 @@ SEXP R_analysis_undirected (SEXP incidence,SEXP ncol, SEXP nrow, SEXP step, SEXP
 	scores=NULL;
 	nc=asInteger(ncol);
   nr=asInteger(nrow);
-  	
-  PROTECT(incidence=coerceVector(incidence,INTSXP));
+  SEXP incidencetmp;
+  	//removed protection, doesn' work with protection
+  PROTECT(incidencetmp=coerceVector(incidence,INTSXP));
+ //SEXP incidencetmp=coerceVector(incidence,INTSXP);
 
   /* Initialize matrix */
 		do
@@ -241,7 +243,7 @@ SEXP R_analysis_undirected (SEXP incidence,SEXP ncol, SEXP nrow, SEXP step, SEXP
     }
   	for (j = 0; j<nc;j++)
 		for(i=0;i<nr;i++)	    
-			matrix[i][j] =(short) INTEGER(incidence)[j * nr+i];
+			matrix[i][j] =(short) INTEGER(incidencetmp)[j * nr+i];
 	
 	for (i=0;i<nr;i++)
 	{	
@@ -289,6 +291,7 @@ SEXP R_analysis_undirected (SEXP incidence,SEXP ncol, SEXP nrow, SEXP step, SEXP
 
 	setAttrib(result, R_NamesSymbol,names); 
 
+	//UNPROTECT(4);
 	UNPROTECT(5);
 	return(result);
 	////printf("Analysis done!\n");
@@ -345,7 +348,7 @@ do
 	return(res);
 	////printf("Rewiring done!\n");
 
-	return 0;
+
 }
 
 

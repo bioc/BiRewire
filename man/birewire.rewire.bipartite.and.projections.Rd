@@ -36,11 +36,9 @@ library(igraph)
 library(BiRewire)
 g <- simplify(graph.bipartite( rep(0:1,length=100),
 c(c(1:100),seq(1,100,3),seq(1,100,7),100,seq(1,100,13),
-seq(1,100,17),seq(1,100,19),seq(1,100,23),100
-)))
+seq(1,100,17),seq(1,100,19),seq(1,100,23),100)))
 ##gets the incidence matrix of g
  m<-as.matrix(get.incidence(graph=g))
-
 ## rewires g and its projections
 result=birewire.rewire.bipartite.and.projections(g,step=10,max.iter="n",accuracy=0.00005) 
 

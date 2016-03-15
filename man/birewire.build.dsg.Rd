@@ -10,7 +10,7 @@
   \item{delimitators}{list(negative='-',positive='+') (default):a list with 'positive' and 'negative' names identifying the character encoding the relation;}
 
  } 
-\details{ This fuction converts the dsg object into a SIF format that can be saved using \code{bipartite.write.dsg} using the given delimitators for encoding the relations. It is the inverse function of \code{birewire.induced.bipartite}.
+\details{ This fuction converts the dsg object into a SIF format that can be saved using \code{birewire.write.dsg}, an internal function, using the given delimitators for encoding the relations. It is the inverse function of \code{\link{birewire.induced.bipartite}}.
 }
 \value{
 A dsg in SIF format.}

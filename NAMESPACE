@@ -2,6 +2,7 @@ useDynLib(BiRewire)
 import(igraph)
 import(slam)
 import(tsne)	
+import(Matrix)	
 export(
 birewire.analysis.bipartite,
 birewire.rewire.undirected,
@@ -21,5 +22,6 @@ birewire.build.dsg,
 birewire.load.dsg,
 birewire.similarity.dsg,
 birewire.analysis.dsg,
-birewire.visual.monitoring.dsg)
+birewire.visual.monitoring.dsg,
+birewire.slum.to.sparseMatrix)
 

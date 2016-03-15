@@ -7,7 +7,7 @@
 \usage{birewire.rewire.bipartite(incidence, max.iter="n",accuracy=0.00005,verbose=TRUE,
 MAXITER_MUL=10,exact=FALSE)}
 \arguments{
- \item{incidence}{Incidence matrix of the initial bipartite graph \emph{g} (can be extracted from an {\code{igraph}} bipartite graph using the {\code{get.incidence}}) function; or the entire bipartite \code{igraph} graph}
+ \item{incidence}{Incidence matrix of the initial bipartite graph \emph{g} (can be extracted from an \code{\link{igraph}} bipartite graph using the \code{\link{get.incidence}}) function; or the entire bipartite \code{\link{igraph}} graph}
   \item{max.iter}{ "n" (default)  the number of switching steps to be performed (or if \emph{exact==TRUE} the number of \strong{successful} switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{2(1-d)} \ln{((e-de)/\delta)} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{((e-de)/\delta)} } otherwise ,  
   where \eqn{e}  is the number of edges of \emph{g} and \eqn{d} its edge density . This bound is much lower than the empirical one proposed  in  \emph{Milo et al. 2003} (see References);}   
 
@@ -28,11 +28,9 @@ Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. a
 
 R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028
   }
-\author{Andrea Gobbi
-\cr
-Special thanks to:\cr
+\author{Andrea Gobbi\cr
 Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>\cr
-Davide Albanese
+
 }
 \examples{
 
