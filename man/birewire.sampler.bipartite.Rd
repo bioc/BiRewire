@@ -23,7 +23,7 @@
  \item{write.sparse}{ TRUE (default). If FALSE the table is written as an R data.frame (long time and more space needed)}
 
 } 
-\details{ The routine creates, starting from the given path, different subfolders in order to have maximum 1000 files for folder . Moreover the incidence matrices are saved using \code{write_stm_CLUTO} (sparse matrices) that can be loaded using \code{read_stm_CLUTO}. The set is generated calling birewire.rewire.bipartite on the last generated graph starting from the input graph.
+\details{ The routine creates, starting from the given path, different subfolders in order to have maximum 1000 files for folder . Moreover the incidence matrices are saved using \code{\link{write_stm_CLUTO}} (sparse matrices) that can be loaded using \code{\link{read_stm_CLUTO}}. The set is generated calling birewire.rewire.bipartite on the last generated graph starting from the input graph.
 }
 \references{
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
@@ -31,8 +31,7 @@ Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. a
 R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028
   }
 \author{Andrea Gobbi:  <gobbi.andrea@mail.com>\cr
-Special thanks to:
-Davide Albanese
+
 }
 
-\keyword{directed graph, rewire, pathway, signaling}
+\keyword{bipartite graph, rewire}

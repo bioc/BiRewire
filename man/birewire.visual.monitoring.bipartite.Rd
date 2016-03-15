@@ -4,7 +4,7 @@
 \alias{birewire.visual.monitoring.bipartite}
 
 \title{Visual monitoring of the Markov chain underlying the SA for directed graphs.}
-\description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{tsne}). If \emph{display} is true, the relative plot is displayed.  }
+\description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{\link{tsne}}). If \emph{display} is set to \emph{TRUE} the relative plot is displayed.  }
 \usage{birewire.visual.monitoring.bipartite(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,
   exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,
   nrow=length(sequence)/ncol,display=TRUE)}
@@ -16,14 +16,14 @@
 
  \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
   \item{n.networks}{  100 (default): the number of network generated for each step defined in \emph{sequence} ;}
-  \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{tsne};}
-  \item{sequence}{ c(1,5,100,"n")(default) the sequence of step for wich generating a sampler (see\code{birewire.rewire.sampler.undirected})}
+  \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{\link{tsne}};}
+  \item{sequence}{ c(1,5,100,"n")(default) the sequence of step for wich generating a sampler (see\code{\link{birewire.sampler.bipartite}})}
   \item{ncol}{ 2 (default). The number of column in the plot;}
   \item{nrow}{ length(sequence)/ncol (default). The number of row in the plot;}
   \item{display}{ TRUE (default). If TRUE the result is displayed.} 
   }
 \details{
- For each value \emph{p} in \emph{sequence} (it that can also contain the special character "n", see \code{birewire.rewire.bipartite}), the routine generates \emph{n.networks} sampled each \emph{p} SS from the SA initialized with the given \emph{data}. Pariwise distance are computed using the Jaccard distance and the resulting matrix is the input for the dimensional scaling performed by the function \code{tsne}. An explorative plot is displayed if \emph{display} is set to TRUE. 
+ For each value \emph{p} in \emph{sequence} (it that can also contain the special character "n", see \code{\link{birewire.rewire.bipartite}}), the routine generates \emph{n.networks} sampled each \emph{p} SS from the SA initialized with the given \emph{data}. Pariwise distance are computed using the Jaccard distance and the resulting matrix is the input for the dimensional scaling performed by the function \code{\link{tsne}}. An explorative plot is displayed if \emph{display} is set to TRUE. 
 }
 \value{
 A list containing the list containing the distance matrices  \emph{dist} and the list containing the tsne results \emph{tsne}.
@@ -41,8 +41,6 @@ Van der Maaten, L.J.P. and Hinton, G.E. Visualizing High-Dimensional Data Using 
 \author{Andrea Gobbi
 \cr
 Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>\cr
-Special thanks to:\cr
-Davide Albanese
 }
 \examples{
 

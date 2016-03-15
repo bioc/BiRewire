@@ -13,7 +13,7 @@
 
 
 \details{
-See \code{birewire.similarity} for more details. 
+See \code{\link{birewire.similarity}} for more details. 
 
 }
 

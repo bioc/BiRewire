@@ -12,9 +12,9 @@
 Summary:
   \tabular{ll}{
   Package: \tab BiRewire\cr
-  Version: \tab 2.3.5\cr
-  Date: 2015-07-07\cr
-  Require: slam, igraph,tsne,  R>=2.10\cr
+  Version: \tab 2.5.1\cr
+  Date: 2016-03-20\cr
+  Require: slam, igraph, tsne, Matrix,  R>=2.10\cr
   URL:  http://www.ebi.ac.uk/~iorio/BiRewire  \cr
   License: \tab GPL-3 \cr
   }
@@ -31,7 +31,7 @@ Andrea Gobbi [aut], Davide Albanese [cbt], Francesco Iorio [cbt], Giuseppe Jurma
 }
 \references{
 
- Iorio, F. and Gobbi, A. (2015) \emph{In Preparation} In Preparation.\cr
+ Iorio, F. and Gobbi, A. (2016) \emph{In Preparation} In Preparation.\cr
 
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
 Jaccard, P. (1901), \emph{Étude comparative de la distribution florale dans une portion des Alpes et des Jura},

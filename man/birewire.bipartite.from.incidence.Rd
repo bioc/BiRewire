@@ -4,7 +4,7 @@
 \alias{birewire.bipartite.from.incidence}
 
 \title{Converts an incidence matrix into a bipartite graph. }
-\description{This function creates an \code{igraph} bipartite graph from an incidence matrix.}
+\description{This function creates an \code{\link{igraph}} bipartite graph from an incidence matrix.}
 \usage{birewire.bipartite.from.incidence(matrix,directed=FALSE)}
 \arguments{
   \item{matrix}{incidence matrix: an (n-by-m) binary matrix where rows correspond to vertices in the frist class while 
@@ -12,7 +12,7 @@
   \item{directed}{Logical, if TRUE a directed graph is created.}
 } 
 \details{
-The function calls \code{graph.incidence} of package \code{igraph}. See \code{igraph} documentation for more details.
+The function calls \code{\link{graph.incidence}} of package \code{\link{igraph}}. See \code{\link{igraph}} documentation for more details.
 
 }
 \value{
