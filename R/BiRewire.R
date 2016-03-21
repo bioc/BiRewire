@@ -1005,7 +1005,7 @@ if(is.igraph(m1[["positive"]]))
 	}else
 	{
 		x=sum(m1[['positive']]*m2[['positive']]) +sum(m1[['negative']]*m2[['negative']] )
-		e=sum(m1[['positive']])+sum(m2[['positive']])+sum(m1[['negative']])+sum(m2[['negative']])
+		e=sum(m1[['positive']])+sum(m1[['negative']])
   		return( x/(2*e-x))
 
 	}
@@ -1045,30 +1045,30 @@ birewire.analysis.dsg<-function(dsg, step=10, max.iter.pos='n',max.iter.neg='n',
 	if(display)
 	{
 		try(dev.off())
-		mean=colMeans(mag$data)
-		std=apply(mag$data,2,sd)
-		sup=mean+ qt(.975,nrow(mag$data)-1)*std/sqrt(nrow(mag$data))
-		inf=mean- qt(.975,nrow(mag$data)-1)*std/sqrt(nrow(mag$data))
-		par(mfrow=c(2,1))
-		x=seq(1,length.out=length(mean))
-		plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time",xlab="Switching steps",ylab='Jaccard Index',ylim=c(min(mag$data,min$data),max(mag$data,min$data) ))
-		polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey80', border = NA)
-		lines(step*x,mean,col='blue',lwd=2)
-		mean=colMeans(min$data)
-		std=apply(min$data,2,sd)
-		sup=mean+ qt(.975,nrow(min$data)-1)*std/sqrt(nrow(min$data))
-		inf=mean- qt(.975,nrow(min$data)-1)*std/sqrt(nrow(min$data))
-		x=seq(1,length.out=length(mean))
-		polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey60', border = NA)
-		lines(step*x,mean,col='green',lwd=2)
-		abline(v=mag$N,col= 'red')
-		abline(v=min$N,col= 'black')
-		legend("topright",ncol=2,cex=0.8,
-				col=c('blue','grey80','green','grey60','red','black'),
-				lwd=c(2,10,2,10,1,1),
-				legend=c( paste("Mean JI",mag_is_pos), paste("C.I.",mag_is_pos),
-						  paste("Mean JI",min_is_pos), paste("C.I.",min_is_pos)
-					,paste("Bound",mag_is_pos), paste("Bound",min_is_pos)))
+		#mean=colMeans(mag$data)
+		#std=apply(mag$data,2,sd)
+		#sup=mean+ qt(.975,nrow(mag$data)-1)*std/sqrt(nrow(mag$data))
+		#inf=mean- qt(.975,nrow(mag$data)-1)*std/sqrt(nrow(mag$data))
+		#par(mfrow=c(2,1))
+		#x=seq(1,length.out=length(mean))
+		#plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time",xlab="Switching steps",ylab='Jaccard Index',ylim=c(min(mag$data,min$data),max(mag$data,min$data) ))
+		#polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey80', border = NA)
+		#lines(step*x,mean,col='blue',lwd=2)
+		#mean=colMeans(min$data)
+		#std=apply(min$data,2,sd)
+		#sup=mean+ qt(.975,nrow(min$data)-1)*std/sqrt(nrow(min$data))
+		##inf=mean- qt(.975,nrow(min$data)-1)*std/sqrt(nrow(min$data))
+		#x=seq(1,length.out=length(mean))
+		#polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey60', border = NA)
+		#lines(step*x,mean,col='green',lwd=2)
+		#abline(v=mag$N,col= 'red')
+		#abline(v=min$N,col= 'black')
+		#legend("topright",ncol=2,cex=0.8,
+		#		col=c('blue','grey80','green','grey60','red','black'),
+		#		lwd=c(2,10,2,10,1,1),
+		#		legend=c( paste("Mean JI",mag_is_pos), paste("C.I.",mag_is_pos),
+		#				  paste("Mean JI",min_is_pos), paste("C.I.",min_is_pos)
+		#			,paste("Bound",mag_is_pos), paste("Bound",min_is_pos)))
 
 
 
@@ -1090,7 +1090,7 @@ birewire.analysis.dsg<-function(dsg, step=10, max.iter.pos='n',max.iter.neg='n',
 		lines(step*x,mean,col='green',lwd=2)
 		abline(v=mag$N,col= 'red')
 		abline(v=min$N,col= 'black')
-		legend("topright",ncol=2,cex=0.8,
+		legend("bottomleft",ncol=2,cex=0.8,
 				col=c('blue','grey80','green','grey60','red','black'),
 				lwd=c(2,10,2,10,1,1),
 				legend=c( paste("Mean JI",mag_is_pos), paste("C.I.",mag_is_pos),
