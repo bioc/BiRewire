@@ -274,7 +274,8 @@ This function uses the SA to generate a set of $K$ DSG in SIF format drawn from 
 ##			delimitators=list(negative='-',positive='+'))
 ##unlink('TESTBIREWIREDSG',recursive = T)
 @
-
+\section{Directed graphs}
+Notice that a directed graph can be encoded as a DSG with only positive (negative) part. All the routines involving DSG could be used also for directed graphs building a DSN as a R list with just one element named {\bf positive}.
 \section{Example}\label{ex}
 Here we collect the functionalities of the package in a single example. The output plot of the analysis is showed in Fig.\ref{fig} on the left side and the output of the monitoring procedure is displayed in Fig.\ref{fig} on the right side.
 <<Example general>>=

@@ -33,6 +33,9 @@ birewire.bipartite.from.incidence<-function(matrix,directed=FALSE)
 birewire.analysis.bipartite<- function(incidence, step=10, max.iter="n",accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,n.networks=50,display=TRUE)
 {
   
+	if(is.null(incidence))
+		return( list(N=0,data=NULL))
+
 	if(!is.matrix(incidence) && !is.data.frame(incidence))
 	{
 		stop("The input must be a data.frame or a matrix object \n")
@@ -118,7 +121,8 @@ birewire.analysis.bipartite<- function(incidence, step=10, max.iter="n",accuracy
 birewire.rewire.bipartite<- function(incidence,  max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
 {
   
-
+if(is.null(incidence))
+	return(NULL)
 if(!is.matrix(incidence) && !is.data.frame(incidence)  && !is.igraph(incidence))
 	{
     stop("The input must be a data.frame or a matrix object or an igraph bipartite graph \n")
@@ -814,7 +818,7 @@ birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positiv
 	{
 
   
-		if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
+		if(!is.list(dsg)  )
 			    {
 			    	stop("The input must be a dsg object (see References) \n")
 			    	return(0)
@@ -859,7 +863,7 @@ birewire.rewire.dsg<-function(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.ite
 {
 
 
-		if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
+		if(!is.list(dsg) )
 			    {
 			    	stop("The input must be a dsg object (see References) \n")
 			    	return(0)
@@ -890,7 +894,8 @@ simplify.table<-function(df)
 ##INTERNAL ROUTINES
 get.data.frame.from.incidence<-function(table,sign)
 {
-
+if(is.null(table))
+	return(NULL)
 
 source=rownames(table)
 target=colnames(table)
@@ -943,7 +948,7 @@ birewire.build.dsg<-function(dsg,delimitators=list(negative='-',positive='+'))
 {
 
 
-	if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
+	if(!is.list(dsg))
 			    {
 			    	stop("The input must be a dsg object (see References) \n")
 			    	return(0)
@@ -958,14 +963,19 @@ birewire.build.dsg<-function(dsg,delimitators=list(negative='-',positive='+'))
 		}else
 		{
 			V(positive)$name=unlist(lapply(strsplit(V(positive)$name,"@@"),function(x){return(x[1])}))
-			V(negative)$name=unlist(lapply(strsplit(V(negative)$name,"@@"),function(x){return(x[1])}))
+			g_n=NULL
+			if(!is.null(negative))
+				{
+					V(negative)$name=unlist(lapply(strsplit(V(negative)$name,"@@"),function(x){return(x[1])}))
+					g_n=get.edgelist(negative,names=TRUE)
+					g_n=cbind(g_n,delimitators[['negative']])
+					g_n=g_n[,c(1,3,2)]
+				}
 			g_p=get.edgelist(positive,names=TRUE)
 			g_p=cbind(g_p,delimitators[['positive']])
 			g_p=g_p[,c(1,3,2)]
 
-			g_n=get.edgelist(negative,names=TRUE)
-			g_n=cbind(g_n,delimitators[['negative']])
-			g_n=g_n[,c(1,3,2)]
+		
 		}
 	g=rbind(g_p,g_n)
 	return(g)
@@ -999,8 +1009,13 @@ if(is.igraph(m1[["positive"]]))
 	{
 		e.p=length(E(m1[["positive"]]))
 		x.p=length(E(graph.intersection(as.undirected(m1[["positive"]]),as.undirected(m2[["positive"]]))))
-		e.n=length(E(m1[["negative"]]))
-		x.n=length(E(graph.intersection(as.undirected(m1[["negative"]]),as.undirected(m2[["negative"]]))))
+		e.n=0
+		x.n=0
+		if(!is.null(m1[["negative"]]))
+			{
+				e.n=length(E(m1[["negative"]]))
+			 	x.n=length(E(graph.intersection(as.undirected(m1[["negative"]]),as.undirected(m2[["negative"]]))))
+			 }
 		return((x.p+x.n)/(2*e.p+2*e.n-x.p-x.n))
 	}else
 	{
@@ -1016,7 +1031,7 @@ if(is.igraph(m1[["positive"]]))
 birewire.analysis.dsg<-function(dsg, step=10, max.iter.pos='n',max.iter.neg='n',accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,n.networks=50,display=TRUE)
 {
   
-		if(!is.list(dsg) | is.null(dsg[['positive']]) | is.null(dsg[['negative']]) )
+		if(!is.list(dsg) )
 			    {
 			    	stop("The input must be a dsg object (see References) \n")
 			    	return(0)
@@ -1028,6 +1043,8 @@ birewire.analysis.dsg<-function(dsg, step=10, max.iter.pos='n',max.iter.neg='n',
     incidence_neg=birewire.analysis.bipartite(incidence=incidence_neg,  max.iter=max.iter.neg, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact,n.networks=n.networks,display=FALSE,step=step)
 	
 
+    if(!is.null(incidence_pos$data) & !is.null(incidence_neg$data))
+    {
 	if(ncol(incidence_pos$data)<ncol(incidence_neg$data))
 			{
 				mag=incidence_neg
@@ -1041,6 +1058,25 @@ birewire.analysis.dsg<-function(dsg, step=10, max.iter.pos='n',max.iter.neg='n',
 						min=incidence_neg
 						mag_is_pos="positive"
 						min_is_pos="negative"
+					}
+					}else
+					{
+						if(is.null(incidence_pos$data))
+							 {
+								mag=incidence_neg
+								min=incidence_pos
+								mag_is_pos="negative"
+								min_is_pos="positive"
+
+							 }else
+							 {
+							 	mag=incidence_pos
+								min=incidence_neg
+								mag_is_pos="positive"
+								min_is_pos="negative"
+							 }
+
+
 					}
 	if(display)
 	{
@@ -1081,6 +1117,8 @@ birewire.analysis.dsg<-function(dsg, step=10, max.iter.pos='n',max.iter.neg='n',
 		plot(step*x,mean,type= 'n',col='blue',lwd=2,main="Jaccard index (JI) over time (log-log scale)",log='xy',xlab="Switching steps",ylab='Jaccard Index',ylim=c(min(mag$data[mag$data>0],min$data[min$data>0]),max(mag$data,min$data) ))
 		polygon(c(rev(step*x),step*x),c(rev(sup),inf), col = 'grey80', border = NA)
 		lines(step*x,mean,col='blue',lwd=2)
+		if(!is.null(min$data))
+		{
 		mean=colMeans(min$data)
 		std=apply(min$data,2,sd)
 		sup=mean+ qt(.975,nrow(min$data)-1)*std/sqrt(nrow(min$data))
@@ -1096,7 +1134,15 @@ birewire.analysis.dsg<-function(dsg, step=10, max.iter.pos='n',max.iter.neg='n',
 				legend=c( paste("Mean JI",mag_is_pos), paste("C.I.",mag_is_pos),
 						  paste("Mean JI",min_is_pos), paste("C.I.",min_is_pos)
 					,paste("Bound",mag_is_pos), paste("Bound",min_is_pos)))
-		
+		}else
+		{
+			abline(v=mag$N,col= 'red')
+		legend("bottomleft",ncol=2,cex=0.8,
+				col=c('blue','grey80','black'),
+				lwd=c(2,10,2,10,1,1),
+				legend=c( paste("Mean JI",mag_is_pos), paste("C.I.",mag_is_pos),
+					paste("Bound",mag_is_pos)))
+		}
 		
 
 	}
