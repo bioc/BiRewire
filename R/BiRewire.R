@@ -566,13 +566,13 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
     					dir.create(path) 
  				 	}
 
-		n=ceiling(K/300)
+		
 		##NB 300 perche' non voglio piu' di 1000 file per cartella
 		NFILES=300
 		if(write.sparse==F)
 			NFILES=1000
 		NNET=NFILES
-
+		n=ceiling(K/NFILES)
 		for( i in 1:n)
 			{
 					if(K-NFILES*i<0)
@@ -633,12 +633,12 @@ birewire.sampler.undirected<-function(adjacency,K,path,max.iter="n", accuracy=0.
     					dir.create(path) 
  				 	}
 
-		n=ceiling(K/300)
 		##NB 300 perche' non voglio piu' di 1000 file per cartella
 		NFILES=300
 		if(write.sparse==F)
 			NFILES=1000
 		NNET=NFILES
+		n=ceiling(K/NFILES)
 
 		for( i in 1:n)
 			{
