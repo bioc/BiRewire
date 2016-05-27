@@ -1,5 +1,5 @@
 Package: BiRewire
-Version: 3.3.0
+Version: 3.3.1
 Date: 2016-03-20
 Title: High-performing routines for the randomization of a bipartite graph (or a binary event matrix), undirected and directed signed graph preserving degree distribution (or marginal totals)
 Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>
@@ -7,6 +7,6 @@ Description: Fast functions for bipartite network rewiring through N consecutive
 License: GPL-3
 Depends: igraph, slam, tsne, Matrix	
 Suggests: RUnit, BiocGenerics
-Author: Andrea Gobbi [aut], Davide Albanese [cbt], Francesco Iorio [cbt], Giuseppe Jurman [cbt], Julio Saez-Rodriguez [cbt] .
+Author: Andrea Gobbi [aut], Francesco Iorio [aut], Giuseppe Jurman [cbt], Davide Albanese [cbt], Julio Saez-Rodriguez [cbt].
 URL: http://www.ebi.ac.uk/~iorio/BiRewire
 biocViews: Network
