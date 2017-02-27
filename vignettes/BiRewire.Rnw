@@ -38,7 +38,7 @@ This package is particularly useful for the randomisation of '0-1' tables (or pr
 For example, by modeling a genomic dataset as a binary event matrix (BEM), in which rows correspond to samples, columns correspond to genes and the $(i,j)$ entry is non-null if the $i$-th sample harbours a mutation in the $j$-th gene, then with BiRewire is possible to randomise the dataset preserving its mutation rates both across samples and genes. This is crucial to preserve tumour specific alterations, dependencies between gene-mutations and heterogeneity in mutation/copy-number-alteration rates across patients.\\
 Large collections of such randomised tables can be then used to approximate samples from the uniform distribution of all the possible genomic datasets with the same mutation-rates of the initial one. Finally this data can be used as null model to test the statistical significance of several combinatorial properties of the original dataset: for example the tendency of a group of genes to be co- or mutually-mutated \cite{Ciriello12}.\\
 
-Moreover, with se same routines, it is possible to generate a rewired version of a given directed signed network (DSG), encoding for example a patway or a signaling network (for details see section \ref{sec:DSG} and \cite{Iorio}). Similar procedures have been implemented in order to manage undirected networks.
+Moreover, with se same routines, it is possible to generate a rewired version of a given directed signed network (DSG), encoding for example a patway or a signaling network (for details see section \ref{sec:DSG} and \cite{Iorio}). Similar procedures have been implemented in order to manage undirected networks. Since version 3.6.0, the SA can be performed also on matrices containing NAs. In this case the SA works as usual but the position of NA will be preserved. This feature is available if the graph is encoded whith its incidence/adjacence matrix and not in the case of DSG.
 
 Specifically, with \textit{BiRewire} users can:
 \begin{enumerate}
@@ -304,10 +304,8 @@ Here we collect the functionalities of the package in a single example. The outp
 \clearpage
 \begin{thebibliography}{}
 
-
-
 \bibitem{Gobbi}Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.
-\bibitem{Iorio} Iorio, F. and Gobbi, A. (2016) \emph{In preparation} In preparation.
+\bibitem{Iorio} Iorio, F. and and Bernardo-Faura, M. and Gobbi, A. and Cokelaer, T.and Jurman, G.and Saez-Rodriguez, J. (2016) \emph{Efficient randomization of biologicalnetworks while preserving functionalcharacterization of individual nodes}  Bioinformatics 2016 1 (17):542 doi: 10.1186/s12859-016-1402-1.
 \bibitem{GobbiJurman}  Gobbi, A. and Jurman, G. (2013) \emph{Theoretical and algorithmic solutions for null models in network theory} (Doctoral dissertation) \url{http://eprints-phd.biblio.unitn.it/1125/} .
 \bibitem{Jaccard} Jaccard, P. (1901), \emph{Etude comparative de la distribution florale dans une portion des Alpes et des Jura}, Bulletin de la Societe Vaudoise des Sciences Naturelles 37:547--579.
  \bibitem{Milo03} R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028.

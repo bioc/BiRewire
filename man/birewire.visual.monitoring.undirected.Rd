@@ -9,7 +9,7 @@
 	exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,
 	nrow=length(sequence)/ncol,display=TRUE)}
 \arguments{
-  \item{data}{The initial undirected graph, either an adjacency matrix or an \emph{igraph} undirected graph object;}
+  \item{data}{The initial undirected graph, either an adjacency matrix or an \emph{igraph} undirected graph object.  Since 3.6.0, if the matrix is provided, such matrix can contain also NAs and the position of such entries will be preserved by the SA;}
   \item{accuracy}{ 0.00005 (default) is the desired level of accuracy reflecting the average distance between the Jaccard index at the N-th step and its analytically derived fixed point in terms of fracion of common edges;}
          \item{verbose}{ TRUE (default). When TRUE a progression bar is printed during computation.}
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
@@ -32,6 +32,8 @@ A list containing the list containing the distance matrices  \emph{dist} and the
 }
 \references{
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
+
+Iorio, F. and and Bernardo-Faura, M. and Gobbi, A. and Cokelaer, T.and Jurman, G.and Saez-Rodriguez, J. (2016) \emph{Efficient randomization of biologicalnetworks while preserving functionalcharacterization of individual nodes}  Bioinformatics 2016 1 (17):542 doi: 10.1186/s12859-016-1402-1.\cr
 
 Jaccard, P. (1901), \emph{Étude comparative de la distribution florale dans une portion des Alpes et des Jura},
  Bulletin de la Société Vaudoise des Sciences Naturelles 37: 547–579.\cr

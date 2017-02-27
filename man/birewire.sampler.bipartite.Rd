@@ -9,7 +9,7 @@
 
 }
 \arguments{
- \item{incidence}{Incidence matrix of the initial bipartite graph;}
+ \item{incidence}{Incidence matrix of the initial bipartite graph. Since 3.6.0 this matrix can contain also NAs and the position of such entries will be preserved by the SA;}
  \item{K}{  The number of networks that has to be generated;}
    \item{path}{ The directory in which the routine stores the outputs; }
 
@@ -27,6 +27,9 @@
 }
 \references{
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
+
+
+Iorio, F. and and Bernardo-Faura, M. and Gobbi, A. and Cokelaer, T.and Jurman, G.and Saez-Rodriguez, J. (2016) \emph{Efficient randomization of biologicalnetworks while preserving functionalcharacterization of individual nodes}  Bioinformatics 2016 1 (17):542 doi: 10.1186/s12859-016-1402-1.\cr
 
 R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the uniform generation of random graphs with prescribed degree sequences}, eprint arXiv:cond-mat/0312028
   }

@@ -8,6 +8,8 @@ test_birewire.bipartite.sparse()
 test_birewire.undirected ()
 test_birewire.dsg()
 test_birewire.visual.monitoring()
+test_birewire.dsg()
+test_birewire.na()
 }
 
 test_birewire.analysis.bipartite <- function() 
@@ -77,5 +79,12 @@ dsg2=birewire.build.dsg(tmp,delimitators=list(negative='-',positive='+'))
 ##birewire.save.dsg(dsg2,"test2.sif")
 checkTrue(birewire.similarity.dsg(dsg,tmp)<=1)
 
+}
+test_birewire.na<-function()
+{
+g <- graph.bipartite( rep(0:1,length=10), c(1:10))
+ m<-as.matrix(get.incidence(graph=g))
+ m[1,1]=m[1,2]=NA
+ checkTrue(length(setdiff(which(is.na(m)),which(is.na(birewire.rewire.bipartite(m))) ))==0)
 }
 
