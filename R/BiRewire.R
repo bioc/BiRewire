@@ -57,7 +57,16 @@ birewire.analysis.bipartite<- function(incidence, step=10, max.iter="n",accuracy
 		{
 			incidence=matrix(as.double(incidence),ncol=nc)
 		}
-	e=sum(incidence)
+	
+	e=sum(incidence,na.rm=TRUE)
+	##remove NA!
+if(length(which(is.na(incidence)))>0 && (MAXITER_MUL<100||!exact ))
+	{
+print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
+ MAXITER_MUL=100 
+ exact=TRUE 
+	}
+	incidence[is.na(incidence)]=2
 	RES=NULL
 	if(exact==TRUE)
     	{
@@ -158,9 +167,14 @@ if(is.igraph(incidence))
 		}
 
 
-  e=sum(incidence)
-
-	
+  e=sum(incidence,na.rm=TRUE)
+if(length(which(is.na(incidence)))>0 && (MAXITER_MUL<100||!exact ))
+	{
+print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
+ MAXITER_MUL=100 
+ exact=TRUE 
+	}
+incidence[is.na(incidence)]=2
 		if(exact==TRUE)
     	{
 					if( max.iter=="n")
@@ -179,7 +193,7 @@ if(is.igraph(incidence))
 
 
 			}
-
+	result[result==2]=NA
  	if(out=="double")
  		result=matrix(result,ncol=ncol(incidence))
 	else
@@ -275,10 +289,11 @@ birewire.similarity<-function(m1,m2)
 	
 	if(dim(m2)[1]!=dim(m1)[1])
 		m1=t(m1)
-	return( sum( m1*m2)/sum(m1+m2-m1*m2))
+	return( sum( m1*m2,na.rm=TRUE)/sum(m1+m2-m1*m2,na.rm=TRUE))
 	}
   
 }
+##NA NOT ALREADY SUPPORTED 
 birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
 {
   if(verbose)
@@ -361,9 +376,15 @@ birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accurac
 		adjacency=matrix(as.double(adjacency),ncol=n)
 	}
 	t=n^2/2
-	e=sum(adjacency)/2
+	e=sum(adjacency,na.rm=TRUE)/2
 	d=e/t
 	RES=NULL
+if(length(which(is.na(adjacency)))>0&& (MAXITER_MUL<100||!exact ))
+	{
+print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
+ MAXITER_MUL=100 
+ exact=TRUE 
+	}
 	if(exact==TRUE)
 		{
 			if( max.iter=="n")
@@ -375,6 +396,7 @@ birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accurac
 			max.iter=ceiling((e/(2*d^3-6*d^2+2*d+2))*log(x=(1-d)/accuracy))
 	
 			}
+	adjacency[is.na(adjacency)]=2
 	for( i in 1:n.networks)
 	{
 		if(exact==TRUE)
@@ -462,9 +484,15 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
 
 
 		t=n^2/2
-		e=sum(adjacency)/2
+		e=sum(adjacency,na.rm=TRUE)/2
 		d=e/t
-
+		adjacency[is.na(adjacency)]=2
+if(length(which(is.na(adjacency)))>0 && (MAXITER_MUL<100||!exact ))
+	{
+print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
+ MAXITER_MUL=100 
+ exact=TRUE 
+	}
 	if(exact==TRUE)
     	{
 						if( max.iter=="n" )
@@ -486,7 +514,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
 
 			}
 
-
+result[result==2]=NA
  	if(out=="double")
  		result=matrix(result,ncol=ncol(adjacency))
 	else
@@ -501,7 +529,7 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
 		return( result)
 	}
 
-
+##NA NOT SUPPORTED YET
 birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE)
 	{ 
 	if(verbose)
@@ -555,6 +583,14 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=0.00005,verbose=
 
 birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,write.sparse=TRUE)
 {
+
+
+	if(length(which(is.na(incidence)))>0 && (MAXITER_MUL<100||!exact ))
+	{
+print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
+ MAXITER_MUL=100 
+ exact=TRUE 
+	}
 	if(K>=100000)
 		{
 
@@ -622,6 +658,14 @@ birewire.sampler.bipartite<-function(incidence,K,path,max.iter="n", accuracy=0.0
 
 birewire.sampler.undirected<-function(adjacency,K,path,max.iter="n", accuracy=0.00005,verbose=TRUE,MAXITER_MUL=10,exact=FALSE,write.sparse=TRUE)
 {
+
+
+	if(length(which(is.na(adjacency)))>0 && (MAXITER_MUL<100||!exact ))
+	{
+print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
+ MAXITER_MUL=100 
+ exact=TRUE 
+	}
 	if(K>=100000)
 		{
 
@@ -691,7 +735,12 @@ birewire.sampler.undirected<-function(adjacency,K,path,max.iter="n", accuracy=0.
 birewire.visual.monitoring.bipartite<-function(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,nrow=length(sequence)/ncol,display=TRUE)
 {
 
-
+if(length(which(is.na(data)))>0 && (MAXITER_MUL<100||!exact ))
+	{
+print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
+ MAXITER_MUL=100 
+ exact=TRUE 
+	}
 if(display)
 {
 	par(mfrow=c(nrow,ncol))
@@ -748,7 +797,12 @@ return(list(dist=dist,tsne=tsne))
 birewire.visual.monitoring.undirected<-function(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,nrow=length(sequence)/ncol,display=TRUE)
 {
 
-
+	if(length(which(is.na(data)))>0 && (MAXITER_MUL<100||!exact ))
+	{
+print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
+ MAXITER_MUL=100 
+ exact=TRUE 
+	}
 if(display)
 {
 	par(mfrow=c(nrow,ncol))
@@ -809,7 +863,7 @@ return(list(dist=dist,tsne=tsne))
 
 
 
-
+##NA NOT SUPPORTED YET
 
 
 

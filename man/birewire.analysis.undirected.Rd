@@ -8,7 +8,7 @@
 \usage{birewire.analysis.undirected(adjacency, step=10, max.iter="n",accuracy=0.00005,
 verbose=TRUE,MAXITER_MUL=10,exact=FALSE,n.networks=50,display=TRUE)}
 \arguments{
-    \item{adjacency}{Incidence matrix of the initial bipartite graph \emph{g} (can be extracted from an \code{\link{igraph}} undirected graph using the \code{\link{get.adjacency}} function)};
+    \item{adjacency}{Incidence matrix of the initial bipartite graph \emph{g} (can be extracted from an \code{\link{igraph}} undirected graph using the \code{\link{get.adjacency}} function). Since 3.6.0 this matrix can contain also NAs and the position of such entries will be preserved by the SA;}
   \item{step}{  10 (default): the interval (in terms of switching steps) at which the Jaccard index between \emph{g} and the its current rewired version is computed;}
   \item{max.iter}{ "n" (default)  the number of switching steps to be performed (or if \emph{exact==TRUE} the number of successful switching steps). If equal to "n" then this number is considered equal to the analytically derived lower bound presented in \emph{Gobbi et al.} (see References): \eqn{N={e}/{(2d^3-dd^2+2d+2)} \ln{((e-de)/\delta)} } if exact is FALSE, \eqn{N={e(1-d)}/{2} \ln{((e-de)/\delta)} } otherwise ,  
   where \eqn{e}  is the number of edges of \emph{g} and \eqn{d} its edge density . This bound is much lower than the empirical one proposed  in  \emph{Milo et al. 2003} (see References);}
@@ -36,6 +36,9 @@ A list containing a data.frame \emph{data} collecting all the Jacard index compu
 }
 \references{
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
+
+
+Iorio, F. and and Bernardo-Faura, M. and Gobbi, A. and Cokelaer, T.and Jurman, G.and Saez-Rodriguez, J. (2016) \emph{Efficient randomization of biologicalnetworks while preserving functionalcharacterization of individual nodes}  Bioinformatics 2016 1 (17):542 doi: 10.1186/s12859-016-1402-1.\cr
 
  Gobbi, A. and Jurman, G. (2013) \emph{Theoretical and algorithmic solutions for null models in network theory} (Doctoral dissertation) \url{http://eprints-phd.biblio.unitn.it/1125/}  \cr
 

@@ -18,8 +18,8 @@ A list of two incidence matrix or bipartite \code{\link{igraph}} objects.}
 
 \references{
 	
-	 Iorio, F. and Gobbi, A.  (2016) \emph{In Preparation} In Preparation.\cr
 
+Iorio, F. and and Bernardo-Faura, M. and Gobbi, A. and Cokelaer, T.and Jurman, G.and Saez-Rodriguez, J. (2016) \emph{Efficient randomization of biologicalnetworks while preserving functionalcharacterization of individual nodes}  Bioinformatics 2016 1 (17):542 doi: 10.1186/s12859-016-1402-1.\cr
 }
 \examples{
 

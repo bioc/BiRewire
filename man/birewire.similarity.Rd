@@ -21,8 +21,7 @@ The \strong{Jaccard} index between two sets \emph{M} and \emph{N} is defined as:
 \deqn{\frac{\sum N_{i,j} \wedge M_{i,j}}{ \sum N_{i,j} \vee M_{i,j}}.}\cr
 
 
-The Jaccard index ranges between 0 and 1.
-
+The Jaccard index ranges between 0 and 1 and since 3.6.0 can be computed also among matrix with NAs.
 
 }
 
