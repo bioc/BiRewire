@@ -1,3 +1,8 @@
+CHANGES IN VERSION 3.9.1
+-----------------------
+    o Minorbug fixed (order not preserved using graph.edgelist and infinite loop in matrix with just one entry)
+
+
 CHANGES IN VERSION 3.6
 -----------------------
 

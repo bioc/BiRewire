@@ -59,6 +59,9 @@ birewire.analysis.bipartite<- function(incidence, step=10, max.iter="n",accuracy
 		}
 	
 	e=sum(incidence,na.rm=TRUE)
+if(e<=1)
+return(list(N=NA,data=NA))
+
 	##remove NA!
 if(length(which(is.na(incidence)))>0 && (MAXITER_MUL<100||!exact ))
 	{
@@ -168,6 +171,8 @@ if(is.igraph(incidence))
 
 
   e=sum(incidence,na.rm=TRUE)
+if(e<=1)
+return(incidence)
 if(length(which(is.na(incidence)))>0 && (MAXITER_MUL<100||!exact ))
 	{
 print("You are using a matrix with NA. It is strongly suggested to use MAXITER_MUL=100 and exact=TRUE because the number of configuration with the NA constrain can terribly decrease, the routine will use  these.")
@@ -193,6 +198,7 @@ incidence[is.na(incidence)]=2
 
 
 			}
+
 	result[result==2]=NA
  	if(out=="double")
  		result=matrix(result,ncol=ncol(incidence))
@@ -309,6 +315,8 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.000
 
   
   e=length(E(g))
+if(e<=1)
+return(graph)
   ##NB sholud have all id from 1 to nnodes
   edges=get.edgelist(names=FALSE,g)
 
@@ -341,18 +349,20 @@ birewire.rewire.sparse.bipartite<- function(graph,  max.iter="n", accuracy=0.000
 			}
 	#print(edges+1)
   	#print(result+1)
+	gg<-graph.edgelist(t(matrix(result+1,nrow=2)),directed=is.directed(g))
 	if(!is.null(names))
 	{
-		gg<-graph.edgelist(t(matrix(names[result+1],nrow=2)))
+		V(gg)$name=names
+		#gg<-graph.edgelist(t(matrix(names[result+1],nrow=2)),directed=is.directed(g))
 		#gg= graph.bipartite( types,names[result+1])
 	}else
 	{
-		gg<-graph.edgelist(t(matrix(result+1,nrow=2)))
+		#
 		#gg= graph.bipartite( types,result+1)
 
 	}
 	V(gg)$type=types
-  	
+
   return(gg)
 }
 
@@ -377,6 +387,8 @@ birewire.analysis.undirected<- function(adjacency, step=10, max.iter="n",accurac
 	}
 	t=n^2/2
 	e=sum(adjacency,na.rm=TRUE)/2
+if(e<=1)
+return( list(N=NA,data=NA))
 	d=e/t
 	RES=NULL
 if(length(which(is.na(adjacency)))>0&& (MAXITER_MUL<100||!exact ))
@@ -486,6 +498,8 @@ if(!is.matrix(adjacency) && !is.data.frame(adjacency) && !is.igraph(adjacency) )
 		t=n^2/2
 		e=sum(adjacency,na.rm=TRUE)/2
 		d=e/t
+if(e<=1)
+return(adjacency )
 		adjacency[is.na(adjacency)]=2
 if(length(which(is.na(adjacency)))>0 && (MAXITER_MUL<100||!exact ))
 	{
@@ -539,6 +553,8 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=0.00005,verbose=
 	n=as.numeric(length(V(graph)))
 	t=n^2/2
 	e=as.numeric(length(E(graph)))
+if(e<=1)
+return(graph )
 	d=e/t
 	edges= get.edgelist(graph,names=F)
 	edges=edges[order(edges[,1]),]-1
@@ -563,13 +579,14 @@ birewire.rewire.sparse<- function(graph,  max.iter="n",accuracy=0.00005,verbose=
 	result<-.Call("R_rewire_sparse", edges,n , n, as.numeric( max.iter),e,verbose,0)
 
 	}
-
+	gg<-graph.edgelist(t(matrix(result+1,nrow=2)),directed=FALSE)
 	if(!is.null(names))
 	{
-		gg<-graph.edgelist(t(matrix(names[result+1],nrow=2)),directed=FALSE)
+		#gg<-graph.edgelist(t(matrix(names[result+1],nrow=2)),directed=FALSE)
+	V(gg)$name=names
 	}else
 	{
-				gg<-graph.edgelist(t(matrix(result+1,nrow=2)),directed=FALSE)
+				#gg<-graph.edgelist(t(matrix(result+1,nrow=2)),directed=FALSE)
 
 	}
 	return( gg)
