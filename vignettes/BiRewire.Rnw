@@ -64,8 +64,9 @@ It is possible to download the package from \url{http://www.ebi.ac.uk/~iorio/BiR
 or with biocLite() directly in R:
 
 \begin{verbatim}
-source("http://bioconductor.org/biocLite.R")
-biocLite("BiRewire")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("BiRewire")
 \end{verbatim}
 
 Moreover, the sources of the developement version are available here \url{http://www.bioconductor.org/packages/devel/bioc/html/BiRewire.html}. Alternatively, the source files can be cloned from the github repositories: \url{https://github.com/andreagobbi/BiRewire} and  \url{https://github.com/andreagobbi/BiRewire--release} using the command 
