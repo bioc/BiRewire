@@ -61,7 +61,7 @@ It is possible to download the package from \url{http://www.ebi.ac.uk/~iorio/BiR
  R CMD INSTALL BiRewire_xx.yy.zz.tar.gz
 \end{verbatim}
 
-or with biocLite() directly in R:
+or with BiocManager::install() directly in R:
 
 \begin{verbatim}
 if (!requireNamespace("BiocManager", quietly=TRUE))
