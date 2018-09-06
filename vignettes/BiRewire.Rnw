@@ -74,7 +74,7 @@ Moreover, the sources of the developement version are available here \url{http:/
 git clone git@github.com:andreagobbi/BiRewire--release.git
 git clone git@github.com:andreagobbi/BiRewire.git
 \end{verbatim}
-We suggest to use the biocLite function from R in order to have the last working relase package (build and check procedure).
+We suggest to use the BiocManager::install() function from R in order to have the last working relase package (build and check procedure).
 
 To load BiRewire use the following commands:
 <<loadBiRewire>>=
