@@ -885,7 +885,7 @@ return(list(dist=dist,tsne=tsne))
 
 
 ##################DSG STUFF#############################
-birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=FALSE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10)
+birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=FALSE,verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10,check_pos_neg=FALSE)
 	{
 
   
@@ -915,11 +915,21 @@ birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positiv
 					{
       					dir.create(PATH)
     				}
-    				for(j in 1:NNET)
+    				j=1
+    				while(j<=NNET)
     					{
-    						dsg=birewire.rewire.dsg(dsg=dsg,delimitators=delimitators,exact=exact,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
-    							verbose=verbose,max.iter.pos=max.iter.pos,max.iter.neg=max.iter.neg, accuracy=accuracy,MAXITER_MUL=MAXITER_MUL)
 
+    						dsg=birewire.rewire.dsg(dsg=dsg,delimitators=delimitators,exact=exact,path=paste(PATH,'network_',(i-1)*1000+j,'.sif',sep=''),
+    							verbose=verbose,max.iter.pos=max.iter.pos,max.iter.neg=max.iter.neg, accuracy=accuracy,MAXITER_MUL=MAXITER_MUL, check_pos_neg=check_pos_neg,in_sampler=TRUE)
+						if(check_pos_neg & pos_neg(dsg))
+							{
+							j=j
+							}
+						else
+						{
+						j=j+1
+						}
+						
     					}	
 
 			}
@@ -930,7 +940,8 @@ birewire.sampler.dsg<-function(dsg,K,path,delimitators=list(negative='-',positiv
 
 	}
 
-birewire.rewire.dsg<-function(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=0.00005,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'))
+
+birewire.rewire.dsg<-function(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.iter.neg='n',accuracy=0.00005,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'),check_pos_neg=FALSE,in_sampler=FALSE)
 {
 
 
@@ -947,16 +958,46 @@ birewire.rewire.dsg<-function(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.ite
     incidence_neg=birewire.rewire.bipartite(incidence=incidence_neg,  max.iter=max.iter.neg, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
 	dsg=list(positive=incidence_pos,negative=incidence_neg)	
 	if(!is.null(path))
+		{	
+			to_save=T
+		}else
 		{
-
-			birewire.save.dsg(g=birewire.build.dsg(dsg,delimitators),file=path)
-				
+			to_save=F
 		}
+	if(check_pos_neg & pos_neg(dsg))
+		{
+			to_save = F
+			if(!in_sampler)
+				{
+					print("The generated DSG has a positive and negative arch between the same couple of nodes and you passed check_pos_neg=T. The routine will return the DSG (in order to not interrupt the chain) but it will not be saved (if you pass a valid path")	
+				}
+		}
+		if(to_save)
+		{
+			birewire.save.dsg(g=birewire.build.dsg(dsg,delimitators),file=path)
+		}
+		
+	
 	return(dsg)
+	
+
 }
 
 
 ##INTERNAL ROUTINES
+
+pos_neg<-function(dsg)
+{
+pos = get.data.frame.from.incidence(dsg$positive,'+')
+neg = get.data.frame.from.incidence(dsg$negative,'+')
+if(nrow(merge(pos,neg))>0)
+{return(TRUE)
+}else
+{
+return(FALSE)
+}
+}
+
 simplify.table<-function(df)
 	{
 		return(df[which(rowSums(df)>0),which(colSums(df)>0)])

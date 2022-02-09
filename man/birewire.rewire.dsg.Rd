@@ -5,7 +5,7 @@
 \title{Efficient rewiring of directed signed graphs}
 \description{Optimal implementation of the switching algorithm. It returns the rewired version of the initial directed signed graph (dsg).} 
 \usage{birewire.rewire.dsg(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.iter.neg='n',
-  accuracy=0.00005,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'))
+  accuracy=0.00005,MAXITER_MUL=10,path=NULL,delimitators=list(positive='+',negative= '-'),check_pos_neg=FALSE,in_sampler=FALSE)
 }
 \arguments{
  \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{\link{birewire.load.dsg}} function and converting the resulting dataframe using \code{\link{birewire.induced.bipartite}};}
@@ -21,6 +21,8 @@
 
    \item{path}{ NULL (default). If not NULL, the dsg is saved in \emph{path} in SIF format; }  
     \item{delimitators}{ list(positive='+',negative= '-') (default). If \emph{save.file} is true, the dsg is saved  using \emph{delimitators} as characters encoding the relations. See \code{\link{birewire.build.dsg}} for more details. }
+   \item{check_pos_neg}{ FALSE (default). if true check if there are positive and negative loops in the same arc, if so the routine will not save the dsg but return it anyway with a warining } 
+\item{in_sampler}{ FALSE (default).if TRUE does not print the warining due to the positive-negative check }  
 
 } 
 \details{ This fuction runs \code{\link{birewire.rewire.bipartite}} on the positive and negative part of \emph{dsg}. See references for more details.

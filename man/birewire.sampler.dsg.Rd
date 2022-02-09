@@ -5,7 +5,7 @@
 \title{Efficient generation of a null model for a given dsg.}
 \description{Efficient generation of a null model for a given dsg. The routine samples correctly from the null model of a given dsg creating a set of randomized dsgs.} 
 \usage{birewire.sampler.dsg(dsg,K,path,delimitators=list(negative='-',positive='+'),exact=FALSE,
-  verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10)
+  verbose=TRUE, max.iter.pos='n',max.iter.neg='n', accuracy=0.00005,MAXITER_MUL=10,check_pos_neg=FALSE)
 }
 \arguments{
  \item{dsg}{A dsg object: is a list of two incidence matrices (see References), "positive" and "negative", encoding the positive edges and negative edges. This list can be obtained reading a SIF file using \code{\link{birewire.load.dsg}} function and converting the resulting dataframe using \code{\link{birewire.induced.bipartite}}.}
@@ -22,6 +22,8 @@
     \item{path}{ The directory in which the routine stores the outputs; }
       \item{K}{  The number of network that has to be generated;}
   \item{delimitators}{list(negative='-',positive='+') (default):a list with 'positive' and 'negative' names identifying the character encoding the relation used for writing the ouput with \code{\link{birewire.build.dsg}};}
+    \item{check_pos_neg}{FALSE (default) : if true check if there are positive and negative loops in the same arc, if so the routine will not save the dsg and goes on with the marcov chain (it can be slower due to the chekcs);}
+
 } 
 \details{ The routine creates, starting from a given path, different subfolders in order to have maximum 1000 files for folder; the SIF files are saved using \code{birewire.write.dsg}, an internal routine. The set is generated calling birewire.rewire.dsg on the last generated dsg starting from the input dsg.
 }
@@ -38,3 +40,5 @@ R. Milo, N. Kashtan, S. Itzkovitz, M. E. J. Newman, U. Alon (2003), \emph{On the
 }
 
 \keyword{directed graph, rewire, pathway, signaling}
+
+

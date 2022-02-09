@@ -1,3 +1,7 @@
+CHANGES IN VERSION 3.27.1
+-----------------------
+    o Added a constraint flag for excluding positive and negative arcs between two nodes
+
 CHANGES IN VERSION 3.9.1
 -----------------------
     o Minorbug fixed (order not preserved using graph.edgelist and infinite loop in matrix with just one entry)
