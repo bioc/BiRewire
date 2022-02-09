@@ -275,6 +275,13 @@ This function uses the SA to generate a set of $K$ DSG in SIF format drawn from 
 ##			delimitators=list(negative='-',positive='+'))
 ##unlink('TESTBIREWIREDSG',recursive = T)
 @
+Since verison 3.27.1 it is possible to add a flag in order to not generate positive and negative loops between two nodes. Be aware that the process could be slower since the generated dsg is checked after the rewiring procedure and saved only if it does not contain positive-negative simulataneous loops.
+<<Sampler DSG v2>>=
+##NOT RUN
+##birewire.sampler.dsg(dsg,K=10,path='TESTBIREWIREDSG',verbose=F,
+##			delimitators=list(negative='-',positive='+'),check_pos_neg=T)
+##unlink('TESTBIREWIREDSG',recursive = T)
+@
 \section{Directed graphs}
 Notice that a directed graph can be encoded as a DSG with only positive (negative) part. All the routines involving DSG could be used also for directed graphs building a DSN as a R list with just one element named {\bf positive}.
 \section{Example}\label{ex}
