@@ -955,7 +955,7 @@ birewire.rewire.dsg<-function(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.ite
 	incidence_pos=dsg[["positive"]]
 	incidence_neg=dsg[["negative"]]
 	incidence_pos=birewire.rewire.bipartite(incidence=incidence_pos,  max.iter=max.iter.pos, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
-    incidence_neg=birewire.rewire.bipartite(incidence=incidence_neg,  max.iter=max.iter.neg, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
+    	incidence_neg=birewire.rewire.bipartite(incidence=incidence_neg,  max.iter=max.iter.neg, accuracy=accuracy,verbose=verbose,MAXITER_MUL=MAXITER_MUL,exact=exact)
 	dsg=list(positive=incidence_pos,negative=incidence_neg)	
 	if(!is.null(path))
 		{	
@@ -988,14 +988,20 @@ birewire.rewire.dsg<-function(dsg,exact=FALSE,verbose=1,max.iter.pos='n',max.ite
 
 pos_neg<-function(dsg)
 {
-pos = get.data.frame.from.incidence(dsg$positive,'+')
-neg = get.data.frame.from.incidence(dsg$negative,'+')
-if(nrow(merge(pos,neg))>0)
-{return(TRUE)
+if(is.igraph(dsg$positive))
+{
+pos = dsg$positive
+neg = dsg$negative
+return(length(E((intersection(pos, neg))))>0)
 }else
 {
-return(FALSE)
+pos = get.data.frame.from.incidence(dsg$positive,'+')
+neg = get.data.frame.from.incidence(dsg$negative,'+')
+return(nrow(merge(pos,neg))>0)
+
 }
+
+
 }
 
 simplify.table<-function(df)
