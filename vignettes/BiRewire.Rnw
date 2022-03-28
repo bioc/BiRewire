@@ -82,7 +82,7 @@ library(BiRewire)
 @
 
 \section{Package Dependencies}
-BiRewire requires the R packages {\bf Matrix} {\bf igraph}\cite{igraph}, {\bf{slam}}\cite{slam} and {\bf tsne}\cite{tsne} available at the CRAN repository.
+BiRewire requires the R packages {\bf Matrix} {\bf igraph}\cite{igraph}, {\bf{slam}}\cite{slam} and {\bf Rtsne}\cite{tsne} available at the CRAN repository.
 
 \section{Notation}\label{Notation}
 Let $\mathcal{G}$ be a bipartite graph, i.e. a graph containing two classes of nodes $V_r$ and $V_c$ such that every edge $e\in E$ connects one node in the first class to a node in the second class.\\ 
@@ -227,14 +227,13 @@ gg <-graph.bipartite(rep(0:1,length=10), c(1:10))
 
 \subsection{{\bf birewire.visual.monitoring.bipartite  } and {\bf .undirected}}
 
-These functions allow to visualize the Markov Chain underlying the SA. More in detail, given a sequence of steps to test, we sample from the SA each indicated step generating a brunch of networks. We compute the pairwise Jaccard distance among them, i.e. the Jaccad index is defined as 1 minus the Jaccad similarity. Then we perform a dimensional scaling using \emph{tsne}\cite{tsne} and plot the result. 
+These functions allow to visualize the Markov Chain underlying the SA. More in detail, given a sequence of steps to test, we sample from the SA each indicated step generating a brunch of networks. We compute the pairwise Jaccard distance among them, i.e. the Jaccad index is defined as 1 minus the Jaccad similarity. Then we perform a dimensional scaling using \emph{Rtsne}\cite{tsne} and plot the result. 
 
 <<Monitoring>>=
- ggg <- graph.bipartite( rep(0:1,length=10), c(1:10))
- ## NOT RUN	
-##birewire.visual.monitoring.bipartite(ggg,display=F,n.networks=10)
+ggg <- graph.bipartite( rep(0:1,length=10), c(1:10))
+tsne = birewire.visual.monitoring.bipartite(ggg,display=F,n.networks=10,perplexity=2)
 g <- erdos.renyi.game(1000,0.1)
-##birewire.visual.monitoring.undirected(g,display=F,n.networks=10)
+tsne = birewire.visual.monitoring.undirected(g,display=F,n.networks=10,perplexity=2)
 @
 
 
@@ -292,11 +291,9 @@ Here we collect the functionalities of the package in a single example. The outp
 #For recovering quickly the bound N we can perform a short analysis
 #N=birewire.analysis.bipartite(get.incidence(ggg,sparse=F),max.iter=2,step=1)$N
 #Now we can perform the real analysis
-#res=birewire.analysis.bipartite(get.incidence(ggg,sparse=F),
-#				max.iter=10*N,n.networks=10)
+#res=birewire.analysis.bipartite(get.incidence(ggg,sparse=F),max.iter=10*N,n.networks=10)
 #and monitoring the markov chain
-#birewire.visual.monitoring.bipartite(ggg,display=T,n.networks=75,
-#				sequence=c(1,10,200,500,"n",10000),ncol=3)
+#tsne = birewire.visual.monitoring.bipartite(ggg,display=T,n.networks=75,sequence=c(1,10,200,500,"n",10000),ncol=3,perplexity=10)
 #Now we can generate a null model
 #birewire.sampler.bipartite(ggg,K=10000,path="TESTBIREWIREBIPARTITE")
 @

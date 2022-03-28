@@ -4,7 +4,7 @@
 \alias{birewire.visual.monitoring.dsg}
 
 \title{Visual monitoring of the Markov chain underlying the SA for dsgs.}
-\description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{\link{tsne}}). If \emph{display} is set to \emph{TRUE} the relative plot is displayed.  }
+\description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{\link{Rtsne}}). If \emph{display} is set to \emph{TRUE} the relative plot is displayed.  }
 \usage{birewire.visual.monitoring.dsg(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,exact=FALSE,n.networks=100,perplexity=15,
   sequence.pos=c(1,5,100,"n"),
   sequence.neg=c(1,5,100,"n"),ncol=2,nrow=length(sequence.pos)/ncol,display=TRUE)}
@@ -15,7 +15,7 @@
  \item{MAXITER_MUL}{ 10 (default). If \emph{exact==TRUE}  in order to prevent a possible infinite loop the program stops anyway after MAXITER_MUL*max.iter iterations;}
  \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
   \item{n.networks}{  100 (default): the number of network generated for each step defined in \emph{sequence} ;}
-  \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{\link{tsne}};}
+  \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{\link{Rtsne}};}
   \item{sequence.pos}{ c(1,5,100,"n")(default) the sequence of step for wich generating a sampler (see\code{\link{birewire.sampler.dsg}}) for the positive part of \emph{data}}
     \item{sequence.neg}{ same as \emph{sequence.pos} but for the negative part}
   \item{ncol}{ 2 (default). The number of column in the plot;}
@@ -27,7 +27,7 @@ See \code{\link{birewire.visual.monitoring.bipartite}} for more details.
 
 }
 \value{
-A list containing the list containing the distance matrices  \emph{dist} and the list containing the tsne results \emph{tsne}.
+A list containing the list containing the distance matrices  \emph{dist} and the list containing the tsne results \emph{Rtsne}.
 }
 \references{
 

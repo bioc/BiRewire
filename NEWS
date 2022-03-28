@@ -1,3 +1,7 @@
+CHANGES IN VERSION 3.27.3
+-----------------------
+    o Update support tsne-> Rtsne
+
 CHANGES IN VERSION 3.27.1
 -----------------------
     o Added a constraint flag for excluding positive and negative arcs between two nodes
