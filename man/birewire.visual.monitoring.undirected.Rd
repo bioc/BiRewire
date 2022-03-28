@@ -17,7 +17,7 @@
  \item{exact}{ FALSE (default). If TRUE the program performs \emph{max.iter} swithcing steps, otherwise the program will count also the not-performed swithcing steps;}
 
   \item{n.networks}{  100 (default): the number of network generated for each step defined in \emph{sequence} ;}
-  \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{\link{tsne}};}
+  \item{perplexity}{ 15 (default): the value of perplexity passed to the function \code{\link{Rtsne}};}
   \item{sequence}{ c(1,5,100,"n")(default) the sequence of step for wich generating a sampler 
 (see \code{\link{birewire.sampler.undirected}})}
   \item{ncol}{ 2 (default). The number of column in the plot;}
@@ -25,10 +25,10 @@
   \item{display}{ TRUE (default). If TRUE the result of tsne is displayed.}
 } 
 \details{
- For each value \emph{p} in \emph{sequence} (it that can also contain the special character "n", see \code{\link{birewire.rewire.bipartite}}), the routine generates \emph{n.networks} sampled each \emph{p} SS from the SA initialized with the given \emph{data}. Pariwise distance are computed using the Jaccard distance and the resulting matrix is the input for the dimensional scaling performed by the function \code{\link{tsne}}. An explorative plot is displayed if \emph{display} is set to TRUE. 
+ For each value \emph{p} in \emph{sequence} (it that can also contain the special character "n", see \code{\link{birewire.rewire.bipartite}}), the routine generates \emph{n.networks} sampled each \emph{p} SS from the SA initialized with the given \emph{data}. Pariwise distance are computed using the Jaccard distance and the resulting matrix is the input for the dimensional scaling performed by the function \code{\link{Rtsne}}. An explorative plot is displayed if \emph{display} is set to TRUE. 
 }
 \value{
-A list containing the list containing the distance matrices  \emph{dist} and the list containing the tsne results \emph{tsne}.
+A list containing the list containing the distance matrices  \emph{dist} and the list containing the tsne results \emph{Rtsne}.
 }
 \references{
 Gobbi, A. and  Iorio, F. and  Dawson, K. J. and Wedge, D. C. and Tamborero, D. and Alexandrov, L. B. and Lopez-Bigas, N. and  Garnett, M. J. and  Jurman, G. and  Saez-Rodriguez, J. (2014) \emph{Fast randomization of large genomic datasets while preserving alteration counts} Bioinformatics 2014 30 (17): i617-i623 doi: 10.1093/bioinformatics/btu474.\cr
