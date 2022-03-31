@@ -4,7 +4,7 @@
 \alias{birewire.visual.monitoring.undirected}
 
 \title{Visual monitoring of the Markov chain underlying the SA for undirected graphs.}
-\description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{\link{tsne}}).  If \emph{display} is set to \emph{TRUE} the relative plot is displayed.  }
+\description{This function generates a cascade-sampling from the model at different switching steps given in \emph{sequence}. For each step the routine computes the pairwise Jaccard distance (1-JI) among the samples and perfroms, on the resulting matix, a dimentional scaling reduction (using \code{\link{Rtsne}}).  If \emph{display} is set to \emph{TRUE} the relative plot is displayed.  }
 \usage{birewire.visual.monitoring.undirected(data,accuracy=0.00005,verbose=FALSE,MAXITER_MUL=10,
 	exact=FALSE,n.networks=100,perplexity=15,sequence=c(1,5,100,"n"),ncol=2,
 	nrow=length(sequence)/ncol,display=TRUE)}
@@ -49,7 +49,7 @@ Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>\cr
 \examples{
 library(BiRewire)
 g <- erdos.renyi.game(1000,0.1)
-birewire.visual.monitoring.undirected(g,display=FALSE,n.networks=10)
+tsne = birewire.visual.monitoring.undirected(g,display=FALSE,n.networks=10,perplexity=1)
 
 
 }

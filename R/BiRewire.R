@@ -790,9 +790,11 @@ for( i in sequence)
 
 		}
 	dist[[ii]]=m	
-	tmp=try(Rtsne(m,perplexity=perplexity,check_duplicates = FALSE))
-	if(!is.list(tmp))
-		return(list(dist=list(),tsne=list()))
+	#tmp=try(Rtsne(m,perplexity=perplexity,check_duplicates = FALSE))
+	#if(!is.list(tmp))
+	#		return(list(dist=list(),tsne=list()))
+	
+	tmp=Rtsne(m,perplexity=perplexity,check_duplicates = FALSE)
 	tsne[[ii]]=tmp
 	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
 	if(display)
@@ -844,9 +846,10 @@ for( i in sequence)
 
 		}
 	dist[[ii]]=m	
-	tmp=try(Rtsne(m,perplexity=perplexity,check_duplicates = FALSE))
-	if(!is.list(tmp))
-		return(list(dist=list(),tsne=list()))
+	#tmp=try(Rtsne(m,perplexity=perplexity,check_duplicates = FALSE))
+	#if(!is.list(tmp))
+	#return(list(dist=list(),tsne=list()))
+	tmp=Rtsne(m,perplexity=perplexity,check_duplicates = FALSE)
 	tsne[[ii]]=tmp
 	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
 	if(display)
@@ -1303,15 +1306,14 @@ for( i in 1:length(sequence.pos))
 
 		}
 	dist[[ii]]=m	
-	tmp=try(tsne(m,whiten=F,perplexity=perplexity))
-	if(!is.double(tmp))
-		return(list(dist=list(),tsne=list()))
+	tmp=Rtsne(m,perplexity=perplexity,check_duplicates = FALSE)
+
 	tsne[[ii]]=tmp
 	#tsne[[ii]]=cmdscale(m,eig=TRUE, k=2)$points
 	if(display)
 		{
-			plot(tsne[[ii]],col=colorRampPalette(c("blue", "red"))( n.networks),pch=16,xlab='A.U.',ylab='A.U.',main=paste("K.pos=",sequence.pos[i],", K.neg=", sequence.neg[i]))
-			text(x=tsne[[ii]][1,1],y=tsne[[ii]][1,2],label='start')
+			plot(tsne[[ii]]$Y,col=colorRampPalette(c("blue", "red"))( n.networks),pch=16,xlab='A.U.',ylab='A.U.',main=paste("K.pos=",sequence.pos[i],", K.neg=", sequence.neg[i]))
+			text(x=tsne[[ii]]$Y[1,1],y=tsne[[ii]]$Y[1,2],label='start')
 		}	
 	ii=ii+1
 

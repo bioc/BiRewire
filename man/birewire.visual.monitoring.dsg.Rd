@@ -57,8 +57,8 @@ test_dsg_2[,3]=paste(test_dsg_2[,3],"_",sep="")
 
 dsg <-  birewire.induced.bipartite(rbind(test_dsg,test_dsg_2),sparse=FALSE)
 
- a=birewire.visual.monitoring.dsg(dsg,exact=TRUE,sequence.pos=c(1,2,"n",100),
-				sequence.neg=c(1,2,"n",60),n.networks=50)
+tsne = birewire.visual.monitoring.dsg(dsg,exact=TRUE,sequence.pos=c(1,2,"n",100),
+				sequence.neg=c(1,2,"n",60),n.networks=50,perplexity=1)
 
 }
 \keyword{rewire, bipartite graph}
