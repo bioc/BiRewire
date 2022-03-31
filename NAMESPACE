@@ -1,7 +1,7 @@
 useDynLib(BiRewire)
 import(igraph)
 import(slam)
-import(tsne)	
+import(Rtsne)	
 import(Matrix)	
 export(
 birewire.analysis.bipartite,

@@ -14,7 +14,7 @@ Summary:
   Package: \tab BiRewire\cr
   Version: \tab 3.7.0\cr
   Date: 2017-02-27\cr
-  Require: slam, igraph, tsne, Matrix,  R>=2.10\cr
+  Require: slam, igraph, Rtsne, Matrix,  R>=2.10\cr
   URL:  http://www.ebi.ac.uk/~iorio/BiRewire  \cr
   License: \tab GPL-3 \cr
   }

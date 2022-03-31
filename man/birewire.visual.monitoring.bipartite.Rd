@@ -49,7 +49,7 @@ Maintainer: Andrea Gobbi <gobbi.andrea@mail.com>\cr
 
 library(BiRewire)
 g <- graph.bipartite( rep(0:1,length=100), c(1:100))
-birewire.visual.monitoring.bipartite(g,display=FALSE,n.networks=10)
+tsne = birewire.visual.monitoring.bipartite(g,display=FALSE,n.networks=10,perplexity=1)
 
 
 }
